@@ -8,6 +8,7 @@ import computerLogo from "../../../assets/img/computer.png";
 const links = [
   { name: "Inicio", href: "/" },
   { name: "Proyectos", href: "/proyectos" },
+  { name: "Laboratorio", href: "/laboratorio" },
   { name: "Sobre Mi", href: "/about" },
   { name: "Contacto", href: "/contact" },
 ];
@@ -15,7 +16,7 @@ const links = [
 
 <nav class="relative">
   <!-- Input control (peer) -->
-  <input id="menu-toggle" type="checkbox" class="peer hidden md:hidden" />
+  <input id="menu-toggle" type="checkbox" class="peer sr-only md:hidden" aria-label="Abrir menú" />
 
   <!-- Navbar -->
   <nav

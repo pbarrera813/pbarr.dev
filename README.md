@@ -1,72 +1,88 @@
 # Personal Portfolio - Pablo Barrera
 
-Portfolio personal construido con Astro y React, personalizado sobre una plantilla base y adaptado con un tema visual propio.
+Portafolio personal auto-hospedado en [pbarr.dev](https://pbarr.dev), construido con Astro y componentes React puntuales, con un tema visual propio.
 
 ## Caracteristicas principales
 
-- Arquitectura con Astro + componentes React puntuales
-- Tema visual global con gradiente personalizado:
+- Paginas: Inicio, Proyectos, Laboratorio, Sobre mi, Contacto y 404
+- Tema visual con gradiente personalizado:
   `#E4E7E4 -> #C0C4CA -> #9BA1B0 -> #777F96 -> #535C7B -> #2E3961 -> #0A1647`
-- Modo claro/oscuro con toggle en el navbar (arriba a la derecha)
-- Persistencia del tema en `localStorage`
+- Modo claro/oscuro con toggle en el navbar, persistido en `localStorage`
 - Diseno responsive para desktop y mobile
-- Secciones: Inicio, Proyectos, Sobre mi, Contacto
-- Filtrado dinamico de proyectos con categorias:
-  `Todos`, `Full Stack`, `Frontend`, `Backend`, `Desarrollo`
-- Fallback visual para proyectos sin demo disponible
-- Header con logo personalizado (icono de computadora)
-- Footer con nombre completo
+- Filtrado de proyectos por categoria: `Todos`, `Full Stack`, `Frontend`, `Backend`, `Desarrollo`
+- Paginas de caso por proyecto (`/proyectos/[slug]`): problema, idea, funciones, arquitectura y decisiones
+- Actividad reciente de GitHub en la pagina principal, actualizada en vivo desde el navegador
+- Pagina `Laboratorio`: como esta montado el servidor y estado en vivo de las demos
+- Campana de `Novedades` en el navbar, con contador de no leidas
+- Tarjetas de proyecto con estado (`En desarrollo`), demo opcional y codigo opcional
+- Experiencia con pestanas (trabajo y colaboracion en codigo abierto) y preguntas frecuentes con `<details>` nativo
+- CV propio en `/cv.pdf`
+- SEO: titulo y descripcion por pagina, canonical, Open Graph, datos estructurados `Person`, `lang="es"` y sitemap
+- Accesibilidad: enlace para saltar al contenido, foco visible, menu movil operable con teclado y soporte de `prefers-reduced-motion`
+- Imagenes optimizadas con `astro:assets` (WebP redimensionado en el build)
 
 ## Tecnologias utilizadas
 
-- Astro
-- React
-- Tailwind CSS
+- Astro 5 (sitio estatico) y React 19 para islas interactivas
+- Tailwind CSS 4
+- `@astrojs/sitemap`
+- `react-icons` y `typewriter-effect`
 - JavaScript
-- Vite
 
 ## Estructura del proyecto
 
 ```text
 /
 |-- public/
-|   |-- svg/                 # Iconos y recursos estaticos
+|   |-- cv.pdf                    # CV descargable
+|   |-- svg/                      # Iconos de tecnologias
 |-- src/
 |   |-- assets/
-|   |   |-- img/             # Imagenes generales (incluye logo del header)
-|   |   |-- img-projects/    # Imagenes de proyectos
-|   |-- components/          # Componentes Astro/React
-|   |   |-- commons/navbar/  # Navbar + theme toggle
-|   |   |-- project/         # Tarjetas de proyectos (pagina proyectos)
-|   |   |-- home/homeProyect/ # Proyectos destacados (home)
-|   |-- data/                # Datos de proyectos y experiencia
-|   |-- layouts/             # Layout base global
-|   |-- pages/               # Paginas principales
-|   |-- scripts/             # Scripts de interaccion
-|   |-- styles/              # Estilos globales y secciones
+|   |   |-- img/                  # Imagenes generales (foto, logo del navbar)
+|   |   |-- img-projects/         # Capturas de proyectos
+|   |-- components/
+|   |   |-- about/                # Sobre mi: bio, experiencia, servicios, tecnologias
+|   |   |-- commons/              # Navbar, footer, hero, banner, FAQs, iconos sociales
+|   |   |-- home/                 # Header, slider, proyectos destacados, actividad de GitHub
+|   |   |-- project/              # Tarjeta de proyecto (compartida por Inicio y Proyectos)
+|   |-- data/
+|   |   |-- projectData.js        # Proyectos y paginas de caso
+|   |   |-- jobsData.js           # Experiencia
+|   |   |-- faqData.js            # Preguntas frecuentes
+|   |   |-- novedades.js          # Entradas de la campana
+|   |   |-- github.js             # Consulta a la API de GitHub durante el build
+|   |-- layouts/Layout.astro      # Meta, SEO, saltar al contenido
+|   |-- pages/                    # index, proyectos, proyectos/[slug], laboratorio, about, contact, 404
+|   |-- scripts/                  # Pestanas de experiencia
+|   |-- styles/                   # Estilos globales y por seccion
 |-- astro.config.mjs
 |-- package.json
 ```
 
 ## Comandos
 
-| Command         | Action                                  |
-|----------------|------------------------------------------|
-| `npm install`  | Instala dependencias                     |
-| `npm run dev`  | Inicia servidor local en `localhost:4321` |
-| `npm run build`| Genera build de produccion               |
-| `npm run preview` | Previsualiza el build                 |
+| Comando           | Accion                                    |
+|-------------------|-------------------------------------------|
+| `npm install`     | Instala dependencias                      |
+| `npm run dev`     | Servidor local en `localhost:4321`        |
+| `npm run build`   | Genera el sitio estatico en `dist/`       |
+| `npm run preview` | Sirve `dist/` (requiere `npm run build`)  |
 
-## Notas recientes
+## Como actualizar el contenido
 
-- Se aplico una paleta gradiente unificada en toda la UI.
-- Se implemento el toggle claro/oscuro en el navbar con apariencia personalizada.
-- Se mejoro contraste de textos en botones y tarjetas clave.
-- Se actualizaron iconos de la seccion Servicios.
-- Se removio Facebook de manera global.
-- Se renombro `MC-AdPanel` a `Orexa Panel`.
-- `Orexa Panel` aparece ahora en proyectos destacados y en filtros multiples.
-- Se agrego la categoria `Desarrollo` para proyectos complejos.
-- Se agrego Java, Go y Docker en el stack visible del sitio:
-  - Seccion `Tecnologias` (pagina Sobre mi)
-  - Carrusel de tecnologias (pagina principal)
+- **Proyectos** (`src/data/projectData.js`): cada proyecto tiene `titulo`, `descripcion`, `imagen` (opcional), `tecnologias`, `demo`, `codigo`, `categoria` (separada por comas), `destacado` y, opcionalmente, `estado`.
+  - `demo` con una URL muestra el boton `Pruebalo`; `demo: ""` muestra el boton con un aviso de que aun no hay demo; `demo: null` oculta el boton.
+  - `codigo: ""` oculta el boton de codigo.
+  - Sin `imagen`, la tarjeta muestra un panel con el titulo.
+  - `destacado: true` lo incluye en la pagina principal (maximo 4).
+- **Paginas de caso**: agrega `slug` y `caso` al proyecto. `caso` es una lista de secciones `{ titulo, texto }` o `{ titulo, lista }`. La pagina `/proyectos/[slug]` y el enlace `Ver caso` se generan solos.
+- **Experiencia**: `src/data/jobsData.js`. **Preguntas frecuentes**: `src/data/faqData.js`.
+- **Novedades**: `src/data/novedades.js`, con la mas reciente primero. El contador cuenta las entradas posteriores a la ultima fecha vista por el visitante.
+- **Actividad de GitHub**: no requiere cambios. Se renderiza en el build y el navegador la actualiza en vivo (cache de 15 minutos).
+- **Estado de las demos**: la pagina `Laboratorio` revisa en el navegador cada proyecto cuya `demo` apunte a `https://pbarr.dev/`.
+
+## Despliegue
+
+El sitio es estatico: `npm ci` y `npm run build` generan `dist/`, que se sirve con `npm run preview`. Despues de cambiar archivos fuente hay que volver a ejecutar el build.
+
+Durante el build se consulta la API de GitHub. Si no esta disponible, el build termina igual: la seccion de actividad se genera oculta y el navegador la completa al cargar la pagina. La variable opcional `GITHUB_TOKEN` solo sirve para aumentar el limite de peticiones del build.

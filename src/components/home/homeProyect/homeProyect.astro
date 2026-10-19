@@ -1,5 +1,5 @@
 ---
-import HomeProjectCard from "./homeProyectCard.astro";
+import ProjectCard from "../../project/proyectCard.astro";
 import { proyectos } from "../../../data/projectData.js";
 ---
 
@@ -11,7 +11,7 @@ import { proyectos } from "../../../data/projectData.js";
   </h2>
 
   <div class="mt-8 grid gap-6 md:grid-cols-2 max-w-[930px] mx-auto px-4">
-    {proyectos.filter((p) => p.destacado).slice(0, 4).map((p) => <HomeProjectCard {...p} />)}
+    {proyectos.filter((p) => p.destacado).slice(0, 4).map((p) => <ProjectCard {...p} compact />)}
   </div>
   <div class="mt-12 flex justify-center">
     <a

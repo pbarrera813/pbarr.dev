@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import MiFoto from "../../assets/img/MiFoto.png";
 ---
 
@@ -10,8 +11,9 @@ import MiFoto from "../../assets/img/MiFoto.png";
   <div
     class="border-primary h-64 w-64 overflow-hidden rounded-2xl shadow-lg md:h-96 md:w-96 drop-shadow-[4px_4px_0_#7836cf]"
   >
-    <img
-      src={MiFoto.src}
+    <Image
+      src={MiFoto}
+      width={800}
       alt="Foto de Pablo"
       class="h-full w-full object-cover"
     />
@@ -31,8 +33,8 @@ import MiFoto from "../../assets/img/MiFoto.png";
       > y
       <span class="text-primary font-semibold">Python</span>,
       tambien uso tecnologías como <span class="text-primary italic"
-    >Astro, JavaScript, HTML, CSS, JS,
-        Node.js, Linux y Docker.</span
+    >Astro, JavaScript, TypeScript, HTML, CSS,
+        Node.js, Go, Java, Flutter, Linux y Docker.</span
       >.
     </p>
     <p class="mt-2">
@@ -51,7 +53,7 @@ import MiFoto from "../../assets/img/MiFoto.png";
       adentrandome mas a la programacion de manera
       <span class="text-primary font-semibold">autodidacta</span>, luego en la
       <span class="text-primary font-semibold"
-        > carrera universitaria de Ingenieria de Desarrollo de Software</span
+        > carrera universitaria de Ingeniería en Tecnología del Software</span
       > fue donde me di cuenta que esto era lo que queria emprender de manera <span
         class="text-primary font-semibold">profesional</span
       >.

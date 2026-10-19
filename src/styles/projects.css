@@ -33,7 +33,7 @@
 
 /* Botones de filtrado no activos */
 .filter-btn {
-  opacity: 0.4;
+  opacity: 0.75;
   transition: 0.18s ease;
 }
 

@@ -1,9 +1,10 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 
-// https://astro.build/config
 export default defineConfig({
+    site: "https://pbarr.dev",
     server: {
         host: "0.0.0.0",
         port: 4321,
@@ -18,5 +19,5 @@ export default defineConfig({
             allowedHosts: ["pbarr.dev", "localhost", "192.168.1.91"],
         },
     },
-    integrations: [react()],
+    integrations: [react(), sitemap({ filter: (page) => !page.endsWith("/404/") })],
 });

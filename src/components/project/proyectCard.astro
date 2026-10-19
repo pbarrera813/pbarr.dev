@@ -1,34 +1,74 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
 export interface Props {
   titulo: string;
   descripcion: string;
-  imagen: string;
+  imagen?: ImageMetadata;
   tecnologias: string[];
-  demo: string;
+  demo: string | null;
   codigo: string;
   categoria?: string;
-  index: number;
+  estado?: string;
+  slug?: string;
+  index?: number;
+  compact?: boolean;
 }
 
-const { titulo, descripcion, imagen, tecnologias, demo, codigo, categoria, index } =
-  Astro.props;
+const {
+  titulo,
+  descripcion,
+  imagen,
+  tecnologias,
+  demo,
+  codigo,
+  categoria,
+  estado,
+  slug,
+  index,
+  compact = false,
+} = Astro.props;
+const showDemo = demo !== null;
 const hasDemo = typeof demo === "string" && demo.trim().length > 0;
+const hasCode = typeof codigo === "string" && codigo.trim().length > 0;
+const btn =
+  "mt-4 min-w-[96px] rounded-xl bg-primary px-2.5 py-1.5 text-center text-force-white text-sm font-semibold transition-colors hover:bg-secondary";
 ---
 
 <div
   data-index={index}
   data-categoria={categoria ?? ""}
-  class="project-card z-10 flex w-[400px] flex-col overflow-hidden rounded-lg bg-gray-900 shadow-lg transition-transform hover:scale-[1.01] lg:w-[320px] drop-shadow-[4px_4px_0_#7836cf]"
+  class:list={[
+    "project-card z-10 flex flex-col overflow-hidden rounded-lg bg-gray-900 shadow-lg transition-transform hover:scale-[1.01] drop-shadow-[4px_4px_0_#7836cf]",
+    compact ? "mx-auto w-full max-w-md" : "w-[400px] lg:w-[320px]",
+  ]}
 >
-  <img
-    src={imagen}
-    alt={`Imagen del proyecto ${titulo}`}
-    class="h-50 w-full rounded-2xl object-cover p-3"
-  />
+  {
+    imagen ? (
+      <Image
+        src={imagen}
+        width={800}
+        alt={`Imagen del proyecto ${titulo}`}
+        class="h-50 w-full rounded-2xl object-cover object-top p-3"
+      />
+    ) : (
+      <div class="m-3 flex h-44 items-center justify-center rounded-2xl bg-primary p-4 text-center text-3xl font-bold text-force-white">
+        {titulo}
+      </div>
+    )
+  }
   <div class="flex grow flex-col px-3 pb-3">
     <h3 class="text-xl font-semibold text-white drop-shadow-[1px_1px_0_#7836cf]">{titulo}</h3>
 
     <div class="my-1.5 flex flex-wrap gap-2">
+      {
+        estado && (
+          <span class="rounded-md border border-[#7836cf] px-2 py-0.5 text-xs font-bold text-[#7836cf]">
+            {estado}
+          </span>
+        )
+      }
       {
         tecnologias.map((tech) => (
           <span class="rounded-md bg-[#7836cf]/20 text-[#a27ed1] px-2 py-0.5 text-xs font-semibold">
@@ -38,38 +78,39 @@ const hasDemo = typeof demo === "string" && demo.trim().length > 0;
       }
     </div>
 
-    <p class="flex grow text-gray-400">{descripcion}</p>
+    {!compact && <p class="flex grow text-gray-400">{descripcion}</p>}
+
+    {
+      slug && (
+        <a
+          href={`/proyectos/${slug}`}
+          class="mt-3 text-sm font-bold text-primary hover:underline"
+        >
+          Ver caso →
+        </a>
+      )
+    }
 
     <div class="mt-auto flex justify-between gap-2">
       {
-        hasDemo ? (
-          <a
-            class="mt-4 min-w-[96px] rounded-xl bg-primary px-2.5 py-1.5 text-center text-force-white text-sm font-semibold transition-colors hover:bg-secondary"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={demo}
-          >
-            Pruebalo
+        !showDemo ? null : hasDemo ? (
+          <a class={btn} target="_blank" rel="noopener noreferrer" href={demo}>
+            Pruébalo
           </a>
         ) : (
-          <button
-            type="button"
-            data-no-demo-trigger
-            class="mt-4 min-w-[96px] cursor-pointer rounded-xl bg-primary px-2.5 py-1.5 text-center text-force-white text-sm font-semibold transition-colors hover:bg-secondary"
-          >
-            Pruebalo
+          <button type="button" data-no-demo-trigger class:list={[btn, "cursor-pointer"]}>
+            Pruébalo
           </button>
         )
       }
 
-      <a
-        class="mt-4 min-w-[96px] rounded-xl bg-primary px-2.5 py-1.5 text-center text-force-white text-sm font-semibold transition-colors hover:bg-secondary"
-        href={codigo}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Codigo
-      </a>
+      {
+        hasCode && (
+          <a class={btn} href={codigo} target="_blank" rel="noopener noreferrer">
+            Código
+          </a>
+        )
+      }
     </div>
   </div>
 </div>

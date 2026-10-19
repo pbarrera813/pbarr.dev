@@ -7,7 +7,10 @@ import Banner from "../components/commons/banners/banner.astro";
 import { proyectos } from "../data/projectData.js";
 ---
 
-<Layout title="Proyectos" description="Proyectos">
+<Layout
+  title="Proyectos"
+  description="Proyectos de Pablo Barrera: paneles de administración, juegos en C++, aplicaciones web y herramientas auto-hospedadas."
+>
   <Hero titulo="Proyectos" />
 
   <!-- Botones -->
@@ -45,6 +48,8 @@ import { proyectos } from "../data/projectData.js";
           demo={proyecto.demo}
           codigo={proyecto.codigo}
           categoria={proyecto.categoria}
+          estado={proyecto.estado}
+          slug={proyecto.slug}
         />
       ))
     }
@@ -103,8 +108,14 @@ import { proyectos } from "../data/projectData.js";
   }
 
   function setActiveButton(btn) {
-    filterButtons.forEach((b) => b.classList.remove("active"));
-    if (btn) btn.classList.add("active");
+    filterButtons.forEach((b) => {
+      b.classList.remove("active");
+      b.setAttribute("aria-pressed", "false");
+    });
+    if (btn) {
+      btn.classList.add("active");
+      btn.setAttribute("aria-pressed", "true");
+    }
   }
 
   /* ---------------- FILTRADO ---------------- */

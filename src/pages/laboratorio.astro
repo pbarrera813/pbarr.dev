@@ -1,0 +1,147 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/commons/hero/hero.astro";
+import Banner from "../components/commons/banners/banner.astro";
+import { proyectos } from "../data/projectData.js";
+
+const demos = proyectos
+  .filter((p) => p.demo?.startsWith("https://pbarr.dev/"))
+  .map((p) => ({ titulo: p.titulo, ruta: new URL(p.demo).pathname }));
+
+const pasos = [
+  { titulo: "Visitante", texto: "Abre pbarr.dev desde cualquier lugar." },
+  { titulo: "Cloudflare", texto: "Administra el dominio pbarr.dev." },
+  {
+    titulo: "Servidor Debian 12",
+    texto: "Un proxy inverso reparte cada ruta a su servicio.",
+  },
+  {
+    titulo: "Servicios",
+    texto: "Este portafolio (Astro, como servicio de systemd), las demos y mis proyectos en desarrollo.",
+  },
+];
+
+const enDesarrollo = [
+  {
+    titulo: "NexuDrive",
+    texto:
+      "Mi servidor NAS propio. Pendiente de una revisión de seguridad antes de abrirse a internet.",
+  },
+  {
+    titulo: "Hostra",
+    texto:
+      "Un dashboard para Linux/Debian para mantener el control de un servidor casero, con una app móvil complementaria.",
+  },
+];
+---
+
+<Layout
+  title="Laboratorio"
+  description="Cómo está montado pbarr.dev: un servidor Debian propio, con el estado en vivo de mis demos."
+>
+  <Hero titulo="Laboratorio" />
+
+  <div class="mx-auto max-w-4xl space-y-6 px-4 pb-4">
+    <p class="text-center text-lg font-semibold text-neutral-300">
+      Todo lo que ves en pbarr.dev corre en un servidor propio con Debian 12 que
+      administro yo mismo. Aquí se ve cómo está montado y si mis demos están
+      respondiendo ahora mismo.
+    </p>
+
+    <section class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
+      <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
+        Cómo está montado
+      </h2>
+      <ol class="mt-4 grid gap-4 md:grid-cols-4">
+        {
+          pasos.map((p, i) => (
+            <li class="relative rounded-xl border border-[#7836cf] p-4">
+              <span class="text-xs font-bold text-[#a27ed1]">Paso {i + 1}</span>
+              <h3 class="font-bold text-white">{p.titulo}</h3>
+              <p class="mt-1 text-sm text-neutral-300">{p.texto}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
+      <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
+        Estado de las demos
+      </h2>
+      <ul class="mt-4 divide-y divide-gray-800">
+        {
+          demos.map((d) => (
+            <li
+              class="status-row flex items-center justify-between py-3"
+              data-status-path={d.ruta}
+              data-estado="pending"
+            >
+              <span>
+                <span class="font-semibold text-white">{d.titulo}</span>
+                <span class="ml-2 text-sm text-neutral-300">{d.ruta}</span>
+              </span>
+              <span class="flex items-center gap-2 text-sm font-semibold text-white">
+                <span class="status-dot h-3 w-3 rounded-full" aria-hidden="true" />
+                <span data-label>Comprobando…</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-3 text-xs text-neutral-300">
+        La comprobación la hace tu navegador cada vez que abres esta página.
+      </p>
+    </section>
+
+    <section class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
+      <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
+        En el laboratorio
+      </h2>
+      <ul class="mt-4 grid gap-4 md:grid-cols-2">
+        {
+          enDesarrollo.map((p) => (
+            <li class="rounded-xl border border-[#7836cf] p-4">
+              <h3 class="font-bold text-white">
+                {p.titulo}
+                <span class="ml-2 rounded-md border border-[#7836cf] px-2 py-0.5 text-xs font-bold text-[#7836cf]">
+                  En desarrollo
+                </span>
+              </h3>
+              <p class="mt-1 text-sm text-neutral-300">{p.texto}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+
+  <Banner />
+</Layout>
+
+<style>
+  .status-dot {
+    background: #8a8f9c;
+  }
+  .status-row[data-estado="ok"] .status-dot {
+    background: #2e9e5b;
+  }
+  .status-row[data-estado="fail"] .status-dot {
+    background: #c0392b;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-status-path]").forEach(async (row) => {
+    let ok = false;
+    try {
+      const res = await fetch(row.dataset.statusPath!, {
+        cache: "no-store",
+        signal: AbortSignal.timeout(5000),
+      });
+      ok = res.ok;
+    } catch {}
+    row.dataset.estado = ok ? "ok" : "fail";
+    row.querySelector("[data-label]")!.textContent = ok ? "En línea" : "Sin respuesta";
+  });
+</script>

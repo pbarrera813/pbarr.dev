@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
 import MiFoto from "../assets/img/MiFoto.png";
 import CopyMail from "../components/links/copyMail.jsx";
 
@@ -13,7 +14,10 @@ const links = [
 ];
 ---
 
-<Layout>
+<Layout
+  title="Contacto"
+  description="Contacta a Pablo Barrera por correo, LinkedIn o GitHub."
+>
   <section
     class="bg-gray-900 flex min-h-screen flex-col items-center justify-center px-6"
   >
@@ -21,8 +25,9 @@ const links = [
       <div class="mb-2 mt-11">
         <div class="relative flex items-center justify-center">
           <!-- Foto con borde -->
-          <img
-            src={MiFoto.src}
+          <Image
+            src={MiFoto}
+            width={256}
             alt="Foto de Pablo"
             class="border-primary h-32 w-32 rounded-full shadow-lg"
           />
