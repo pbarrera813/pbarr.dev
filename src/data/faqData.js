@@ -12,7 +12,7 @@ export const faqs = [
   {
     pregunta: "Mi formación",
     respuesta:
-      "Mi educación consiste en haber estudiado la carrera de Ingeniería en Tecnología del Software en la Universidad Autónoma de Nuevo León, la cual terminé en noviembre del 2025. Gracias a la experiencia adquirida dentro de la carrera, decidí adentrarme con mayor profundidad al sistema operativo Linux y al lenguaje de programación Python, con el objetivo de pulir y mejorar los conocimientos adquiridos, pues estar en constante aprendizaje nunca está de más.",
+      "Mi educación consiste en haber estudiado la carrera de Ingeniería en Tecnología del Software en la Universidad Autónoma de Nuevo León, la cual terminé en noviembre del 2025. Gracias a la experiencia adquirida dentro de la carrera, decidí adentrarme con mayor profundidad al sistema operativo Linux y al lenguaje de programación Python, con el objetivo de pulir y mejorar los conocimientos adquiridos, pues estar en constante aprendizaje nunca está de más. Desde septiembre del 2026 curso la Maestría en Ingeniería con orientación en Tecnologías de la Información en la FIME de la UANL.",
   },
   {
     pregunta: "¿Cómo trabajo en equipo?",

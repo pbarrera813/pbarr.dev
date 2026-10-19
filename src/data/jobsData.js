@@ -20,7 +20,7 @@ export const jobs = [
   },
   {
     title: "Practicante de Ingeniero en Infraestructura - John Deere",
-    time: ["05/2024 - 11/2024"],
+    time: ["05/2023 - 11/2023"],
     description:
       "Mis tareas en John Deere consistian en dar soporte tecnico de Nivel 2, asi como desarrollar aplicaciones en Microsoft PowerApps.",
     list: [
