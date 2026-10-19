@@ -190,6 +190,44 @@ export const proyectos = [
     },
     {
         titulo: "Simple Voice App",
+        slug: "simple-voice-app",
+        caso: [
+          {
+            titulo: "El problema",
+            texto:
+              "Los jugadores de Minecraft Bedrock, en su gran mayoría en consola, solo podían entrar al chat de voz de SimpleVoice-Geyser desde su interfaz web. Eso obligaba a elegir entre abrirla en el navegador del celular o usar una laptop o computadora aparte. Para una sesión larga de juego en consola, ninguna de las dos opciones es cómoda.",
+          },
+          {
+            titulo: "Cómo nació",
+            texto:
+              "Como ya había contribuido al plugin, empecé a pensar en desarrollar una app oficial. Cuando vi en el foro del plugin a un usuario pidiendo una app oficial, decidí tomar la iniciativa y empezar a construirla yo.",
+          },
+          {
+            titulo: "La idea",
+            texto:
+              "Una app de Android que se conecta directo al servidor y funciona como una llamada: ingresas servidor, usuario y contraseña, y hablas con micrófono abierto, silenciado o push-to-talk.",
+          },
+          {
+            titulo: "Qué hace",
+            lista: [
+              "Captura y reproducción de audio nativas de Android, con opción de salida por auricular o altavoz.",
+              "Notificación de llamada en primer plano con controles para silenciar, cambiar a altavoz, colgar y responder al chat.",
+              "Pestañas de voz y chat, prueba de audio local y un panel de diagnóstico de conexión.",
+            ],
+          },
+          {
+            titulo: "Cómo está hecho",
+            texto:
+              "Interfaz en Flutter y Dart con audio nativo de Android por debajo. Se conecta por websocket directamente a la ruta /ws de SimpleVoice-Geyser, que la app calcula a partir del campo de servidor y que funciona con subrutas y puertos.",
+          },
+          {
+            titulo: "Decisiones",
+            lista: [
+              "Para que la app funcionara también modifiqué el plugin: soporte de protocolo para clientes Android (PR #64).",
+              "También aporté soporte de subruta para reverse proxy, audio espacial y autenticación persistente (PR #45).",
+            ],
+          },
+        ],
         imagen: svgApp,
         descripcion:
         "App de Android hecha con Flutter para jugadores de Minecraft Bedrock: permite unirse al chat de voz y al chat del servidor de SimpleVoice-Geyser sin usar el navegador. Soy su desarrollador principal.",
