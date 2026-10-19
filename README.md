@@ -10,7 +10,7 @@ Portafolio personal auto-hospedado en [pbarr.dev](https://pbarr.dev), construido
 - Modo claro/oscuro con toggle en el navbar, persistido en `localStorage`
 - Diseno responsive para desktop y mobile
 - Filtrado de proyectos por categoria: `Todos`, `Full Stack`, `Frontend`, `Backend`, `Desarrollo`
-- Paginas de caso por proyecto (`/proyectos/[slug]`): problema, idea, funciones, arquitectura y decisiones
+- Paginas `Detras del proyecto` (`/proyectos/[slug]`): problema, idea, funciones, arquitectura y decisiones
 - Actividad reciente de GitHub en la pagina principal, actualizada en vivo desde el navegador
 - Pagina `Laboratorio`: como esta montado el servidor y estado en vivo de las demos
 - Campana de `Novedades` en el navbar, con contador de no leidas
@@ -75,7 +75,7 @@ Portafolio personal auto-hospedado en [pbarr.dev](https://pbarr.dev), construido
   - `codigo: ""` oculta el boton de codigo.
   - Sin `imagen`, la tarjeta muestra un panel con el titulo.
   - `destacado: true` lo incluye en la pagina principal (maximo 4).
-- **Paginas de caso**: agrega `slug` y `caso` al proyecto. `caso` es una lista de secciones `{ titulo, texto }` o `{ titulo, lista }`. La pagina `/proyectos/[slug]` y el enlace `Ver caso` se generan solos.
+- **Pagina `Detras del proyecto`**: agrega `slug` y `caso` al proyecto. `caso` es una lista de secciones `{ titulo, texto }` o `{ titulo, lista }`. La pagina `/proyectos/[slug]` y el enlace `Detras del proyecto` se generan solos.
 - **Experiencia**: `src/data/jobsData.js`. **Preguntas frecuentes**: `src/data/faqData.js`.
 - **Novedades**: `src/data/novedades.js`, con la mas reciente primero. El contador cuenta las entradas posteriores a la ultima fecha vista por el visitante.
 - **Actividad de GitHub**: no requiere cambios. Se renderiza en el build y el navegador la actualiza en vivo (cache de 15 minutos).
