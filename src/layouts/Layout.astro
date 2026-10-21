@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Navbar from "../components/commons/navbar/navbar.astro";
 import Footer from "../components/commons/footer/footer.astro";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title?: string;
@@ -11,19 +12,19 @@ interface Props {
 
 const {
   title,
-  description = "Portafolio de Pablo Barrera, ingeniero de software enfocado en C++, Python y Linux, con proyectos auto-hospedados en Debian.",
+  description = "Portafolio de Pablo Barrera, ingeniero de software full-stack: backend en Go y Python, React, Flutter e infraestructura Linux auto-hospedada.",
   noindex = false,
 } = Astro.props;
 
 const siteName = "Pablo Barrera";
-const fullTitle = title ? `${title} | ${siteName}` : `${siteName} | Ingeniero de Software`;
+const fullTitle = title ? `${title} | ${siteName}` : `${siteName} | Ingeniero de Software Full-Stack`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
 const person = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: siteName,
-  jobTitle: "Ingeniero de Software",
+  jobTitle: "Ingeniero de Software Full-Stack",
   url: Astro.site?.href,
   sameAs: [
     "https://github.com/pbarrera813",
@@ -37,19 +38,34 @@ const person = {
   <head>
     <script is:inline>
       (function () {
-        const saved = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        const useDark = saved ? saved === "dark" : prefersDark;
-        document.documentElement.classList.toggle("theme-dark", useDark);
+        const root = document.documentElement;
+        function apply(el = root) {
+          const saved = localStorage.getItem("theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          el.classList.toggle("theme-dark", saved ? saved === "dark" : prefersDark);
+          el.classList.add("js");
+        }
+        apply();
+        // the swap copies the incoming <html> attributes, so set the theme there first or the
+        // persisted navbar sees a theme-less frame and animates the toggle
+        document.addEventListener("astro:before-swap", (e) => apply(e.newDocument.documentElement));
+        document.addEventListener("astro:after-swap", () => apply());
+        setTimeout(() => {
+          if (!document.documentElement.classList.contains("motion-ready")) {
+            document.documentElement.classList.remove("js");
+          }
+        }, 3000);
       })();
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <ClientRouter />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title="Pablo Barrera: blog" href="/rss.xml" />
     {noindex && <meta name="robots" content="noindex" />}
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_MX" />
@@ -74,6 +90,8 @@ const person = {
     <Footer />
     <script is:inline>
       (function () {
+        if (window.__demoToast) return;
+        window.__demoToast = true;
         const message = "Lo siento, este proyecto aún no cuenta con una demo.";
         let activeToast = null;
 
@@ -105,6 +123,9 @@ const person = {
           showToast();
         });
       })();
+    </script>
+    <script>
+      import "../scripts/motion.js";
     </script>
   </body>
 </html>

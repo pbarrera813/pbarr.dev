@@ -21,7 +21,7 @@ async function gh(path) {
   }
 }
 
-export async function actividad() {
+async function cargarActividad() {
   const [repos, prs] = await Promise.all([
     gh(`/users/${USER}/repos?sort=pushed&per_page=10`),
     gh(`/search/issues?q=author:${USER}+is:pr+is:merged+-user:${USER}&per_page=1`),
@@ -32,6 +32,9 @@ export async function actividad() {
     prsFusionados: prs?.total_count ?? 0,
   };
 }
+
+let pendiente;
+export const actividad = () => (pendiente ??= cargarActividad());
 
 export const fecha = (iso) =>
   new Date(iso).toLocaleDateString("es-MX", {

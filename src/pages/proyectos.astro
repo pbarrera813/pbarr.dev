@@ -84,7 +84,7 @@ import { proyectos } from "../data/projectData.js";
 
   /* ---------------- HELPERS ---------------- */
   function queryElements() {
-    cards = Array.from(document.querySelectorAll("[data-index]"));
+    cards = Array.from(document.querySelectorAll("[data-categoria]"));
     filterButtons = Array.from(document.querySelectorAll(".filter-btn"));
     loadMoreBtn = document.getElementById("load-more");
   }
@@ -123,7 +123,7 @@ import { proyectos } from "../data/projectData.js";
     activeFilter = filter ?? "all";
     const normalized = activeFilter.toLowerCase();
 
-    cards = Array.from(document.querySelectorAll("[data-index]"));
+    cards = Array.from(document.querySelectorAll("[data-categoria]"));
 
     const filteredCards = cards.filter((card) => {
       const categorias = (card.dataset.categoria ?? "")

@@ -87,6 +87,26 @@ div {
   outline-offset: 2px;
 }
 
+.scroll-fino::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-fino::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-fino::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .scroll-fino {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+  }
+}
+
 #menu-toggle:focus-visible ~ nav label[for="menu-toggle"] {
   outline: 2px solid var(--accent-strong);
   outline-offset: 2px;
@@ -100,6 +120,26 @@ div {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* nothing on the site is meant to be selected or dragged; form fields stay usable */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+input,
+textarea,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+img,
+a {
+  -webkit-user-drag: none;
+  user-drag: none;
 }
 
 ::selection {
@@ -303,4 +343,237 @@ div {
 
 .animate-gradientMove2 {
   animation: gradientMove2 8s ease-in-out infinite alternate;
+}
+
+:root {
+  --dur-fast: 150ms;
+  --dur-base: 280ms;
+  --dur-slow: 800ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+html.js [data-reveal]:not([data-revealed]) {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.lift {
+  transition:
+    translate var(--dur-base) var(--ease-out),
+    background-color 260ms ease,
+    color 260ms ease,
+    border-color 260ms ease,
+    filter var(--dur-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .lift:hover {
+    translate: 0 -4px;
+    filter: drop-shadow(6px 6px 0 var(--accent)) !important;
+  }
+
+  /* cards without their own background would drop-shadow a copy of their content */
+  .lift.lift-flat:hover {
+    filter: none !important;
+  }
+}
+
+.nav-bar {
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+html[data-scrolled] .nav-bar {
+  background-color: color-mix(in srgb, var(--surface-3) 82%, transparent) !important;
+  box-shadow: 0 8px 24px var(--shadow);
+}
+
+.bell-menu {
+  transform-origin: top right;
+  animation: menu-in var(--dur-fast) var(--ease-out);
+}
+
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+}
+
+main {
+  animation: page-rise var(--dur-base) var(--ease-out) backwards;
+}
+
+@keyframes page-rise {
+  from {
+    transform: translateY(8px);
+  }
+}
+
+.nav-bar {
+  view-transition-name: site-nav;
+}
+
+::view-transition-old(site-nav),
+::view-transition-new(site-nav) {
+  animation: none;
+}
+
+::view-transition-old(site-nav) {
+  display: none;
+}
+
+html.theme-switching::view-transition-old(root),
+html.theme-switching::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* case pages: chip cascade, reading progress, chapter rail, accent draw */
+@keyframes chip-in {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+
+.caso-chip {
+  animation: chip-in var(--dur-slow) var(--ease-out) backwards;
+  animation-delay: calc(0.25s + var(--i, 0) * 45ms);
+}
+
+.caso-progress,
+.caso-rail {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  @keyframes caso-progress {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  .caso-progress {
+    display: block;
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 60;
+    height: 3px;
+    background: var(--accent);
+    transform-origin: left;
+    animation: caso-progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+@media (min-width: 1280px) {
+  .caso-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: fixed;
+    z-index: 40;
+    top: 50%;
+    left: calc(50% - 448px - 2.75rem);
+    translate: 0 -50%;
+  }
+
+  .caso-rail a {
+    position: relative;
+    display: block;
+    width: 28px;
+    height: 20px;
+  }
+
+  .caso-rail a::before {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 8px;
+    height: 8px;
+    translate: -50% -50%;
+    border-radius: 999px;
+    background: var(--text-soft);
+    opacity: 0.55;
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      opacity var(--dur-base) var(--ease-out),
+      background-color var(--dur-base) var(--ease-out);
+  }
+
+  .caso-rail a[aria-current]::before {
+    background: var(--accent);
+    opacity: 1;
+    transform: scale(1.6);
+  }
+
+  .caso-rail a::after {
+    content: attr(data-label);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    translate: -4px -50%;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: var(--surface-3);
+    color: var(--text-main);
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity var(--dur-fast) var(--ease-out),
+      translate var(--dur-fast) var(--ease-out);
+  }
+
+  .caso-rail a:hover::after,
+  .caso-rail a:focus-visible::after {
+    opacity: 1;
+    translate: 0 -50%;
+  }
+
+  .caso-rail a:hover::before {
+    opacity: 1;
+  }
+}
+
+.caso-destacada::before {
+  content: "";
+  position: absolute;
+  inset: 12px auto 12px 0;
+  width: 4px;
+  border-radius: 4px;
+  background: #7836cf;
+  transform-origin: top;
+  transition: transform calc(var(--dur-slow) * 1.2) var(--ease-out) 0.15s;
+}
+
+html.js .caso-destacada:not([data-visto])::before {
+  transform: scaleY(0);
 }

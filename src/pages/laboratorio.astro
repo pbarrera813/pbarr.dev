@@ -9,30 +9,37 @@ const demos = proyectos
   .map((p) => ({ titulo: p.titulo, ruta: new URL(p.demo).pathname }));
 
 const pasos = [
-  { titulo: "Visitante", texto: "Abre pbarr.dev desde cualquier lugar." },
-  { titulo: "Cloudflare", texto: "Administra el dominio pbarr.dev." },
   {
-    titulo: "Servidor Debian 12",
-    texto: "Un proxy inverso reparte cada ruta a su servicio.",
+    titulo: "Visitante",
+    texto: "Abre pbarr.dev desde cualquier lugar.",
+    que: "pbarr son mis iniciales y .dev dice, de la mejor manera posible, que aquí vive un desarrollador.",
+    porque: "Quería un dominio corto que se explicara solo: mis iniciales y la palabra que describe lo que hago.",
+    falla: "Si pbarr.dev no abre, lo más probable es que el sitio esté caído porque le estoy haciendo mantenimiento. Eso sí, si falla, no vas a poder ver este sitio para nada.",
   },
   {
-    titulo: "Servicios",
-    texto: "Este portafolio (Astro, como servicio de systemd), las demos y mis proyectos en desarrollo.",
+    titulo: "Cloudflare",
+    texto: "Administra el dominio pbarr.dev.",
+    que: "Administra el dominio y recibe primero cada petición; entrega el contenido cifrado y responde desde caché lo que puede.",
+    porque: "Por su seguridad y la protección que da a los sitios: es el servicio antibots más conocido y usado, y por eso lo elegí.",
+    falla: "Sería un problema serio: el dominio es de ellos, así que si Cloudflare cae, el sitio cae con él. Solo queda esperar, junto con medio internet.",
+  },
+  {
+    titulo: "Servidor Debian 12",
+    texto: "Mi propio servidor: aquí corre todo.",
+    que: "Es el servidor en sí: aquí viven mis aplicaciones, incluido este sitio, y funciona como servidor de desarrollo y de producción.",
+    porque: "Debian es una distribución de Linux muy ligera y da muy buenas bases; si algún día quiero aprender otra distribución, esas bases me van a servir.",
+    falla: "Si el servidor falla, falla todo: todos los servicios dejan de responder.",
+  },
+  {
+    titulo: "Proxy inverso",
+    texto: "Zoraxy reparte cada ruta a su servicio.",
+    que: "Zoraxy, mi proxy inverso, intercepta cada petición que llega al servidor, revisa a qué ruta va y la manda al servicio correcto: la ruta base lleva a este portafolio y las subrutas, a las demos y demás servicios. Todo lo que corre en el servidor está detrás de él.",
+    porque: "Toda petición pasa por aquí, así que es el único lugar donde se decide a dónde va cada ruta.",
+    falla: "Si falla, ninguna ruta llega a su servicio aunque los servicios sigan funcionando.",
   },
 ];
 
-const enDesarrollo = [
-  {
-    titulo: "NexuDrive",
-    texto:
-      "Mi servidor NAS propio. Pendiente de una revisión de seguridad antes de abrirse a internet.",
-  },
-  {
-    titulo: "Hostra",
-    texto:
-      "Un dashboard para Linux/Debian para mantener el control de un servidor casero, con una app móvil complementaria.",
-  },
-];
+const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
 ---
 
 <Layout
@@ -42,38 +49,66 @@ const enDesarrollo = [
   <Hero titulo="Laboratorio" />
 
   <div class="mx-auto max-w-4xl space-y-6 px-4 pb-4">
-    <p class="text-center text-lg font-semibold text-neutral-300">
+    <p data-reveal class="text-center text-lg font-semibold text-neutral-300">
       Todo lo que ves en pbarr.dev corre en un servidor propio con Debian 12 que
       administro yo mismo. Aquí se ve cómo está montado y si mis demos están
       respondiendo ahora mismo.
     </p>
 
-    <section class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
+    <section data-reveal class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
       <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
         Cómo está montado
       </h2>
-      <ol class="mt-4 grid gap-4 md:grid-cols-4">
+      <ol data-flujo class="mt-4 grid gap-4 md:grid-cols-4">
         {
           pasos.map((p, i) => (
-            <li class="relative rounded-xl border border-[#7836cf] p-4">
-              <span class="text-xs font-bold text-[#a27ed1]">Paso {i + 1}</span>
-              <h3 class="font-bold text-white">{p.titulo}</h3>
-              <p class="mt-1 text-sm text-neutral-300">{p.texto}</p>
+            <li class="paso-li lift lift-flat relative" style={`--i:${i}`}>
+              <button
+                type="button"
+                data-i={i}
+                aria-pressed="false"
+                aria-controls="paso-detalle"
+                class="paso block h-full w-full cursor-pointer rounded-xl border border-[#7836cf] p-4 text-left"
+              >
+                <span class="block text-xs font-bold text-[#a27ed1]">Paso {i + 1}</span>
+                <span class="block font-bold text-white">{p.titulo}</span>
+                <span class="mt-1 block text-sm text-neutral-300">{p.texto}</span>
+              </button>
             </li>
           ))
         }
       </ol>
+      <div
+        id="paso-detalle"
+        data-detalle
+        hidden
+        aria-live="polite"
+        class="mt-4 overflow-hidden rounded-xl border border-[#7836cf]"
+      >
+        {
+          pasos.map((p, i) => (
+            <div data-panel={i} hidden class="grid gap-4 p-4 md:grid-cols-3">
+              {[["Qué hace", p.que], ["Por qué lo elegí", p.porque], ["Si falla", p.falla]].map(([t, x]) => (
+                <div>
+                  <h3 class="text-xs font-bold uppercase tracking-wide text-[#a27ed1]">{t}</h3>
+                  <p class="mt-1 text-sm text-neutral-300">{x}</p>
+                </div>
+              ))}
+            </div>
+          ))
+        }
+      </div>
     </section>
 
-    <section class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
+    <section data-reveal class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
       <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
         Estado de las demos
       </h2>
-      <ul class="mt-4 divide-y divide-gray-800">
+      <ul data-estados class="mt-4 divide-y divide-gray-800">
         {
           demos.map((d) => (
             <li
-              class="status-row flex items-center justify-between py-3"
+              class="status-row -mx-3 flex items-center justify-between rounded-lg px-3 py-3"
               data-status-path={d.ruta}
               data-estado="pending"
             >
@@ -81,7 +116,7 @@ const enDesarrollo = [
                 <span class="font-semibold text-white">{d.titulo}</span>
                 <span class="ml-2 text-sm text-neutral-300">{d.ruta}</span>
               </span>
-              <span class="flex items-center gap-2 text-sm font-semibold text-white">
+              <span class="flex shrink-0 items-center gap-2 whitespace-nowrap text-sm font-semibold text-white">
                 <span class="status-dot h-3 w-3 rounded-full" aria-hidden="true" />
                 <span data-label>Comprobando…</span>
               </span>
@@ -94,21 +129,21 @@ const enDesarrollo = [
       </p>
     </section>
 
-    <section class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
+    <section data-reveal class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
       <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
         En el laboratorio
       </h2>
       <ul class="mt-4 grid gap-4 md:grid-cols-2">
         {
           enDesarrollo.map((p) => (
-            <li class="rounded-xl border border-[#7836cf] p-4">
+            <li data-reveal class="lift lift-flat lab-card rounded-xl border border-[#7836cf] p-4">
               <h3 class="font-bold text-white">
                 {p.titulo}
-                <span class="ml-2 rounded-md border border-[#7836cf] px-2 py-0.5 text-xs font-bold text-[#7836cf]">
+                <span class="badge-live ml-2 rounded-md border border-[#7836cf] px-2 py-0.5 text-xs font-bold text-[#7836cf]">
                   En desarrollo
                 </span>
               </h3>
-              <p class="mt-1 text-sm text-neutral-300">{p.texto}</p>
+              <p class="mt-1 text-sm text-neutral-300">{p.ahora}</p>
             </li>
           ))
         }
@@ -121,6 +156,7 @@ const enDesarrollo = [
 
 <style>
   .status-dot {
+    position: relative;
     background: #8a8f9c;
   }
   .status-row[data-estado="ok"] .status-dot {
@@ -129,19 +165,287 @@ const enDesarrollo = [
   .status-row[data-estado="fail"] .status-dot {
     background: #c0392b;
   }
+
+  .paso-li {
+    --off: 1 0;
+  }
+  .paso,
+  .lab-card,
+  .status-row {
+    transition:
+      box-shadow var(--dur-base) var(--ease-out),
+      background-color var(--dur-base) var(--ease-out);
+  }
+  .paso {
+    transition:
+      box-shadow var(--dur-base) var(--ease-out),
+      opacity var(--dur-base) var(--ease-out),
+      border-color var(--dur-slow) var(--ease-out) calc(var(--i) * 450ms);
+  }
+  .paso[aria-pressed="true"] {
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .paso-li[data-fuera] .paso {
+    opacity: 0.4;
+  }
+  .paso-li[data-fuera]::after,
+  .paso-li[data-sel]::after {
+    scale: var(--off);
+    transition-delay: 0s;
+  }
+  @media (hover: hover) {
+    .paso-li:hover .paso,
+    .lab-card:hover {
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+    .status-row:hover {
+      background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+    }
+  }
+  .paso-li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 2px;
+    height: 1rem;
+    background: var(--accent);
+    transform-origin: top;
+    transition: scale var(--dur-slow) var(--ease-out) calc(var(--i) * 450ms + 250ms);
+  }
+  @media (min-width: 768px) {
+    .paso-li {
+      --off: 0 1;
+    }
+    .paso-li:not(:last-child)::after {
+      left: 100%;
+      top: 50%;
+      width: 1rem;
+      height: 2px;
+      transform-origin: left;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js) [data-flujo]:not([data-corre]) .paso {
+      border-color: transparent !important;
+    }
+    [data-corre] .paso {
+      animation: paso-on 900ms var(--ease-out) calc(var(--i) * 450ms) backwards;
+    }
+    :global(html.js) [data-flujo]:not([data-corre]) .paso-li::after {
+      scale: var(--off);
+    }
+
+    .status-row[data-sondeo][data-estado="pending"] .status-dot {
+      animation: dot-breathe 1.2s ease-in-out infinite;
+    }
+    .status-row[data-estado="ok"] .status-dot,
+    .status-row[data-estado="fail"] .status-dot {
+      animation: dot-pop 500ms var(--ease-out);
+    }
+    .status-row[data-estado="ok"] .status-dot::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: #2e9e5b;
+      animation: dot-ping 900ms ease-out both;
+    }
+    .status-row[data-estado="ok"] {
+      animation: row-ok 1400ms var(--ease-out);
+    }
+    .status-row[data-estado="fail"] {
+      animation: row-fail 1400ms var(--ease-out);
+    }
+    .status-row[data-estado="fail"] .status-dot::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: #c0392b;
+      animation: dot-ping 900ms ease-out both;
+    }
+    .status-row[data-sondeo][data-estado="pending"] [data-label] {
+      animation: dot-breathe 1.2s ease-in-out infinite;
+    }
+    .status-row[data-estado="ok"] [data-label],
+    .status-row[data-estado="fail"] [data-label] {
+      animation: label-in 400ms var(--ease-out);
+    }
+
+    .badge-live::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 6px;
+      border-radius: 999px;
+      background: currentColor;
+      animation: dot-breathe 2.4s ease-in-out infinite;
+    }
+  }
+
+  @keyframes paso-on {
+    from {
+      box-shadow: 0 0 0 0 transparent;
+    }
+    40% {
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 35%, transparent);
+    }
+    to {
+      box-shadow: 0 0 0 0 transparent;
+    }
+  }
+  @keyframes row-ok {
+    from {
+      background-color: rgb(46 158 91 / 0.28);
+    }
+  }
+  @keyframes row-fail {
+    from {
+      background-color: rgb(192 57 43 / 0.28);
+    }
+  }
+  @keyframes dot-breathe {
+    50% {
+      opacity: 0.35;
+    }
+  }
+  @keyframes dot-pop {
+    from {
+      transform: scale(0.4);
+    }
+    60% {
+      transform: scale(1.25);
+    }
+  }
+  @keyframes dot-ping {
+    from {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    to {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+  @keyframes label-in {
+    from {
+      opacity: 0;
+      translate: 0 4px;
+    }
+  }
 </style>
 
 <script>
-  document.querySelectorAll<HTMLElement>("[data-status-path]").forEach(async (row) => {
-    let ok = false;
-    try {
-      const res = await fetch(row.dataset.statusPath!, {
-        cache: "no-store",
-        signal: AbortSignal.timeout(5000),
+  import { seconds } from "../scripts/tokens.js";
+
+  const probe = (ruta: string) =>
+    fetch(ruta, { cache: "no-store", signal: AbortSignal.timeout(5000) }).then(
+      (res) => res.ok,
+      () => false
+    );
+
+  // hold each result a moment (not under reduced motion) so the state change is perceptible
+  function sondear(lista: HTMLElement) {
+    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    lista.querySelectorAll<HTMLElement>("[data-status-path]").forEach(async (row, i) => {
+      row.dataset.sondeo = "";
+      const [ok] = await Promise.all([
+        probe(row.dataset.statusPath!),
+        new Promise((r) => setTimeout(r, calm ? 0 : 600 + i * 180)),
+      ]);
+      row.dataset.estado = ok ? "ok" : "fail";
+      row.querySelector("[data-label]")!.textContent = ok ? "En línea" : "Sin respuesta";
+    });
+  }
+
+  // start each effect when its card is actually on screen, not at page load
+  function alEntrar(selector: string, fn: (el: HTMLElement) => void) {
+    const el = document.querySelector<HTMLElement>(selector);
+    if (!el || el.dataset.listo) return;
+    el.dataset.listo = "1";
+    new IntersectionObserver(
+      (entries, io) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        fn(el);
+      },
+      { rootMargin: "0px 0px -15% 0px" }
+    ).observe(el);
+  }
+
+  // step inspector: select a step, replay the path up to it, cross-fade its detail
+  function inspector() {
+    const ol = document.querySelector<HTMLElement>("[data-flujo]");
+    const box = document.querySelector<HTMLElement>("[data-detalle]");
+    if (!ol || !box || ol.dataset.insp) return;
+    ol.dataset.insp = "1";
+    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const items = [...ol.querySelectorAll<HTMLElement>(".paso-li")];
+    const panels = [...box.querySelectorAll<HTMLElement>("[data-panel]")];
+    const base = seconds("--dur-base") * 1000;
+    const easing = getComputedStyle(document.documentElement).getPropertyValue("--ease-out");
+    let sel = -1;
+    let run = 0;
+
+    const replay = (i: number) => {
+      const off = matchMedia("(min-width: 768px)").matches ? "0 1" : "1 0";
+      items.forEach((li, k) => {
+        li.toggleAttribute("data-fuera", k > i);
+        li.toggleAttribute("data-sel", k === i);
+        li.querySelector(".paso")!.setAttribute("aria-pressed", String(k === i));
+        if (calm || k > i) return;
+        const o = { duration: base * 3, delay: k * 450, easing, fill: "backwards" as FillMode };
+        li.querySelector(".paso")!.animate({ opacity: [0.35, 1] }, o);
+        if (k < i) li.animate({ scale: [off, "1 1"] }, { ...o, delay: k * 450 + 250, pseudoElement: "::after" });
       });
-      ok = res.ok;
-    } catch {}
-    row.dataset.estado = ok ? "ok" : "fail";
-    row.querySelector("[data-label]")!.textContent = ok ? "En línea" : "Sin respuesta";
-  });
+    };
+
+    const mostrar = async (i: number) => {
+      const me = ++run;
+      const cur = panels.find((p) => !p.hidden);
+      if (cur && !calm) await cur.animate({ opacity: [1, 0] }, { duration: base / 2 }).finished;
+      if (me !== run) return;
+      const from = box.hidden ? 0 : box.offsetHeight;
+      panels.forEach((p, k) => (p.hidden = k !== i));
+      box.hidden = false;
+      if (calm) return;
+      box.animate({ height: [`${from}px`, `${box.offsetHeight}px`] }, { duration: base * 1.3, easing });
+      panels[i].animate({ opacity: [0, 1], translate: ["0 8px", "0 0"] }, { duration: base * 1.4, easing });
+    };
+
+    const cerrar = async () => {
+      const me = ++run;
+      sel = -1;
+      items.forEach((li) => {
+        li.removeAttribute("data-fuera");
+        li.removeAttribute("data-sel");
+        li.querySelector(".paso")!.setAttribute("aria-pressed", "false");
+      });
+      if (!calm) await box.animate({ height: [`${box.offsetHeight}px`, "0px"] }, { duration: base, easing }).finished;
+      if (me === run) box.hidden = true;
+    };
+
+    ol.addEventListener("click", (e) => {
+      const b = (e.target as Element).closest<HTMLElement>(".paso");
+      if (!b) return;
+      const i = Number(b.dataset.i);
+      if (i === sel) return cerrar();
+      sel = i;
+      replay(i);
+      mostrar(i);
+    });
+    document.addEventListener("keydown", (e) => e.key === "Escape" && sel >= 0 && cerrar());
+  }
+
+  function iniciar() {
+    inspector();
+    alEntrar("[data-flujo]", (el) => el.setAttribute("data-corre", ""));
+    alEntrar("[data-estados]", sondear);
+  }
+
+  document.addEventListener("astro:page-load", iniciar);
+  if (document.readyState !== "loading") iniciar();
 </script>

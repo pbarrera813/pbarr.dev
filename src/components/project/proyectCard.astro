@@ -14,6 +14,7 @@ export interface Props {
   slug?: string;
   index?: number;
   compact?: boolean;
+  reveal?: boolean;
 }
 
 const {
@@ -28,6 +29,7 @@ const {
   slug,
   index,
   compact = false,
+  reveal = false,
 } = Astro.props;
 const showDemo = demo !== null;
 const hasDemo = typeof demo === "string" && demo.trim().length > 0;
@@ -39,8 +41,9 @@ const btn =
 <div
   data-index={index}
   data-categoria={categoria ?? ""}
+  data-reveal={reveal ? "" : undefined}
   class:list={[
-    "project-card z-10 flex flex-col overflow-hidden rounded-lg bg-gray-900 shadow-lg transition-transform hover:scale-[1.01] drop-shadow-[4px_4px_0_#7836cf]",
+    "project-card z-10 flex flex-col overflow-hidden rounded-lg bg-gray-900 shadow-lg lift drop-shadow-[4px_4px_0_#7836cf]",
     compact ? "mx-auto w-full max-w-md" : "w-[400px] lg:w-[320px]",
   ]}
 >
@@ -49,6 +52,7 @@ const btn =
       <Image
         src={imagen}
         width={800}
+        transition:name={`proy-${slug ?? "x"}`}
         alt={`Imagen del proyecto ${titulo}`}
         class="h-50 w-full rounded-2xl object-cover object-top p-3"
       />

@@ -8,19 +8,20 @@ import computerLogo from "../../../assets/img/computer.png";
 const links = [
   { name: "Inicio", href: "/" },
   { name: "Proyectos", href: "/proyectos" },
-  { name: "Laboratorio", href: "/laboratorio" },
+  { name: "Blog", href: "/blog" },
+  { name: "Laboratorio", href: "/laboratorio", soloGrande: true },
   { name: "Sobre Mi", href: "/about" },
   { name: "Contacto", href: "/contact" },
 ];
 ---
 
-<nav class="relative">
+<nav class="relative z-50" transition:persist="navbar">
   <!-- Input control (peer) -->
   <input id="menu-toggle" type="checkbox" class="peer sr-only md:hidden" aria-label="Abrir menú" />
 
   <!-- Navbar -->
   <nav
-    class="fixed top-0 left-0 w-full z-50 bg-gray-950/20 backdrop-blur-md border-b border-white/10"
+    class="nav-bar fixed top-0 left-0 w-full z-50 bg-gray-950/20 backdrop-blur-md border-b border-white/10"
   >
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <!-- Logo -->
@@ -33,13 +34,13 @@ const links = [
       </a>
 
       <!-- Desktop Links -->
-      <ul id="navbar-links" class="hidden md:flex items-center space-x-8">
+      <ul id="navbar-links" class="hidden md:flex items-center space-x-5 lg:space-x-8">
         {
           links.map((link) => (
-            <li>
+            <li class={link.soloGrande ? "hidden lg:block" : ""}>
               <a
                 href={link.href}
-                class="nav-link font-bold transition-colors duration-300 text-white hover:text-[#7d2dac]"
+                class="nav-link whitespace-nowrap font-bold transition-colors duration-300 text-white hover:text-[#7d2dac]"
               >
                 {link.name}
               </a>
@@ -152,6 +153,10 @@ const links = [
     }
 
     window.addEventListener("popstate", markActiveLinks);
+    document.addEventListener("astro:page-load", () => {
+      const toggle = document.getElementById("menu-toggle") as HTMLInputElement | null;
+      if (toggle) toggle.checked = false;
+    });
     document.addEventListener("astro:page-load", markActiveLinks);
     document.addEventListener("astro:after-swap", markActiveLinks);
     window.addEventListener("load", () => setTimeout(markActiveLinks, 50));

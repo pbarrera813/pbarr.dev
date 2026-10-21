@@ -63,12 +63,12 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-50 mt-2 w-72 max-w-sm rounded-lg border-none bg-gray-900 shadow-lg drop-shadow-[4px_4px_0_#7836cf]">
+        <div className="bell-menu absolute right-0 z-50 mt-2 w-72 max-w-sm rounded-lg border-none bg-gray-900 shadow-lg drop-shadow-[4px_4px_0_#7836cf]">
           <div className="p-3">
             <h4 className="mb-2 text-sm font-bold text-gray-200 drop-shadow-[1px_1px_0_#7836cf]">
               Novedades
             </h4>
-            <ul className="max-h-60 divide-y divide-gray-800 overflow-auto">
+            <ul className="max-h-60 divide-y divide-gray-800 overflow-y-auto scroll-fino">
               {novedades.map((n) => (
                 <li key={n.texto} className="py-2 text-sm text-gray-400">
                   <time dateTime={n.fecha} className="block text-xs opacity-70">
@@ -78,10 +78,19 @@ export default function NotificationBell() {
                       year: "numeric",
                     })}
                   </time>
-                  {n.texto}
+                  {n.href ? (
+                    <a href={n.href} className="font-bold underline">
+                      {n.texto}
+                    </a>
+                  ) : (
+                    n.texto
+                  )}
                 </li>
               ))}
             </ul>
+            <a href="/blog" className="mt-2 block text-sm font-bold underline">
+              Ver el blog
+            </a>
           </div>
         </div>
       )}

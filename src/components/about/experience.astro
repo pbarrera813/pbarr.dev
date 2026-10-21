@@ -18,6 +18,7 @@ import { jobs } from "../../data/jobsData";
 
   <section class="jobs">
     <div class="job-title">
+      <span class="tab-indicator" aria-hidden="true"></span>
       {
         jobs.map((job, index) => (
           <button
@@ -62,8 +63,5 @@ import { jobs } from "../../data/jobsData";
 </section>
 
 <script>
-  import { initExperienceTabs } from "../../scripts/experienceTabs.js";
-
-  initExperienceTabs();
-  document.addEventListener("astro:after-swap", initExperienceTabs);
+  import "../../scripts/experienceTabs.js";
 </script>

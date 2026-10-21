@@ -5,13 +5,14 @@ import { proyectos } from "../../../data/projectData.js";
 
 <section class="py-10 relative z-10">
   <h2
+    data-reveal
     class="text-3xl md:text-4xl font-bold text-white mb-12 mx-auto px-6 text-center text-shadow"
   >
     Proyectos Destacados
   </h2>
 
   <div class="mt-8 grid gap-6 md:grid-cols-2 max-w-[930px] mx-auto px-4">
-    {proyectos.filter((p) => p.destacado).slice(0, 4).map((p) => <ProjectCard {...p} compact />)}
+    {proyectos.filter((p) => p.destacado).slice(0, 4).map((p) => <ProjectCard {...p} compact reveal />)}
   </div>
   <div class="mt-12 flex justify-center">
     <a
