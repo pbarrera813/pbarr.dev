@@ -1,0 +1,39 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/commons/hero/hero.astro";
+import Banner from "../../components/commons/banners/banner.astro";
+import Seguir from "../../components/blog/seguir.astro";
+---
+
+<Layout
+  title="Suscribirse al blog"
+  description="Cómo recibir un aviso cuando publico un post nuevo: una dirección RSS para tu lector de feeds."
+>
+  <Hero titulo="Suscribirse" />
+
+  <div class="mx-auto max-w-3xl px-4 pb-4">
+    <a href="/blog" class="text-sm font-bold text-primary hover:underline">← Volver al blog</a>
+
+    <section class="mt-4 rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf] md:p-10">
+      <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
+        Recibe cada post nuevo
+      </h2>
+      <p class="mt-3 max-w-[70ch] text-neutral-300">
+        Utilizando una aplicación para lectura de feeds (por ejemplo Feedly, Inoreader, etc.) te llegará
+        un aviso cuando publico algo, sin tener que volver a revisar el sitio.
+      </p>
+      <p class="mt-3 max-w-[70ch] text-neutral-300">
+        Copia esta dirección y agrégala a tu lector:
+      </p>
+      <div class="mt-3">
+        <Seguir />
+      </div>
+      <p class="mt-6 max-w-[70ch] text-sm text-neutral-300">
+        ¿No usas un lector? Si vuelves a visitar el sitio, la campana de Novedades en la barra
+        superior te muestra cuántas publicaciones nuevas hay.
+      </p>
+    </section>
+  </div>
+
+  <Banner />
+</Layout>
