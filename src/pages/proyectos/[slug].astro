@@ -22,7 +22,7 @@ interface Seccion {
 }
 
 const { p } = Astro.props;
-const posts = (await getCollection("blog"))
+const posts = (await getCollection("blog", ({ data }) => !data.borrador))
   .filter((b) => b.data.proyecto === p.slug)
   .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
 const capitulos = [
@@ -132,8 +132,8 @@ const btn =
                   <li>
                     <a
                       href={e.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      target={e.href.startsWith("/") ? undefined : "_blank"}
+                      rel={e.href.startsWith("/") ? undefined : "noopener noreferrer"}
                       class="font-bold text-primary hover:underline"
                     >
                       {e.texto}

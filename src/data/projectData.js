@@ -8,6 +8,7 @@ import playerping from "../assets/img-projects/playerping.png";
 import nitori from "../assets/img-projects/nitori-discord.png";
 import svgApp from "../assets/img-projects/svg-app.jpg";
 import hostra from "../assets/img-projects/hostra.png";
+import hostraCompanion from "../assets/img-projects/hostra-companion.png";
 export const proyectos = [
   
   {
@@ -415,7 +416,7 @@ export const proyectos = [
         destacado: false,
     },
     {
-        titulo: "Hostra",
+        titulo: "Hostra Dashboard",
         slug: "hostra",
         caso: [
           {
@@ -431,40 +432,126 @@ export const proyectos = [
           {
             titulo: "Qué hace",
             lista: [
-              "Muestra el CPU, la memoria, el almacenamiento y la salud de los discos.",
-              "Muestra la red y los puertos, los servicios de systemd, los contenedores de Docker y un resumen del tráfico del reverse proxy.",
-              "Genera alertas que dicen qué está mal y qué hacer al respecto.",
-              "Solo si tú lo permites, puede iniciar, detener y reiniciar servicios y contenedores, y hacer algunas limpiezas seguras.",
-              "La app de Android ofrece lo mismo desde el celular, con notificaciones de alertas y una terminal.",
+              "Muestra el CPU, la memoria, el almacenamiento (con un pronóstico de cuándo se llenará cada volumen) y la salud de los discos.",
+              "Muestra la red y los puertos con su dueño, los servicios de systemd con sus registros, los contenedores de Docker y un resumen del tráfico de Zoraxy, el reverse proxy.",
+              "Sus alertas dicen qué pasó, muestran la evidencia y señalan qué hacer al respecto.",
+              "Solo si tú lo permites, puede iniciar, detener y reiniciar servicios y contenedores, y hacer limpiezas seguras de espacio.",
+              "La app de Android, Hostra Companion, ofrece lo mismo desde el celular, con notificaciones de alertas y una terminal.",
             ],
           },
           {
             titulo: "Cómo está hecho",
-            texto:
-              "Un agente pequeño en Go corre en el servidor Linux con systemd y sirve el dashboard, hecho con React y TypeScript. La app complementaria está hecha con Flutter para Android.",
+            texto: [
+              "Un agente en Go corre como usuario normal en el servidor Linux con systemd y sirve el dashboard, hecho con React y TypeScript, que ya viene integrado: no hay nada más que ejecutar. El estado se guarda en SQLite.",
+              "Lo poco que necesita permisos de root lo hacen cinco programas diminutos y separados: salud de los discos, limpieza, política, dueño de los puertos y terminal. systemd inicia cada uno solo cuando llega una petición, desde un socket que únicamente puede usar la cuenta del agente, y cada uno acepta un solo tipo de petición.",
+            ],
           },
           {
             titulo: "Decisiones",
             lista: [
               "Por defecto el dashboard solo observa: ninguna acción sobre el servidor está permitida hasta que tú la habilites.",
+              "Lo que Hostra puede hacer lo define un archivo de política que solo root puede escribir. El instalador crea uno que no permite nada; los permisos se conceden en Ajustes y las acciones sensibles piden escribir el nombre antes.",
+              "Está pensado para un solo dueño y un solo servidor, no para flotas: cada navegador o teléfono se empareja una vez con un código.",
               "El instalador explica lo que va a hacer y pregunta antes de cambiar algo, y permite revisar los pasos sin ejecutarlos.",
+              "La terminal es para revisiones rápidas, no para reemplazar a SSH: corre en su propia unidad de systemd como un usuario desechable, sin grupos ni sudo, con el sistema en solo lectura y límites de memoria y de tiempo.",
             ],
           },
           {
             titulo: "Estado actual",
             texto:
-              "El dashboard y la app de Android están en la versión 1.0.0. Los repositorios todavía no son públicos.",
+              "Versión 1.0.0, con el código público en GitHub bajo licencia MIT. No hay binarios para descargar: se compila en el propio servidor con el instalador. La app de Android es un proyecto aparte, Hostra Companion.",
+            enlaces: [
+              { texto: "Hostra Dashboard en GitHub", href: "https://github.com/pbarrera813/Hostra-Dashboard" },
+              { texto: "Hostra Companion, la app de Android", href: "/proyectos/hostra-companion" },
+              { texto: "Zoraxy, el reverse proxy que Hostra resume", href: "https://github.com/tobychui/zoraxy" },
+            ],
           },
         ],
         descripcion:
-        "Dashboard para mantener el control de un servidor Linux casero: CPU, memoria, almacenamiento y salud de los discos, red y puertos, servicios de systemd y contenedores de Docker, con alertas que dicen qué está mal y qué hacer. Incluye una app de Android hecha con Flutter para vigilarlo y administrarlo desde el celular.",
-        tecnologias: ["Go", "React", "TypeScript", "Flutter"],
+        "Dashboard para mantener el control de un servidor Linux casero: CPU, memoria, almacenamiento y salud de los discos, red y puertos, servicios de systemd y contenedores de Docker, con alertas que dicen qué está mal y qué hacer. Pensado para un solo dueño y un solo servidor; la app de Android se publica aparte como Hostra Companion.",
+        tecnologias: ["Go", "React", "TypeScript"],
         demo: null,
         imagen: hostra,
-        codigo: "",
+        codigo: "https://github.com/pbarrera813/Hostra-Dashboard",
         categoria: "FullStack,Backend,Desarrollo",
-        estado: "En desarrollo",
-        ahora: "Dashboard y app de Android en versión 1.0.0; los repositorios aún no son públicos.",
+        destacado: false,
+    },
+    {
+        titulo: "Hostra Companion",
+        slug: "hostra-companion",
+        fecha: "2026-10-22",
+        caso: [
+          {
+            titulo: "El problema",
+            texto:
+              "El dashboard de Hostra vive en la red de tu casa a propósito: es HTTP sencillo y solo se abre desde ahí. Eso deja un hueco cuando no estás en casa y algo falla en el servidor.",
+          },
+          {
+            titulo: "La idea",
+            texto:
+              "Hostra Companion lleva el dashboard al bolsillo: muestra lo que hace tu servidor, te dice con palabras claras cuando algo está mal y, solo si lo permites, te deja actuar: reiniciar un servicio, pausar un contenedor, liberar espacio o abrir una terminal. Es una app para un solo dueño y su propio servidor: no hay cuenta, ni servicio en la nube, ni descarga ya compilada.",
+          },
+          {
+            titulo: "Qué hace",
+            lista: [
+              "Resumen: salud, CPU, memoria, almacenamiento, red, sensores, servicios favoritos y las alertas más recientes.",
+              "Servicios de systemd con búsqueda y filtros, y detalle con estado, memoria y registro; si lo permites, iniciarlos, detenerlos o reiniciarlos.",
+              "Contenedores de Docker: reiniciar, pausar, reanudar o detener, con su imagen, tiempo activo, memoria y salud.",
+              "Almacenamiento con historial de uso, análisis del disco y una guía para liberar espacio; red y puertos, con quién es dueño de cada puerto.",
+              "Alertas con la evidencia, filtros por gravedad e historial, y notificaciones en el teléfono.",
+              "Una terminal real en el servidor, protegida con tu huella o el bloqueo de pantalla.",
+              "Administración desde el teléfono (dispositivos, política de control, revisiones de configuración y registro de actividad), apagada por defecto.",
+            ],
+          },
+          {
+            titulo: "Cómo está hecho",
+            texto: [
+              "Está hecha con Flutter y Dart para Android. Nunca habla directo con el servidor por internet: el teléfono llama a un nombre público en Cloudflare, Cloudflare revisa el certificado de cliente del teléfono (TLS mutuo) y un Cloudflare Tunnel lleva la petición al servicio de Hostra, que solo escucha en la propia máquina.",
+              "Las notificaciones pasan por Firebase de Google, en un proyecto tuyo. Google puede leer el título y el detalle de cada alerta en tránsito, y la app lo explica antes de activarlas.",
+            ],
+          },
+          {
+            titulo: "Decisiones",
+            lista: [
+              "Dos cerraduras: un certificado de cliente (Cloudflare) y un token de dispositivo que solo existe después de emparejar el teléfono con un código de un solo uso. Quitar un teléfono en el dashboard cierra su sesión en segundos, incluso con una terminal abierta.",
+              "La llave del certificado se crea en el Android Keystore y no puede exportarse. Si borras los datos de la app o la desinstalas, la llave se borra y te registras de nuevo.",
+              "La app recuerda la identidad del servidor y se niega a conectarse si la dirección responde con otra.",
+              "Todo lo que cambia el servidor empieza apagado. Los dos interruptores del teléfono (administrar y terminal) solo se cambian desde el dashboard en tu red de casa, nunca desde el propio teléfono.",
+              "Cada acción se envía una sola vez y no se repite sola después de un resultado incierto; lo que se hizo y desde qué teléfono queda en Actividad reciente.",
+              "No hay descarga ya compilada a propósito: las notificaciones y la conexión segura dependen de tu proyecto de Firebase y de tu certificado, así que cada quien compila la suya.",
+            ],
+          },
+          {
+            titulo: "Límites",
+            lista: [
+              "Android 11 o superior, arm64 y servicios de Google Play. Un solo servidor emparejado por app.",
+              "Cada teléfono necesita su propio certificado y su propia huella en la regla de Cloudflare.",
+              "La terminal permite una sesión por teléfono y dos en total, termina tras 10 minutos sin actividad y a los 60 como máximo.",
+              "No hay versión web, ni app para iOS, ni ficha en una tienda.",
+            ],
+          },
+          {
+            titulo: "Cómo instalarla",
+            texto:
+              "Hay dos caminos que llevan al mismo resultado: seguir la guía SETUP.md paso a paso, o abrir el repositorio con un asistente de código y pedirle que lea AGENTS.md. El asistente te guía, pregunta antes de tocar tu servidor, tu dominio o tu cuenta de Firebase y nunca pide tus secretos.",
+          },
+          {
+            titulo: "Estado actual",
+            texto:
+              "Versión 1.0.0, con el código público en GitHub bajo licencia MIT. Es la app complementaria de Hostra Dashboard.",
+            enlaces: [
+              { texto: "Hostra Companion en GitHub", href: "https://github.com/pbarrera813/Hostra-Companion" },
+              { texto: "Hostra Dashboard, el dashboard que controla", href: "/proyectos/hostra" },
+            ],
+          },
+        ],
+        descripcion:
+        "App de Android hecha con Flutter para vigilar y administrar desde el celular un servidor Linux con Hostra: servicios, contenedores, almacenamiento, red, alertas con notificaciones y una terminal, con la conexión protegida por un certificado de cliente y un código de emparejamiento.",
+        tecnologias: ["Flutter", "Dart"],
+        demo: null,
+        imagen: hostraCompanion,
+        codigo: "https://github.com/pbarrera813/Hostra-Companion",
+        categoria: "FullStack,Desarrollo",
         destacado: false,
     },
     {
