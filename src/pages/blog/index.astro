@@ -5,7 +5,7 @@ import Hero from "../../components/commons/hero/hero.astro";
 import Banner from "../../components/commons/banners/banner.astro";
 import { proyectos } from "../../data/projectData.js";
 
-const posts = (await getCollection("blog")).sort(
+const posts = (await getCollection("blog", ({ data }) => !data.borrador)).sort(
   (a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf()
 );
 const titulos = Object.fromEntries(proyectos.map((p) => [p.slug, p.titulo]));

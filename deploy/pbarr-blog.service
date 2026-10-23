@@ -1,0 +1,13 @@
+[Unit]
+Description=Reconstruye pbarr.dev cuando cambia un articulo del blog
+
+[Service]
+Type=oneshot
+# Cambia USUARIO y la ruta por los de tu servidor. Si node vive en nvm, agrega su carpeta bin al PATH.
+User=USUARIO
+WorkingDirectory=/RUTA/AL/PROYECTO
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+# un build colgado no debe quedarse para siempre ni quitarle CPU al sitio
+TimeoutStartSec=300
+Nice=10
+ExecStart=/RUTA/AL/PROYECTO/scripts/publicar-blog.sh

@@ -1,0 +1,10 @@
+[Unit]
+Description=Revisa cada 15 segundos si hay articulos nuevos
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=15s
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

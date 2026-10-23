@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaBell } from "react-icons/fa";
-import { novedades } from "../../../data/novedades.js";
 
 const STORAGE_KEY = "novedades-visto";
-const latest = novedades[0]?.fecha ?? "";
 
-export default function NotificationBell() {
+export default function NotificationBell({ novedades = [] }) {
+  const latest = novedades[0]?.fecha ?? "";
   const [open, setOpen] = useState(false);
   const [seen, setSeen] = useState(null);
   const containerRef = useRef(null);

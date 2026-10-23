@@ -6,3 +6,6 @@ dist/
 .claude/
 .agents/
 *.zip
+dist-next/
+dist-old/
+.blog-marca
