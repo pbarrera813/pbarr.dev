@@ -10,4 +10,6 @@ Environment=PATH=/usr/local/bin:/usr/bin:/bin
 # un build colgado no debe quedarse para siempre ni quitarle CPU al sitio
 TimeoutStartSec=300
 Nice=10
+# espera a que terminen de subirse varios archivos seguidos
+ExecStartPre=/bin/sleep 3
 ExecStart=/RUTA/AL/PROYECTO/scripts/publicar-blog.sh

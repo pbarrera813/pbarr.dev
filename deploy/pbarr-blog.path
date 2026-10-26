@@ -1,0 +1,10 @@
+[Unit]
+Description=Vigila los articulos del blog
+
+[Path]
+# Cambia la ruta por la de tu servidor. systemd usa eventos del kernel: no hay polling.
+PathChanged=/RUTA/AL/PROYECTO/src/content/blog
+Unit=pbarr-blog.service
+
+[Install]
+WantedBy=multi-user.target
