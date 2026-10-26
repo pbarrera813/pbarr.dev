@@ -7,7 +7,7 @@ borrador: true (opcional: mientras diga true, el post no se publica)
 ---
 
 
-# Nota: para realizar un blog en ingles, el nombre del archivo debe terminar en .end.md. Por ejemplo, un archivo con el nombre `primer-blog.en.md` seria el blog para la version del sitio en ingles unicamente.
+# Nota: para realizar un blog en ingles, el nombre del archivo debe terminar en .en.md. Por ejemplo, un archivo con el nombre `primer-blog.en.md` seria el blog para la version del sitio en ingles unicamente.
 
 
 Aqui puede ir una introduccion sobre el blog directamente
