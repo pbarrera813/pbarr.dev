@@ -1,0 +1,72 @@
+---
+// Pieces of the "nostalgia" skin. They are always in the HTML but hidden (.r-only) unless
+// html[data-era] is set; see src/styles/retro.css. Everything shown here is real data.
+import T from "../../../i18n/T.astro";
+import { novedades } from "../../../data/novedades.js";
+import { proyectos } from "../../../data/projectData.js";
+
+const { pieza } = Astro.props;
+
+const noticias = await novedades();
+const ticker = (l: "es" | "en") =>
+  `${l === "es" ? "¡BIENVENIDO A PBARR.DEV!" : "WELCOME TO PBARR.DEV!"} *** ${noticias.map((n) => n.texto[l]).join(" *** ")} ***`;
+
+// newest projects first (they carry a `fecha`), then the featured ones
+const populares = proyectos
+  .filter((p) => p.caso)
+  .sort((a, b) => (b.fecha ?? "").localeCompare(a.fecha ?? "") || Number(b.destacado) - Number(a.destacado))
+  .slice(0, 4);
+
+const hoy = new Date();
+const fecha = (loc: string) => hoy.toLocaleDateString(loc, { day: "numeric", month: "long", year: "numeric" });
+---
+
+{
+  pieza === "ticker" && (
+    <div id="r-ticker" class="r-only" aria-hidden="true">
+      <span data-l="es">{ticker("es")}</span>
+      <span data-l="en">{ticker("en")}</span>
+    </div>
+  )
+}
+
+{
+  pieza === "side" && (
+    <div id="r-side" class="r-only">
+      <h4><T es="Proyectos populares" en="Hot projects" /></h4>
+      {
+        populares.map((p) => (
+          <a href={`/proyectos/${p.slug}`}>
+            {p.titulo}
+            {p.fecha && <span class="r-new">NEW!</span>}
+          </a>
+        ))
+      }
+      <h4><T es="Sitios amigos" en="Partner sites" /></h4>
+      <a href="https://github.com/pbarrera813" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://www.linkedin.com/in/pablo-hdz-barr/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="/cv.pdf" data-cv target="_blank"><T es="Descargar mi CV" en="Download my CV" /></a>
+    </div>
+  )
+}
+
+{
+  pieza === "footer" && (
+    <div id="r-footer" class="r-only">
+      <div class="obras" aria-hidden="true"></div>
+      <p>
+        <T es="Visitantes:" en="Visitors:" /> <span id="r-count" class="count">------</span>
+      </p>
+      <p>
+        <T es="Última actualización:" en="Last updated:" />{" "}
+        <span data-l="es">{fecha("es-MX")}</span>
+        <span data-l="en">{fecha("en-US")}</span>
+      </p>
+      <p>
+        <T es="Agrega esta página a favoritos con Ctrl+D" en="Bookmark this page with Ctrl+D" />
+        {" · "}
+        <button type="button" data-era-off><T es="De vuelta al presente" en="Back to the future" /></button>
+      </p>
+    </div>
+  )
+}

@@ -1,0 +1,112 @@
+/* "Feeling nostalgic?": an early-2000s portal skin. Everything is scoped to html[data-era] and only
+   restyles the existing markup; the extra furniture (ticker, sidebar blocks, footer) lives in
+   components/commons/retro/Retro.astro and is hidden (.r-only) outside the skin. */
+
+.r-only {
+  display: none;
+}
+
+html[data-era] {
+  .r-only {
+    display: block;
+  }
+
+  *, *::before, *::after {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    transition: none !important;
+    animation: none !important;
+    filter: none !important;
+  }
+  &, & body {
+    background: #003399 !important;
+    background-image: none !important;
+    font: 13px/1.45 Verdana, Geneva, Arial, sans-serif !important;
+  }
+  main, main * {
+    color: #fff !important;
+    font-family: Verdana, Geneva, Arial, sans-serif !important;
+  }
+
+  /* modern decoration off */
+  .animate-gradientMove, [class*="gradientMove"], [class*="blur-3xl"], .theme-toggle, [data-bell] { display: none !important; }
+  header, section, .hero-surface, .bg-gray-950 { background: transparent !important; background-image: none !important; mask-image: none !important; -webkit-mask-image: none !important; }
+  [class*="bg-linear"], [class*="bg-gradient"], main div:not(.bg-gray-900) { background-image: none !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; translate: none !important; }
+
+  /* the nav becomes the portal sidebar */
+  .nav-bar, [data-scrolled] .nav-bar {
+    position: fixed !important; top: 0 !important; left: 0 !important; width: 178px !important; height: 100vh !important;
+    background: #002070 !important; border: 0 !important; border-right: 2px solid #fff !important;
+  }
+  .nav-bar > div { flex-direction: column !important; align-items: flex-start !important; justify-content: flex-start !important; max-width: none !important; padding: 10px !important; gap: 8px !important; }
+  .nav-bar img { height: 36px !important; width: 36px !important; border: 0 !important; }
+  .nav-bar > div::after { content: "pbarr.dev"; order: 1; font: italic bold 20px Georgia, serif; color: #fff; margin-top: -6px; }
+  #navbar-links { display: flex !important; flex-direction: column !important; align-items: flex-start !important; width: 100% !important; gap: 0 !important; margin: 0 !important; order: 2; }
+  #navbar-links > li { display: block !important; width: 100% !important; border-bottom: 1px dotted #5577cc; }
+  #navbar-links > li.flex { display: flex !important; gap: 10px !important; padding: 10px 0 !important; border: 0; }
+  #navbar-links a.nav-link { display: block; padding: 5px 2px 5px 14px; color: #ffff66 !important; font-weight: bold !important; text-decoration: none; position: relative; font-size: 12px; }
+  #navbar-links a.nav-link::before { content: "\25A0"; position: absolute; left: 2px; top: 6px; font-size: 8px; color: #ffcc00; }
+  #navbar-links a.nav-link:hover { color: #fff !important; text-decoration: underline; }
+  .nav-bar svg { color: #fff !important; }
+  .nav-bar > div > a img { filter: invert(1) !important; }
+  [data-era-on] { display: none !important; }
+  [role="menu"] { right: auto !important; left: 0 !important; }
+  main { margin-left: 178px !important; padding-top: 22px; }
+
+  /* headings and links */
+  h1 { font: italic bold 32px Georgia, "Times New Roman", serif !important; color: #ffff66 !important; letter-spacing: 0 !important; }
+  h2 { font: bold 20px Arial, Helvetica, sans-serif !important; color: #ffff66 !important; border-bottom: 1px solid #fff; padding-bottom: 2px; letter-spacing: 0 !important; }
+  h3 { font: bold 15px Arial, Helvetica, sans-serif !important; letter-spacing: 0 !important; }
+  .hero-surface { margin-top: 0 !important; padding: 30px 0 18px !important; border-bottom: 2px solid #fff; }
+  main a { color: #99ccff !important; text-decoration: underline; }
+  main a:visited { color: #cc99ff !important; }
+
+  /* white content boxes with a hard shadow */
+  .bg-gray-900, .bg-base-900 { background: #fff !important; border: 1px solid #000 !important; box-shadow: 4px 4px 0 #000 !important; }
+  .bg-gray-900, .bg-gray-900 *, .bg-base-900 * { color: #000 !important; }
+  .bg-gray-900 h2, .bg-gray-900 h3 { color: #003399 !important; border: 0; }
+  .bg-gray-900 a, .bg-gray-900 a * { color: #0000cc !important; text-decoration: underline; }
+  .bg-gray-900 a:visited { color: #800080 !important; }
+  [class*="border-[#7836cf]"], .border { border-color: #003399 !important; }
+
+  /* buttons and chips */
+  .bg-primary, [class*="bg-[#69c7c7]"] { background: #c0c0c0 !important; border: 2px outset #fff !important; text-decoration: none !important; }
+  .bg-primary, .bg-primary *, [class*="bg-[#69c7c7]"] { color: #000 !important; font: bold 12px Arial, sans-serif !important; }
+  [class*="bg-[#7836cf]/20"] { background: #ffffcc !important; border: 1px solid #999 !important; color: #000 !important; }
+  img { border: 1px solid #000 !important; }
+  footer { margin-left: 178px !important; border-top: 2px solid #fff; background: #002070 !important; }
+  footer * { color: #fff !important; }
+
+  /* the portal furniture */
+  #r-ticker { position: fixed; top: 0; left: 178px; right: 0; z-index: 60; background: #000; color: #ffff66; font: bold 12px Verdana, sans-serif; border-bottom: 1px solid #fff; overflow: hidden; white-space: nowrap; height: 22px; line-height: 22px; }
+  #r-ticker span { display: inline-block; padding-left: 100%; animation: r-marq 40s linear infinite !important; }
+  #r-side { order: 3; width: 100%; font: 11px Verdana, sans-serif; }
+  #r-side h4 { margin: 10px 0 4px; color: #ffff66 !important; font: bold 11px Arial, sans-serif; text-transform: uppercase; border-bottom: 1px solid #fff; }
+  #r-side a { display: block; color: #fff !important; padding: 2px 0 2px 12px; text-decoration: underline; }
+  .r-new { background: #f00; color: #fff !important; font: bold 10px Arial; padding: 0 3px; margin-left: 6px; animation: r-blink 1s steps(2, start) infinite !important; }
+  #r-footer { margin-left: 178px; padding: 14px; text-align: center; font: 11px Verdana, sans-serif; color: #fff; border-top: 2px solid #fff; background: #002070; }
+  #r-footer .count { display: inline-block; background: #000; color: #0f0 !important; font: bold 13px "Courier New", monospace; padding: 1px 6px; letter-spacing: 2px; border: 2px inset #888 !important; }
+  #r-footer .obras { height: 10px; margin: 0 auto 10px; max-width: 360px; background: repeating-linear-gradient(45deg, #ffcc00 0 10px, #000 10px 20px) !important; }
+  #r-footer a, #r-footer button { color: #ffff66 !important; text-decoration: underline; background: none; border: 0; font: inherit; cursor: pointer; }
+
+  /* small screens: the sidebar becomes a flat top bar */
+  @media (max-width: 767px) {
+    .nav-bar, [data-scrolled] .nav-bar { position: sticky !important; top: 0 !important; width: 100% !important; height: auto !important; border-right: 0 !important; border-bottom: 2px solid #fff !important; }
+    .nav-bar > div { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; }
+    .nav-bar > div::after, #r-side, #r-ticker { display: none !important; }
+    main, footer, #r-footer { margin-left: 0 !important; }
+    main { padding-top: 0; }
+  }
+}
+
+html[data-era]::view-transition-old(*),
+html[data-era]::view-transition-new(*),
+html[data-era]::view-transition-group(*) {
+  animation: none !important;
+}
+
+@keyframes r-marq { to { transform: translateX(-100%); } }
+@keyframes r-blink { to { visibility: hidden; } }

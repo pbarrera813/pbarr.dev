@@ -1,0 +1,20 @@
+[Unit]
+Description=Contador de visitantes unicos de pbarr.dev
+After=network.target
+
+[Service]
+Type=simple
+# Cambia USUARIO, la ruta y el PUERTO por los de tu servidor; el proxy inverso reenvia /visitas a ese puerto.
+User=USUARIO
+WorkingDirectory=/RUTA/AL/PROYECTO
+Environment=PORT=PUERTO
+Environment=VISITAS_FILE=/RUTA/AL/PROYECTO/visitas.txt
+ExecStart=/usr/bin/env node scripts/visitas.mjs
+Restart=on-failure
+RestartSec=10
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/RUTA/AL/PROYECTO
+
+[Install]
+WantedBy=multi-user.target
