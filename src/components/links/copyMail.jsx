@@ -23,7 +23,8 @@ export default function EmailCopy() {
         className="flex items-center gap-2 cursor-pointer font-bold rounded-md border-none  px-2 py-1 text-sm bg-primary hover:bg-secondary drop-shadow-[2px_2px_0_#0debd8]"
       >
         <FaRegCopy className="text-gray-300" />
-        {copied ? "Copiado!" : "Copiar"}
+        <span data-l="es">{copied ? "Copiado!" : "Copiar"}</span>
+        <span data-l="en">{copied ? "Copied!" : "Copy"}</span>
       </button>
     </div>
   );

@@ -1,6 +1,7 @@
 ---
 const githubUrl = "https://github.com/pbarrera813";
 const imageUrl = "/github.png";
+import T from "../../i18n/T.astro";
 ---
 
 <section class="mt-16 flex justify-center px-4">
@@ -19,10 +20,12 @@ const imageUrl = "/github.png";
       </div>
 
       <div class="flex-1 p-4 text-center md:p-8 md:text-left">
-        <h3 class="text-5xl font-bold md:text-4xl text-force-white">Visita mi GitHub!</h3>
+        <h3 class="text-5xl font-bold md:text-4xl text-force-white"><T es="Visita mi GitHub!" en="Visit my GitHub!" /></h3>
         <p class="mt-2 text-sm md:text-xl text-force-white">
-          Hola! te invito a mi perfil de GitHub para que puedas explorar un poco mas del lado
-          programador de mi :)
+          <T
+            es="Hola! te invito a mi perfil de GitHub para que puedas explorar un poco más del lado programador de mí :)"
+            en="Hi! I invite you to my GitHub profile so you can explore a bit more of my programmer side :)"
+          />
         </p>
         <a
           href={githubUrl}
@@ -30,7 +33,7 @@ const imageUrl = "/github.png";
           rel="noopener noreferrer"
           class="mt-4 inline-block rounded-full bg-primary hover:bg-secondary px-6 py-3 font-semibold text-force-white transition"
         >
-          Mi GitHub
+          <T es="Mi GitHub" en="My GitHub" />
         </a>
       </div>
     </div>

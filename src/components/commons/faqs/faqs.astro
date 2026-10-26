@@ -1,5 +1,6 @@
 ---
 import { faqs } from "../../../data/faqData.js";
+import T from "../../../i18n/T.astro";
 ---
 
 <ul class="mt-4 space-y-4 text-lg">
@@ -9,7 +10,7 @@ import { faqs } from "../../../data/faqData.js";
         <details class="faq group w-full overflow-hidden rounded-2xl bg-gray-900 drop-shadow-[2px_2px_0_#7836cf]">
           <summary class="flex cursor-pointer list-none items-center justify-between gap-2 p-4 [&::-webkit-details-marker]:hidden">
             <span class="text-lg font-bold text-white drop-shadow-[1px_1px_0_#7836cf]">
-              {pregunta}
+              <T {...pregunta} />
             </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +23,7 @@ import { faqs } from "../../../data/faqData.js";
             </svg>
           </summary>
           <div class="faq-body overflow-hidden">
-            <p class="px-4 pb-4 text-[0.8em] text-white">{respuesta}</p>
+            <p class="px-4 pb-4 text-[0.8em] text-white"><T {...respuesta} /></p>
           </div>
         </details>
       </li>

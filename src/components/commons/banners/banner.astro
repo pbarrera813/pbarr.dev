@@ -1,24 +1,29 @@
+---
+import T from "../../../i18n/T.astro";
+---
+
 <section class="pt-16">
   <div class="bg-gray-900 py-24 text-center text-white">
     <h2 data-reveal class="mb-4 text-4xl font-bold drop-shadow-[2px_2px_0_#7836cf]">
-      ¿Cómo contactarme?
+      <T es="¿Cómo contactarme?" en="Want to connect?" />
     </h2>
     <p data-reveal class="mb-6 text-lg text-neutral-300 font-semibold">
-      Estoy disponible para nuevas oportunidades. ¡Hablemos!
+      <T es="Estoy disponible para nuevas oportunidades. ¡Hablemos!" en="I'm available for new opportunities. Let's talk!" />
     </p>
     <div data-reveal class="flex justify-center gap-4">
       <a
         href="/contact"
         class="rounded-lg bg-primary hover:bg-secondary drop-shadow-[2px_2px_0_#0debd8] px-6 py-3 text-lg font-semibold text-force-white transition active:translate-0.5 active:drop-shadow-none"
       >
-        Contáctame
+        <T es="Contáctame" en="Contact me" />
       </a>
       <a
         target="_blank"
         href="/cv.pdf"
+        data-cv
         class="rounded-lg bg-primary hover:bg-secondary drop-shadow-[2px_2px_0_#0debd8] px-6 py-3 text-lg font-semibold text-force-white transition active:translate-0.5 active:drop-shadow-none"
       >
-        Mi CV
+        <T es="Mi CV" en="My CV" />
       </a>
     </div>
   </div>

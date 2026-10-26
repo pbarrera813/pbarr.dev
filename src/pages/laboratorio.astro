@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Hero from "../components/commons/hero/hero.astro";
 import Banner from "../components/commons/banners/banner.astro";
 import { proyectos } from "../data/projectData.js";
+import T from "../i18n/T.astro";
 
 const demos = proyectos
   .filter((p) => p.demo?.startsWith("https://pbarr.dev/"))
@@ -10,54 +11,100 @@ const demos = proyectos
 
 const pasos = [
   {
-    titulo: "Visitante",
-    texto: "Abre pbarr.dev desde cualquier lugar.",
-    que: "pbarr son mis iniciales y .dev dice, de la mejor manera posible, que aquí vive un desarrollador.",
-    porque: "Quería un dominio corto que se explicara solo: mis iniciales y la palabra que describe lo que hago.",
-    falla: "Si pbarr.dev no abre, lo más probable es que el sitio esté caído porque le estoy haciendo mantenimiento. Eso sí, si falla, no vas a poder ver este sitio para nada.",
+    titulo: { es: "Visitante", en: "Visitor" },
+    texto: { es: "Abre pbarr.dev desde cualquier lugar.", en: "Opens pbarr.dev from anywhere." },
+    que: {
+      es: "pbarr son mis iniciales y .dev dice, de la mejor manera posible, que aquí vive un desarrollador.",
+      en: "pbarr are my initials and .dev says, in the best possible way, that a developer lives here.",
+    },
+    porque: {
+      es: "Quería un dominio corto que se explicara solo: mis iniciales y la palabra que describe lo que hago.",
+      en: "I wanted a short domain that explains itself: my initials and the word that describes what I do.",
+    },
+    falla: {
+      es: "Si pbarr.dev no abre, lo más probable es que el sitio esté caído porque le estoy haciendo mantenimiento. Eso sí, si falla, no vas a poder ver este sitio para nada.",
+      en: "If pbarr.dev doesn't open, most likely the site is down because I'm doing maintenance on it. Still, if it fails, you won't be able to see this site at all.",
+    },
   },
   {
-    titulo: "Cloudflare",
-    texto: "Administra el dominio pbarr.dev.",
-    que: "Administra el dominio y recibe primero cada petición; entrega el contenido cifrado y responde desde caché lo que puede.",
-    porque: "Por su seguridad y la protección que da a los sitios: es el servicio antibots más conocido y usado, y por eso lo elegí.",
-    falla: "Sería un problema serio: el dominio es de ellos, así que si Cloudflare cae, el sitio cae con él. Solo queda esperar, junto con medio internet.",
+    titulo: { es: "Cloudflare", en: "Cloudflare" },
+    texto: { es: "Administra el dominio pbarr.dev.", en: "Manages the pbarr.dev domain." },
+    que: {
+      es: "Administra el dominio y recibe primero cada petición; entrega el contenido cifrado y responde desde caché lo que puede.",
+      en: "It manages the domain and receives every request first; it delivers the encrypted content and answers from cache what it can.",
+    },
+    porque: {
+      es: "Por su seguridad y la protección que da a los sitios: es el servicio antibots más conocido y usado, y por eso lo elegí.",
+      en: "For its security and the protection it gives sites: it's the best-known and most widely used anti-bot service, and that's why I chose it.",
+    },
+    falla: {
+      es: "Sería un problema serio: el dominio es de ellos, así que si Cloudflare cae, el sitio cae con él. Solo queda esperar, junto con medio internet.",
+      en: "It would be a serious problem: the domain is theirs, so if Cloudflare goes down, the site goes down with it. All that's left is to wait, along with half the internet.",
+    },
   },
   {
-    titulo: "Servidor Debian 12",
-    texto: "Mi propio servidor: aquí corre todo.",
-    que: "Es el servidor en sí: aquí viven mis aplicaciones, incluido este sitio, y funciona como servidor de desarrollo y de producción.",
-    porque: "Debian es una distribución de Linux muy ligera y da muy buenas bases; si algún día quiero aprender otra distribución, esas bases me van a servir.",
-    falla: "Si el servidor falla, falla todo: todos los servicios dejan de responder.",
+    titulo: { es: "Servidor Debian 12", en: "Debian 12 server" },
+    texto: { es: "Mi propio servidor: aquí corre todo.", en: "My own server: everything runs here." },
+    que: {
+      es: "Es el servidor en sí: aquí viven mis aplicaciones, incluido este sitio, y funciona como servidor de desarrollo y de producción.",
+      en: "It's the server itself: my applications live here, including this site, and it works as both a development and a production server.",
+    },
+    porque: {
+      es: "Debian es una distribución de Linux muy ligera y da muy buenas bases; si algún día quiero aprender otra distribución, esas bases me van a servir.",
+      en: "Debian is a very light Linux distribution and gives very good fundamentals; if I ever want to learn another distribution, those fundamentals will serve me.",
+    },
+    falla: {
+      es: "Si el servidor falla, falla todo: todos los servicios dejan de responder.",
+      en: "If the server fails, everything fails: all services stop responding.",
+    },
   },
   {
-    titulo: "Proxy inverso",
-    texto: "Zoraxy reparte cada ruta a su servicio.",
-    que: "Zoraxy, mi proxy inverso, intercepta cada petición que llega al servidor, revisa a qué ruta va y la manda al servicio correcto: la ruta base lleva a este portafolio y las subrutas, a las demos y demás servicios. Todo lo que corre en el servidor está detrás de él.",
-    porque: "Toda petición pasa por aquí, así que es el único lugar donde se decide a dónde va cada ruta.",
-    falla: "Si falla, ninguna ruta llega a su servicio aunque los servicios sigan funcionando.",
+    titulo: { es: "Proxy inverso", en: "Reverse proxy" },
+    texto: { es: "Zoraxy reparte cada ruta a su servicio.", en: "Zoraxy sends each route to its service." },
+    que: {
+      es: "Zoraxy, mi proxy inverso, intercepta cada petición que llega al servidor, revisa a qué ruta va y la manda al servicio correcto: la ruta base lleva a este portafolio y las subrutas, a las demos y demás servicios. Todo lo que corre en el servidor está detrás de él.",
+      en: "Zoraxy, my reverse proxy, intercepts every request that reaches the server, checks which route it is for and sends it to the right service: the base route leads to this portfolio and the subroutes to the demos and other services. Everything that runs on the server is behind it.",
+    },
+    porque: {
+      es: "Toda petición pasa por aquí, así que es el único lugar donde se decide a dónde va cada ruta.",
+      en: "Every request passes through here, so it's the only place where it's decided where each route goes.",
+    },
+    falla: {
+      es: "Si falla, ninguna ruta llega a su servicio aunque los servicios sigan funcionando.",
+      en: "If it fails, no route reaches its service even though the services keep working.",
+    },
   },
+];
+
+const encabezados = [
+  { es: "Qué hace", en: "What it does" },
+  { es: "Por qué lo elegí", en: "Why I chose it" },
+  { es: "Si falla", en: "If it fails" },
 ];
 
 const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
 ---
 
 <Layout
-  title="Laboratorio"
-  description="Cómo está montado pbarr.dev: un servidor Debian propio, con el estado en vivo de mis demos."
+  title={{ es: "Laboratorio", en: "Lab" }}
+  description={{
+    es: "Cómo está montado pbarr.dev: un servidor Debian propio, con el estado en vivo de mis demos.",
+    en: "How pbarr.dev is set up: a Debian server of my own, with the live status of my demos.",
+  }}
 >
-  <Hero titulo="Laboratorio" />
+  <Hero titulo={{ es: "Laboratorio", en: "Lab" }} />
 
   <div class="mx-auto max-w-4xl space-y-6 px-4 pb-4">
     <p data-reveal class="text-center text-lg font-semibold text-neutral-300">
-      Todo lo que ves en pbarr.dev corre en un servidor propio con Debian 12 que
-      administro yo mismo. Aquí se ve cómo está montado y si mis demos están
-      respondiendo ahora mismo.
+      <T
+        es="Todo lo que ves en pbarr.dev corre en un servidor propio con Debian 12 que administro yo mismo. Aquí se ve cómo está montado y si mis demos están respondiendo ahora mismo."
+        en="Everything you see on pbarr.dev runs on a server of my own with Debian 12 that I manage myself. Here you can see how it's set up and whether my demos are responding right now."
+      />
     </p>
 
     <section data-reveal class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
       <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
-        Cómo está montado
+        <T es="Cómo está montado" en="How it's set up" />
       </h2>
       <ol data-flujo class="mt-4 grid gap-4 md:grid-cols-4">
         {
@@ -70,9 +117,9 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
                 aria-controls="paso-detalle"
                 class="paso block h-full w-full cursor-pointer rounded-xl border border-[#7836cf] p-4 text-left"
               >
-                <span class="block text-xs font-bold text-[#a27ed1]">Paso {i + 1}</span>
-                <span class="block font-bold text-white">{p.titulo}</span>
-                <span class="mt-1 block text-sm text-neutral-300">{p.texto}</span>
+                <span class="block text-xs font-bold text-[#a27ed1]"><T es="Paso" en="Step" /> {i + 1}</span>
+                <span class="block font-bold text-white"><T {...p.titulo} /></span>
+                <span class="mt-1 block text-sm text-neutral-300"><T {...p.texto} /></span>
               </button>
             </li>
           ))
@@ -88,10 +135,10 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
         {
           pasos.map((p, i) => (
             <div data-panel={i} hidden class="grid gap-4 p-4 md:grid-cols-3">
-              {[["Qué hace", p.que], ["Por qué lo elegí", p.porque], ["Si falla", p.falla]].map(([t, x]) => (
+              {[p.que, p.porque, p.falla].map((x, k) => (
                 <div>
-                  <h3 class="text-xs font-bold uppercase tracking-wide text-[#a27ed1]">{t}</h3>
-                  <p class="mt-1 text-sm text-neutral-300">{x}</p>
+                  <h3 class="text-xs font-bold uppercase tracking-wide text-[#a27ed1]"><T {...encabezados[k]} /></h3>
+                  <p class="mt-1 text-sm text-neutral-300"><T {...x} /></p>
                 </div>
               ))}
             </div>
@@ -102,7 +149,7 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
 
     <section data-reveal class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
       <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
-        Estado de las demos
+        <T es="Estado de las demos" en="Demo status" />
       </h2>
       <ul data-estados class="mt-4 divide-y divide-gray-800">
         {
@@ -118,20 +165,23 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
               </span>
               <span class="flex shrink-0 items-center gap-2 whitespace-nowrap text-sm font-semibold text-white">
                 <span class="status-dot h-3 w-3 rounded-full" aria-hidden="true" />
-                <span data-label>Comprobando…</span>
+                <span data-label>
+                  <span data-l="es" data-label-es>Comprobando…</span>
+                  <span data-l="en" data-label-en>Checking…</span>
+                </span>
               </span>
             </li>
           ))
         }
       </ul>
       <p class="mt-3 text-xs text-neutral-300">
-        La comprobación la hace tu navegador cada vez que abres esta página.
+        <T es="La comprobación la hace tu navegador cada vez que abres esta página." en="The check is done by your browser every time you open this page." />
       </p>
     </section>
 
     <section data-reveal class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
       <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
-        En el laboratorio
+        <T es="En el laboratorio" en="In the lab" />
       </h2>
       <ul class="mt-4 grid gap-4 md:grid-cols-2">
         {
@@ -140,10 +190,10 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
               <h3 class="font-bold text-white">
                 {p.titulo}
                 <span class="badge-live ml-2 rounded-md border border-[#7836cf] px-2 py-0.5 text-xs font-bold text-[#7836cf]">
-                  En desarrollo
+                  <T es="En desarrollo" en="In development" />
                 </span>
               </h3>
-              <p class="mt-1 text-sm text-neutral-300">{p.ahora}</p>
+              <p class="mt-1 text-sm text-neutral-300"><T {...p.ahora} /></p>
             </li>
           ))
         }
@@ -357,7 +407,8 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
         new Promise((r) => setTimeout(r, calm ? 0 : 600 + i * 180)),
       ]);
       row.dataset.estado = ok ? "ok" : "fail";
-      row.querySelector("[data-label]")!.textContent = ok ? "En línea" : "Sin respuesta";
+      row.querySelector("[data-label-es]")!.textContent = ok ? "En línea" : "Sin respuesta";
+      row.querySelector("[data-label-en]")!.textContent = ok ? "Online" : "No response";
     });
   }
 

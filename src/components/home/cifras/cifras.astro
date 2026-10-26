@@ -1,6 +1,7 @@
 ---
 import { proyectos } from "../../../data/projectData.js";
 import { actividad } from "../../../data/github.js";
+import T from "../../../i18n/T.astro";
 
 const data = await actividad();
 const prs = data?.prsFusionados ?? 0;
@@ -9,15 +10,15 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo").lengt
 
 <dl class="relative z-10 mx-auto flex max-w-[930px] flex-wrap justify-center gap-4 px-4 py-8">
   <div data-reveal class="lift flex w-full flex-col-reverse rounded-xl bg-gray-900 p-4 text-center drop-shadow-[4px_4px_0_#7836cf] sm:w-56">
-    <dt class="text-sm text-neutral-300">proyectos</dt>
+    <dt class="text-sm text-neutral-300"><T es="proyectos" en="projects" /></dt>
     <dd class="text-3xl font-bold text-white">{proyectos.length}</dd>
   </div>
   <div data-reveal class="lift flex w-full flex-col-reverse rounded-xl bg-gray-900 p-4 text-center drop-shadow-[4px_4px_0_#7836cf] sm:w-56">
-    <dt class="text-sm text-neutral-300">en desarrollo ahora</dt>
+    <dt class="text-sm text-neutral-300"><T es="en desarrollo ahora" en="in development now" /></dt>
     <dd class="text-3xl font-bold text-white">{enDesarrollo}</dd>
   </div>
   <div data-reveal data-stat hidden={!prs} class="lift flex w-full flex-col-reverse rounded-xl bg-gray-900 p-4 text-center drop-shadow-[4px_4px_0_#7836cf] sm:w-56">
-    <dt class="text-sm text-neutral-300">pull requests fusionados</dt>
+    <dt class="text-sm text-neutral-300"><T es="pull requests fusionados" en="merged pull requests" /></dt>
     <dd data-stat-prs class="text-3xl font-bold text-white">{prs || ""}</dd>
   </div>
 </dl>

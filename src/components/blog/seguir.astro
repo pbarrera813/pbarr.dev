@@ -1,5 +1,10 @@
 ---
-const feed = new URL("/rss.xml", Astro.site).href;
+import T from "../../i18n/T.astro";
+
+const feeds = {
+  es: new URL("/rss.xml", Astro.site).href,
+  en: new URL("/rss-en.xml", Astro.site).href,
+};
 const enlace =
   "block rounded-lg border border-[#7836cf] px-3 py-1.5 text-sm font-semibold text-white hover:underline";
 const redes = [
@@ -8,20 +13,27 @@ const redes = [
 ];
 ---
 
-<div class="flex flex-wrap items-center gap-3">
-  <code class="rounded-lg bg-gray-950/20 px-3 py-2 text-sm text-white [overflow-wrap:anywhere]">
-    {feed}
-  </code>
-  <button
-    type="button"
-    data-copiar={feed}
-    class="cursor-pointer rounded-lg bg-primary px-4 py-2 text-sm font-semibold hover:bg-secondary"
-  >
-    Copiar
-  </button>
-</div>
+{
+  (["es", "en"] as const).map((l) => (
+    <div data-l={l} class="flex flex-wrap items-center gap-3">
+      <code class="rounded-lg bg-gray-950/20 px-3 py-2 text-sm text-white [overflow-wrap:anywhere]">
+        {feeds[l]}
+      </code>
+      <button
+        type="button"
+        data-copiar={feeds[l]}
+        data-lang-btn={l}
+        class="cursor-pointer rounded-lg bg-primary px-4 py-2 text-sm font-semibold hover:bg-secondary"
+      >
+        {l === "es" ? "Copiar" : "Copy"}
+      </button>
+    </div>
+  ))
+}
 
-<p class="mt-5 text-sm text-neutral-300">También puedes seguirme en:</p>
+<p class="mt-5 text-sm text-neutral-300">
+  <T es="También puedes seguirme en:" en="You can also follow me on:" />
+</p>
 <ul class="mt-2 flex flex-wrap gap-3">
   {
     redes.map((r) => (
@@ -35,15 +47,17 @@ const redes = [
 </ul>
 
 <script>
+  const text = { es: { ok: "¡Copiado!", fail: "Selecciona y copia", idle: "Copiar" }, en: { ok: "Copied!", fail: "Select and copy", idle: "Copy" } };
   document.addEventListener("click", async (event) => {
     const btn = (event.target as Element).closest<HTMLButtonElement>("[data-copiar]");
     if (!btn) return;
+    const t = text[(btn.dataset.langBtn as "es" | "en") ?? "es"];
     try {
       await navigator.clipboard.writeText(btn.dataset.copiar!);
-      btn.textContent = "¡Copiado!";
+      btn.textContent = t.ok;
     } catch {
-      btn.textContent = "Selecciona y copia";
+      btn.textContent = t.fail;
     }
-    setTimeout(() => (btn.textContent = "Copiar"), 2000);
+    setTimeout(() => (btn.textContent = t.idle), 2000);
   });
 </script>

@@ -1,36 +1,38 @@
 ---
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import Hero from "../../components/commons/hero/hero.astro";
 import Banner from "../../components/commons/banners/banner.astro";
 import Seguir from "../../components/blog/seguir.astro";
+import T from "../../i18n/T.astro";
 import { proyectos } from "../../data/projectData.js";
+import { entradas } from "../../data/blog.js";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.borrador);
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  return (await entradas()).map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
-const proyecto = proyectos.find((p) => p.slug === post.data.proyecto);
-const fecha = post.data.fecha.toLocaleDateString("es-MX", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-  timeZone: "UTC",
-});
+const { Content } = await render(post.es);
+const ContentEn = post.en ? (await render(post.en)).Content : null;
+const proyecto = proyectos.find((p) => p.slug === post.proyecto);
+const fecha = (loc: string) =>
+  post.fecha.toLocaleDateString(loc, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 ---
 
-<Layout title={post.data.titulo} description={post.data.resumen}>
-  <Hero titulo={post.data.titulo} />
+<Layout title={post.titulo} description={post.resumen}>
+  <Hero titulo={post.titulo} />
 
   <article class="mx-auto max-w-3xl px-4 pb-4">
-    <a href="/blog" class="text-sm font-bold text-primary hover:underline">← Volver al blog</a>
+    <a href="/blog" class="text-sm font-bold text-primary hover:underline">
+      <T es="← Volver al blog" en="← Back to the blog" />
+    </a>
 
     <div class="mt-4 rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf] md:p-10">
       <div class="flex flex-wrap items-center gap-3 text-sm text-neutral-300">
-        <time datetime={post.data.fecha.toISOString().slice(0, 10)}>{fecha}</time>
+        <time datetime={post.fecha.toISOString().slice(0, 10)}>
+          <T es={fecha("es-MX")} en={fecha("en-US")} />
+        </time>
         {
           proyecto && (
             <a
@@ -42,15 +44,36 @@ const fecha = post.data.fecha.toLocaleDateString("es-MX", {
           )
         }
       </div>
-      <div class="articulo">
-        <Content />
-      </div>
+      {
+        ContentEn ? (
+          <>
+            <div class="articulo" data-l="es">
+              <Content />
+            </div>
+            <div class="articulo" data-l="en">
+              <ContentEn />
+            </div>
+          </>
+        ) : (
+          <div class="articulo">
+            <p data-l="en" class="rounded-lg border border-[#7836cf] px-3 py-2 text-sm">
+              This post is only available in Spanish.
+            </p>
+            <Content />
+          </div>
+        )
+      }
     </div>
 
     <section class="mt-6 rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf] md:p-10">
-      <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">Sigue el blog</h2>
+      <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
+        <T es="Sigue el blog" en="Follow the blog" />
+      </h2>
       <p class="mt-3 max-w-[70ch] text-neutral-300">
-        Recibe un aviso cuando publique algo nuevo. Copia esta dirección en tu lector de feeds:
+        <T
+          es="Recibe un aviso cuando publique algo nuevo. Copia esta dirección en tu lector de feeds:"
+          en="Get a notice when I publish something new. Copy this address into your feed reader:"
+        />
       </p>
       <div class="mt-3">
         <Seguir />

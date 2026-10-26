@@ -1,10 +1,11 @@
 ---
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
+import T from "../../i18n/T.astro";
 
 export interface Props {
   titulo: string;
-  descripcion: string;
+  descripcion: { es: string; en: string };
   imagen?: ImageMetadata;
   tecnologias: string[];
   demo: string | null;
@@ -69,7 +70,7 @@ const btn =
       {
         estado && (
           <span class="rounded-md border border-[#7836cf] px-2 py-0.5 text-xs font-bold text-[#7836cf]">
-            {estado}
+            <T es={estado} en={estado === "En desarrollo" ? "In development" : estado} />
           </span>
         )
       }
@@ -82,7 +83,7 @@ const btn =
       }
     </div>
 
-    {!compact && <p class="flex grow text-gray-400">{descripcion}</p>}
+    {!compact && <p class="flex grow text-gray-400"><T {...descripcion} /></p>}
 
     {
       slug && (
@@ -90,7 +91,7 @@ const btn =
           href={`/proyectos/${slug}`}
           class="mt-3 text-sm font-bold text-primary hover:underline"
         >
-          Detrás del proyecto →
+          <T es="Detrás del proyecto →" en="Behind the project →" />
         </a>
       )
     }
@@ -99,11 +100,11 @@ const btn =
       {
         !showDemo ? null : hasDemo ? (
           <a class={btn} target="_blank" rel="noopener noreferrer" href={demo}>
-            Pruébalo
+            <T es="Pruébalo" en="Try it" />
           </a>
         ) : (
           <button type="button" data-no-demo-trigger class:list={[btn, "cursor-pointer"]}>
-            Pruébalo
+            <T es="Pruébalo" en="Try it" />
           </button>
         )
       }
@@ -111,7 +112,7 @@ const btn =
       {
         hasCode && (
           <a class={btn} href={codigo} target="_blank" rel="noopener noreferrer">
-            Código
+            <T es="Código" en="Code" />
           </a>
         )
       }

@@ -46,7 +46,7 @@ function enter(section) {
       stagger: Math.min(0.07, 0.5 / items.length),
       clearProps: "opacity,transform",
     });
-  section.querySelectorAll("[data-count]").forEach((el) => gsap.delayedCall(0.55, countUp, [el]));
+  section.querySelectorAll("dd [data-l]").forEach((el) => gsap.delayedCall(0.55, countUp, [el]));
 }
 
 function setup() {

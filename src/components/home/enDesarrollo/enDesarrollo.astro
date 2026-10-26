@@ -1,5 +1,6 @@
 ---
 import { proyectos } from "../../../data/projectData.js";
+import T from "../../../i18n/T.astro";
 
 const activos = proyectos.filter((p) => p.estado === "En desarrollo");
 ---
@@ -8,7 +9,7 @@ const activos = proyectos.filter((p) => p.estado === "En desarrollo");
   activos.length > 0 && (
     <section class="relative z-10 mx-auto max-w-[930px] px-4 py-10">
       <h2 data-reveal class="mb-8 text-center text-3xl font-bold text-white text-shadow md:text-4xl">
-        En desarrollo ahora
+        <T es="En desarrollo ahora" en="In development now" />
       </h2>
 
       <ul class="grid gap-4 md:grid-cols-2">
@@ -17,13 +18,13 @@ const activos = proyectos.filter((p) => p.estado === "En desarrollo");
             <h3 class="text-lg font-semibold text-white drop-shadow-[1px_1px_0_#7836cf]">
               {p.titulo}
             </h3>
-            <p class="mt-1 text-sm text-gray-400">{p.ahora}</p>
+            <p class="mt-1 text-sm text-gray-400"><T {...p.ahora} /></p>
             {p.slug && (
               <a
                 href={`/proyectos/${p.slug}`}
                 class="mt-auto pt-3 text-sm font-bold text-primary hover:underline"
               >
-                Detrás del proyecto →
+                <T es="Detrás del proyecto →" en="Behind the project →" />
               </a>
             )}
           </li>

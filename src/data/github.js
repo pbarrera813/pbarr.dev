@@ -36,8 +36,8 @@ async function cargarActividad() {
 let pendiente;
 export const actividad = () => (pendiente ??= cargarActividad());
 
-export const fecha = (iso) =>
-  new Date(iso).toLocaleDateString("es-MX", {
+export const fecha = (iso, loc = "es-MX") =>
+  new Date(iso).toLocaleDateString(loc, {
     day: "numeric",
     month: "short",
     year: "numeric",

@@ -1,19 +1,17 @@
 import rss from "@astrojs/rss";
-import { getCollection } from "astro:content";
+import { entradas } from "../data/blog.js";
 
 export async function GET(context) {
-  const posts = (await getCollection("blog", ({ data }) => !data.borrador)).sort(
-    (a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf()
-  );
+  const posts = await entradas();
   return rss({
     title: "Pablo Barrera: blog",
     description: "Notas de desarrollo de Pablo Barrera.",
     site: context.site,
-    items: posts.map((post) => ({
-      title: post.data.titulo,
-      pubDate: post.data.fecha,
-      description: post.data.resumen,
-      link: `/blog/${post.id}/`,
+    items: posts.map((p) => ({
+      title: p.titulo.es,
+      pubDate: p.fecha,
+      description: p.resumen.es,
+      link: `/blog/${p.id}/`,
     })),
     customData: "<language>es-mx</language>",
   });

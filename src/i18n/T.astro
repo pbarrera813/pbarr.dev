@@ -1,0 +1,19 @@
+---
+// <T es="Hola" en="Hello" /> renders both languages; CSS shows the active one.
+// For rich text use the slots: <T><Fragment slot="es">...</Fragment><Fragment slot="en">...</Fragment></T>
+const { es, en } = Astro.props;
+---
+
+{
+  es !== undefined ? (
+    <>
+      <span data-l="es">{es}</span>
+      <span data-l="en">{en}</span>
+    </>
+  ) : (
+    <>
+      <span data-l="es"><slot name="es" /></span>
+      <span data-l="en"><slot name="en" /></span>
+    </>
+  )
+}

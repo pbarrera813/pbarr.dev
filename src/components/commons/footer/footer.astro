@@ -1,5 +1,6 @@
 ---
 import SocialIcons from "../socialIcons/socialIcons.jsx";
+import T from "../../../i18n/T.astro";
 ---
 
 <footer class="bg-gray-950 text-white">
@@ -7,13 +8,18 @@ import SocialIcons from "../socialIcons/socialIcons.jsx";
     class="container mx-auto flex flex-col items-center justify-between px-6 py-12 lg:flex-row lg:px-20"
   >
     <!-- Logo -->
-    <a href="/" class="flex items-center">
-      <h3
-        class="text-[#69c7c7] text-2xl md:text-3xl font-bold drop-shadow-[1.5px_1.5px_0_#7836cf]"
-      >
-        Pablo Barrera
-      </h3>
-    </a>
+    <div class="flex flex-col items-center lg:items-start">
+      <a href="/" class="flex items-center">
+        <h3
+          class="text-[#69c7c7] text-2xl md:text-3xl font-bold drop-shadow-[1.5px_1.5px_0_#7836cf]"
+        >
+          Pablo Barrera
+        </h3>
+      </a>
+      <button type="button" data-era-on class="mt-1 cursor-pointer text-[11px] text-gray-600 opacity-70 transition-opacity hover:text-gray-400 hover:opacity-100">
+        <T es="¿Te gana la nostalgia?" en="Feeling nostalgic?" />
+      </button>
+    </div>
 
     <!-- Navigation Links -->
     <nav class="mb-4 lg:mb-0">
@@ -21,11 +27,11 @@ import SocialIcons from "../socialIcons/socialIcons.jsx";
         class="flex flex-col items-center space-y-2 text-gray-400 lg:flex-row lg:items-start lg:space-y-0 lg:space-x-6"
       >
         <li>
-          <a href="/" class="hover:text-[#552496] font-semibold">Inicio</a>
+          <a href="/" class="hover:text-[#552496] font-semibold"><T es="Inicio" en="Home" /></a>
         </li>
         <li>
           <a href="/proyectos" class="hover:text-[#552496] font-semibold"
-            >Proyectos</a>
+            ><T es="Proyectos" en="Projects" /></a>
         </li>
         <li>
           <a href="/blog" class="hover:text-[#552496] font-semibold"
@@ -33,15 +39,15 @@ import SocialIcons from "../socialIcons/socialIcons.jsx";
         </li>
         <li>
           <a href="/laboratorio" class="hover:text-[#552496] font-semibold"
-            >Laboratorio</a>
+            ><T es="Laboratorio" en="Lab" /></a>
         </li>
         <li>
           <a href="/about" class="hover:text-[#552496] font-semibold"
-            >Sobre Mi</a>
+            ><T es="Sobre Mi" en="About" /></a>
         </li>
         <li>
           <a href="/contact" class="hover:text-[#552496] font-semibold"
-            >Contacto</a>
+            ><T es="Contacto" en="Contact" /></a>
         </li>
       </ul>
     </nav>
@@ -52,10 +58,4 @@ import SocialIcons from "../socialIcons/socialIcons.jsx";
     </div>
   </div>
 
-  <!-- Copyright -->
-  <div
-    class="w-full border-t border-gray-600 py-10 text-center text-sm text-gray-500"
-  >
-    pbarrera813@gmail.com
-  </div>
 </footer>

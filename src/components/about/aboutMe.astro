@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import MiFoto from "../../assets/img/MiFoto.png";
+import T from "../../i18n/T.astro";
 ---
 
 <!-- Contenedor principal -->
@@ -15,30 +16,57 @@ import MiFoto from "../../assets/img/MiFoto.png";
       src={MiFoto}
       width={800}
       alt="Foto de Pablo"
+      data-attr="alt"
+      data-es="Foto de Pablo"
+      data-en="Photo of Pablo"
       class="h-full w-full object-cover"
     />
   </div>
 
   <div class="flex-1 text-center text-gray-300 lg:text-left">
     <h2 class="text-3xl font-bold text-white">
-      Hola! Mi nombre es <span class="text-white text-shadow">Pablo</span>
+      <T es="Hola! Mi nombre es" en="Hi! My name is" /> <span class="text-white text-shadow">Pablo</span>
     </h2>
     <p class="mt-4">
-      Soy <span class="text-primary font-semibold">Ingeniero en Tecnología del Software</span>
-      por la UANL, vivo en Monterrey y curso una
-      <span class="text-primary font-semibold">maestría en Ingeniería con orientación en Tecnologías de la Información</span>.
-      Trabajo en <span class="text-primary font-semibold">backend y full-stack</span>: servicios
-      en Go y Python, interfaces con React y TypeScript y apps con Flutter. Todo lo que construyo
-      lo despliego y mantengo en mi propio servidor Linux, así que me importa tanto el código como
-      lo que pasa después de escribirlo.
+      <T>
+        <Fragment slot="es">
+          Soy <span class="text-primary font-semibold">Ingeniero en Tecnología del Software</span>
+          por la UANL, vivo en Monterrey y curso una
+          <span class="text-primary font-semibold">maestría en Ingeniería con orientación en Tecnologías de la Información</span>.
+          Trabajo en <span class="text-primary font-semibold">backend y full-stack</span>: servicios
+          en Go y Python, interfaces con React y TypeScript y apps con Flutter. Todo lo que construyo
+          lo despliego y mantengo en mi propio servidor Linux, así que me importa tanto el código como
+          lo que pasa después de escribirlo.
+        </Fragment>
+        <Fragment slot="en">
+          I'm a <span class="text-primary font-semibold">Software Technology Engineer</span>
+          from UANL, I live in Monterrey and I'm doing a
+          <span class="text-primary font-semibold">master's degree in Engineering with a focus on Information Technology</span>.
+          I work on <span class="text-primary font-semibold">backend and full-stack</span>: services
+          in Go and Python, interfaces with React and TypeScript, and apps with Flutter. Everything I
+          build I deploy and maintain on my own Linux server, so I care as much about the code as
+          about what happens after it's written.
+        </Fragment>
+      </T>
     </p>
     <p class="mt-2">
-      Empecé a programar de forma <span class="text-primary font-semibold">autodidacta</span>, con
-      tutoriales y reparando equipos, y en la universidad decidí dedicarme a esto de forma
-      profesional. Hoy construyo herramientas que uso yo mismo: un panel para servidores de
-      Minecraft, un bot de Discord con IA, una app de Android para el chat de voz de Bedrock y un
-      dashboard para mi servidor, y colaboro en
-      <span class="text-primary font-semibold">código abierto</span>.
+      <T>
+        <Fragment slot="es">
+          Empecé a programar de forma <span class="text-primary font-semibold">autodidacta</span>, con
+          tutoriales y reparando equipos, y en la universidad decidí dedicarme a esto de forma
+          profesional. Hoy construyo herramientas que uso yo mismo: un panel para servidores de
+          Minecraft, un bot de Discord con IA, una app de Android para el chat de voz de Bedrock y un
+          dashboard para mi servidor, y colaboro en
+          <span class="text-primary font-semibold">código abierto</span>.
+        </Fragment>
+        <Fragment slot="en">
+          I started programming as a <span class="text-primary font-semibold">self-taught</span>
+          developer, with tutorials and by repairing computers, and at university I decided to do this
+          professionally. Today I build tools I use myself: a panel for Minecraft servers, a Discord
+          bot with AI, an Android app for Bedrock voice chat and a dashboard for my server, and I
+          contribute to <span class="text-primary font-semibold">open source</span>.
+        </Fragment>
+      </T>
     </p>
   </div>
 </div>

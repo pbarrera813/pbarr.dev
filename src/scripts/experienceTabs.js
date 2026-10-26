@@ -77,3 +77,4 @@ document.addEventListener("astro:page-load", () => {
   document.fonts?.ready.then(sync);
 });
 window.addEventListener("resize", sync);
+document.addEventListener("langchange", sync); // button widths differ between languages

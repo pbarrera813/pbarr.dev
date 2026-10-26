@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import MiFoto from "../assets/img/MiFoto.png";
 import CopyMail from "../components/links/copyMail.jsx";
+import T from "../i18n/T.astro";
 
 const links = [
   {
@@ -15,8 +16,11 @@ const links = [
 ---
 
 <Layout
-  title="Contacto"
-  description="Contacta a Pablo Barrera por correo, LinkedIn o GitHub."
+  title={{ es: "Contacto", en: "Contact" }}
+  description={{
+    es: "Contacta a Pablo Barrera por correo, LinkedIn o GitHub.",
+    en: "Contact Pablo Barrera by email, LinkedIn or GitHub.",
+  }}
 >
   <section
     class="bg-gray-900 flex min-h-screen flex-col items-center justify-center px-6"
@@ -29,6 +33,9 @@ const links = [
             src={MiFoto}
             width={256}
             alt="Foto de Pablo"
+            data-attr="alt"
+            data-es="Foto de Pablo"
+            data-en="Photo of Pablo"
             class="border-primary h-32 w-32 rounded-full shadow-lg"
           />
 
@@ -41,9 +48,14 @@ const links = [
               id="circlePathText"
               d="M100,100 m-77,0 a77,77 0 1,1 154,0 a77,77 0 1,1 -154,0"
               fill="none"></path>
-            <text fill="#69c7c7" font-size="18" font-weight="bold">
+            <text data-l="es" fill="#69c7c7" font-size="18" font-weight="bold">
               <textPath href="#circlePathText" startOffset="0%">
                 ✦ Hola ! ✦ Estoy disponible para nuevas oportunidades!
+              </textPath>
+            </text>
+            <text data-l="en" fill="#69c7c7" font-size="18" font-weight="bold">
+              <textPath href="#circlePathText" startOffset="0%">
+                ✦ Hi ! ✦ I'm available for new opportunities!
               </textPath>
             </text>
           </svg>

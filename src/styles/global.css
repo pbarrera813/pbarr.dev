@@ -552,6 +552,10 @@ html.theme-switching *::after {
       translate var(--dur-fast) var(--ease-out);
   }
 
+  html[data-lang="en"] .caso-rail a::after {
+    content: attr(data-label-en);
+  }
+
   .caso-rail a:hover::after,
   .caso-rail a:focus-visible::after {
     opacity: 1;
@@ -576,4 +580,19 @@ html.theme-switching *::after {
 
 html.js .caso-destacada:not([data-visto])::before {
   transform: scaleY(0);
+}
+
+/* bilingual text: both languages are in the HTML, the active one shows (see src/i18n/T.astro) */
+html[data-lang="es"] [data-l="en"],
+html[data-lang="en"] [data-l="es"] {
+  display: none !important;
+}
+
+.lang-check {
+  visibility: hidden;
+}
+
+html[data-lang="es"] [data-opt="es"] .lang-check,
+html[data-lang="en"] [data-opt="en"] .lang-check {
+  visibility: visible;
 }

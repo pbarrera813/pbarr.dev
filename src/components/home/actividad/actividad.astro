@@ -1,5 +1,6 @@
 ---
 import { actividad, fecha } from "../../../data/github.js";
+import T from "../../../i18n/T.astro";
 
 const data = await actividad();
 const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
@@ -11,7 +12,7 @@ const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
   class="relative z-10 mx-auto max-w-[930px] px-4 py-10"
 >
   <h2 data-reveal class="mb-8 text-center text-3xl font-bold text-white text-shadow md:text-4xl">
-    Actividad reciente
+    <T es="Actividad reciente" en="Recent activity" />
   </h2>
 
   <ul class="grid gap-4 md:grid-cols-2">
@@ -35,7 +36,12 @@ const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
               {r.description}
             </span>
             <span data-meta class="mt-auto pt-3 text-xs font-semibold text-[#a27ed1]">
-              {r.pushed_at && `${r.language ? `${r.language} · ` : ""}Actualizado el ${fecha(r.pushed_at)}`}
+              <span data-l="es" data-meta-es>
+                {r.pushed_at && `${r.language ? `${r.language} · ` : ""}Actualizado el ${fecha(r.pushed_at)}`}
+              </span>
+              <span data-l="en" data-meta-en>
+                {r.pushed_at && `${r.language ? `${r.language} · ` : ""}Updated ${fecha(r.pushed_at, "en-US")}`}
+              </span>
             </span>
           </a>
         </li>
@@ -45,10 +51,12 @@ const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
 
   <p class="mt-6 text-center text-sm text-neutral-300">
     <span data-prs>
-      {
-        data && data.prsFusionados > 0 &&
-          `${data.prsFusionados} pull requests fusionados en proyectos de otras personas. `
-      }
+      <span data-l="es" data-prs-es>
+        {data && data.prsFusionados > 0 && `${data.prsFusionados} pull requests fusionados en proyectos de otras personas. `}
+      </span>
+      <span data-l="en" data-prs-en>
+        {data && data.prsFusionados > 0 && `${data.prsFusionados} merged pull requests in other people's projects. `}
+      </span>
     </span>
     <a
       href="https://github.com/pbarrera813"
@@ -56,7 +64,7 @@ const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
       rel="noopener noreferrer"
       class="font-bold text-primary hover:underline"
     >
-      Ver mi perfil
+      <T es="Ver mi perfil" en="See my profile" />
     </a>
   </p>
 </section>
@@ -71,8 +79,8 @@ const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
       r.ok ? r.json() : Promise.reject(r.status)
     );
 
-  const fecha = (iso: string) =>
-    new Date(iso).toLocaleDateString("es-MX", {
+  const fecha = (iso: string, loc: string) =>
+    new Date(iso).toLocaleDateString(loc, {
       day: "numeric",
       month: "short",
       year: "numeric",
@@ -114,11 +122,15 @@ const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
           el.href = r.html_url;
           el.querySelector("[data-name]")!.textContent = r.name;
           el.querySelector("[data-desc]")!.textContent = r.description ?? "";
-          el.querySelector("[data-meta]")!.textContent =
-            `${r.language ? `${r.language} · ` : ""}Actualizado el ${fecha(r.pushed_at)}`;
+          const lang = r.language ? `${r.language} · ` : "";
+          el.querySelector("[data-meta-es]")!.textContent = `${lang}Actualizado el ${fecha(r.pushed_at, "es-MX")}`;
+          el.querySelector("[data-meta-en]")!.textContent = `${lang}Updated ${fecha(r.pushed_at, "en-US")}`;
         });
-        root.querySelector("[data-prs]")!.textContent = prs
+        root.querySelector("[data-prs-es]")!.textContent = prs
           ? `${prs} pull requests fusionados en proyectos de otras personas. `
+          : "";
+        root.querySelector("[data-prs-en]")!.textContent = prs
+          ? `${prs} merged pull requests in other people's projects. `
           : "";
         document.querySelectorAll<HTMLElement>("[data-stat-prs]").forEach((el) => {
           el.textContent = String(prs);

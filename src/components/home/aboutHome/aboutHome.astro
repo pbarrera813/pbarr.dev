@@ -2,6 +2,7 @@
 import { HiArrowRight } from "react-icons/hi";
 import { Image } from "astro:assets";
 import MiFoto from "../../../assets/img/MiFoto.png";
+import T from "../../../i18n/T.astro";
 ---
 
 <section class="relative flex items-center justify-center px-4 pt-16">
@@ -23,6 +24,9 @@ import MiFoto from "../../../assets/img/MiFoto.png";
         src={MiFoto}
         width={600}
         alt="Foto de Pablo"
+        data-attr="alt"
+        data-es="Foto de Pablo"
+        data-en="Photo of Pablo"
         class="h-full w-full object-cover"
       />
     </div>
@@ -32,19 +36,20 @@ import MiFoto from "../../../assets/img/MiFoto.png";
       class="lift bg-gray-900 border-none flex w-full flex-col justify-center rounded-2xl border p-6 shadow-lg md:w-2/3 drop-shadow-[4px_4px_0_#7836cf]"
     >
       <h2 class="text-white text-4xl font-bold drop-shadow-[2px_2px_0_#7836cf]">
-        Sobre Mí
+        <T es="Sobre Mí" en="About Me" />
       </h2>
       <p class="mt-2 font-semibold">
-        Soy Pablo, ingeniero de software full-stack en Monterrey. Construyo backends en Go y
-        Python, interfaces con React y TypeScript, apps móviles con Flutter e infraestructura
-        propia con Linux, Docker y systemd. También colaboro en proyectos de código abierto.
+        <T
+          es="Soy Pablo, ingeniero de software full-stack en Monterrey. Construyo backends en Go y Python, interfaces con React y TypeScript, apps móviles con Flutter e infraestructura propia con Linux, Docker y systemd. También colaboro en proyectos de código abierto."
+          en="I'm Pablo, a full-stack software engineer in Monterrey. I build backends in Go and Python, interfaces with React and TypeScript, mobile apps with Flutter and my own infrastructure with Linux, Docker and systemd. I also contribute to open source projects."
+        />
       </p>
 
       <a
         href="/about"
         class="group mt-4 inline-flex items-center text-primary font-bold transition-all"
       >
-        Ver más sobre mí
+        <T es="Ver más sobre mí" en="More about me" />
         <HiArrowRight
           className="ml-1 transition-transform duration-200 group-hover:translate-x-1"
           size={18}

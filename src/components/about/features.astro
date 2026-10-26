@@ -1,5 +1,6 @@
 ---
 import ServiceCard from "./ServiceCard.astro";
+import T from "../../i18n/T.astro";
 import {
   FaServer,
   FaLayerGroup,
@@ -12,51 +13,63 @@ import {
 const areas = [
   {
     icon: FaServer,
-    title: "Backend y APIs",
-    description:
-      "Servicios en Go y Python con APIs REST, WebSockets y bases de datos SQL, pensados para instalarse y operarse fácilmente.",
+    title: { es: "Backend y APIs", en: "Backend and APIs" },
+    description: {
+      es: "Servicios en Go y Python con APIs REST, WebSockets y bases de datos SQL, pensados para instalarse y operarse fácilmente.",
+      en: "Go and Python services with REST APIs, WebSockets and SQL databases, built to be easy to install and operate.",
+    },
     href: "/proyectos/orexa-panel",
-    linkTexto: "Ver Orexa Panel →",
+    linkTexto: { es: "Ver Orexa Panel →", en: "See Orexa Panel →" },
   },
   {
     icon: FaLayerGroup,
-    title: "Full-stack",
-    description:
-      "Interfaces con React y TypeScript conectadas a mis propios backends, desde un panel de administración hasta un dashboard en vivo.",
+    title: { es: "Full-stack", en: "Full-stack" },
+    description: {
+      es: "Interfaces con React y TypeScript conectadas a mis propios backends, desde un panel de administración hasta un dashboard en vivo.",
+      en: "React and TypeScript interfaces connected to my own backends, from an admin panel to a live dashboard.",
+    },
     href: "/proyectos/hostra",
-    linkTexto: "Ver Hostra →",
+    linkTexto: { es: "Ver Hostra →", en: "See Hostra →" },
   },
   {
     icon: FaMobileScreenButton,
-    title: "Móvil",
-    description:
-      "Apps de Android con Flutter y audio nativo, con conexión directa por websocket y notificaciones.",
+    title: { es: "Móvil", en: "Mobile" },
+    description: {
+      es: "Apps de Android con Flutter y audio nativo, con conexión directa por websocket y notificaciones.",
+      en: "Android apps built with Flutter and native audio, with a direct websocket connection and notifications.",
+    },
     href: "/proyectos/simple-voice-app",
-    linkTexto: "Ver Simple Voice App →",
+    linkTexto: { es: "Ver Simple Voice App →", en: "See Simple Voice App →" },
   },
   {
     icon: FaLinux,
-    title: "Infraestructura",
-    description:
-      "Servidores Linux con Docker y systemd: despliegue, monitoreo y una nube propia, explicado en el Laboratorio.",
+    title: { es: "Infraestructura", en: "Infrastructure" },
+    description: {
+      es: "Servidores Linux con Docker y systemd: despliegue, monitoreo y una nube propia, explicado en el Laboratorio.",
+      en: "Linux servers with Docker and systemd: deployment, monitoring and a cloud of my own, explained in the Lab.",
+    },
     href: "/laboratorio",
-    linkTexto: "Ver el Laboratorio →",
+    linkTexto: { es: "Ver el Laboratorio →", en: "See the Lab →" },
   },
   {
     icon: FaRobot,
-    title: "IA aplicada",
-    description:
-      "Bots con modelos de lenguaje donde el código valida cada acción: planes tipados, permisos reales y control de costos.",
+    title: { es: "IA aplicada", en: "Applied AI" },
+    description: {
+      es: "Bots con modelos de lenguaje donde el código valida cada acción: planes tipados, permisos reales y control de costos.",
+      en: "Bots built on language models where the code validates every action: typed plans, real permissions and cost control.",
+    },
     href: "/proyectos/nitori",
-    linkTexto: "Ver Nitori →",
+    linkTexto: { es: "Ver Nitori →", en: "See Nitori →" },
   },
   {
     icon: FaCodeBranch,
-    title: "Código abierto",
-    description:
-      "Contribuciones al plugin SimpleVoice-Geyser, con pull requests fusionados y trabajo con el mantenedor.",
+    title: { es: "Código abierto", en: "Open source" },
+    description: {
+      es: "Contribuciones al plugin SimpleVoice-Geyser, con pull requests fusionados y trabajo con el mantenedor.",
+      en: "Contributions to the SimpleVoice-Geyser plugin, with merged pull requests and work with its maintainer.",
+    },
     href: "https://github.com/TheodoreMeyer/SimpleVoice-Geyser/pulls?q=is%3Apr+author%3Apbarrera813+is%3Amerged",
-    linkTexto: "Ver mis pull requests →",
+    linkTexto: { es: "Ver mis pull requests →", en: "See my pull requests →" },
   },
 ];
 ---
@@ -66,7 +79,7 @@ const areas = [
 		class="text-4xl font-bold flex flex-col items-center gap-6 text-center whitespace-nowrap text-white md:flex-row md:items-center md:text-end"
 	>
 		<span class="hidden h-1.5 grow rounded-lg drop-shadow-[2px_2px_0_#0debd8] bg-[#7836cf] md:block"></span>
-		<span class="drop-shadow-[2px_2px_0_#7836cf]">Qué hago</span>
+		<span class="drop-shadow-[2px_2px_0_#7836cf]"><T es="Qué hago" en="What I do" /></span>
 	</h2>
 
 	<div class="mt-10 grid gap-6 md:grid-cols-3">

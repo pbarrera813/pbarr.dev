@@ -3,8 +3,9 @@ import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import Hero from "../../components/commons/hero/hero.astro";
 import Banner from "../../components/commons/banners/banner.astro";
-import { getCollection } from "astro:content";
 import { proyectos } from "../../data/projectData.js";
+import T from "../../i18n/T.astro";
+import { entradas } from "../../data/blog.js";
 
 export function getStaticPaths() {
   return proyectos
@@ -12,22 +13,21 @@ export function getStaticPaths() {
     .map((p) => ({ params: { slug: p.slug }, props: { p } }));
 }
 
+type Bi = { es: string; en: string };
 interface Seccion {
-  titulo: string;
-  texto?: string | string[];
-  lista?: string[];
-  cifras?: { valor: string; etiqueta: string }[];
-  enlaces?: { texto: string; href: string }[];
+  titulo: Bi;
+  texto?: Bi | Bi[];
+  lista?: Bi[];
+  cifras?: { valor: Bi; etiqueta: Bi }[];
+  enlaces?: { texto: Bi; href: string }[];
   destacada?: boolean;
 }
 
 const { p } = Astro.props;
-const posts = (await getCollection("blog", ({ data }) => !data.borrador))
-  .filter((b) => b.data.proyecto === p.slug)
-  .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
-const capitulos = [
+const posts = (await entradas()).filter((b) => b.proyecto === p.slug);
+const capitulos: Bi[] = [
   ...(p.caso as Seccion[]).map((s) => s.titulo),
-  ...(posts.length ? ["En el blog"] : []),
+  ...(posts.length ? [{ es: "En el blog", en: "On the blog" }] : []),
 ];
 const btn =
   "rounded-xl bg-primary px-5 py-2 text-center text-force-white font-semibold transition-colors hover:bg-secondary";
@@ -38,17 +38,17 @@ const btn =
 
   <div class="caso-progress" aria-hidden="true"></div>
 
-  <nav class="caso-rail" aria-label="Secciones de esta página">
+  <nav class="caso-rail" aria-label="Secciones de esta página" data-attr="aria-label" data-es="Secciones de esta página" data-en="Sections on this page">
     {
       capitulos.map((t, i) => (
-        <a href={`#sec-${i}`} data-rail={i} data-label={t} aria-label={t}></a>
+        <a href={`#sec-${i}`} data-rail={i} data-label={t.es} data-label-en={t.en} aria-label={t.es} data-attr="aria-label" data-es={t.es} data-en={t.en}></a>
       ))
     }
   </nav>
 
   <article data-caso class="mx-auto max-w-4xl px-4 pb-4">
     <a href="/proyectos" class="text-sm font-bold text-primary hover:underline">
-      ← Volver a proyectos
+      <T es="← Volver a proyectos" en="← Back to projects" />
     </a>
 
     {
@@ -59,6 +59,9 @@ const btn =
           transition:name={`proy-${p.slug}`}
           loading="eager"
           alt={`Imagen del proyecto ${p.titulo}`}
+          data-attr="alt"
+          data-es={`Imagen del proyecto ${p.titulo}`}
+          data-en={`Image of the project ${p.titulo}`}
           class="mt-4 w-full rounded-2xl object-cover drop-shadow-[4px_4px_0_#7836cf]"
         />
       )
@@ -78,14 +81,14 @@ const btn =
       {
         p.demo && (
           <a class={btn} href={p.demo} target="_blank" rel="noopener noreferrer">
-            Pruébalo
+            <T es="Pruébalo" en="Try it" />
           </a>
         )
       }
       {
         p.codigo && (
           <a class={btn} href={p.codigo} target="_blank" rel="noopener noreferrer">
-            Código
+            <T es="Código" en="Code" />
           </a>
         )
       }
@@ -104,15 +107,15 @@ const btn =
             ]}
           >
             <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
-              {s.titulo}
+              <T {...s.titulo} />
             </h2>
             {[s.texto ?? []].flat().map((t) => (
-              <p class="mt-3 max-w-[70ch] text-neutral-300">{t}</p>
+              <p class="mt-3 max-w-[70ch] text-neutral-300"><T {...t} /></p>
             ))}
             {s.lista && (
               <ul class="mt-3 max-w-[70ch] list-disc space-y-2 pl-5 text-neutral-300 marker:text-[#7836cf]">
                 {s.lista.map((item) => (
-                  <li>{item}</li>
+                  <li><T {...item} /></li>
                 ))}
               </ul>
             )}
@@ -120,8 +123,8 @@ const btn =
               <dl class="mt-4 grid gap-4 md:grid-cols-3">
                 {s.cifras.map((c) => (
                   <div class="flex flex-col-reverse rounded-xl border border-[#7836cf] p-4">
-                    <dt class="text-sm text-neutral-300">{c.etiqueta}</dt>
-                    <dd data-count class="text-2xl font-bold text-white tabular-nums">{c.valor}</dd>
+                    <dt class="text-sm text-neutral-300"><T {...c.etiqueta} /></dt>
+                    <dd class="text-2xl font-bold text-white tabular-nums"><T {...c.valor} /></dd>
                   </div>
                 ))}
               </dl>
@@ -136,7 +139,7 @@ const btn =
                       rel={e.href.startsWith("/") ? undefined : "noopener noreferrer"}
                       class="font-bold text-primary hover:underline"
                     >
-                      {e.texto}
+                      <T {...e.texto} />
                     </a>
                   </li>
                 ))}
@@ -154,13 +157,13 @@ const btn =
             class="scroll-mt-24 rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]"
           >
             <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
-              En el blog
+              <T es="En el blog" en="On the blog" />
             </h2>
             <ul class="mt-3 flex flex-col gap-2">
               {posts.map((b) => (
                 <li>
                   <a href={`/blog/${b.id}/`} class="font-bold text-primary hover:underline">
-                    {b.data.titulo}
+                    <T {...b.titulo} />
                   </a>
                 </li>
               ))}

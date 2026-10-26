@@ -1,30 +1,44 @@
 ---
 import "../styles/global.css";
+import "../styles/retro.css";
+import Retro from "../components/commons/retro/Retro.astro";
 import Navbar from "../components/commons/navbar/navbar.astro";
 import Footer from "../components/commons/footer/footer.astro";
 import { ClientRouter } from "astro:transitions";
+import T from "../i18n/T.astro";
+
+type Bi = string | { es: string; en: string };
 
 interface Props {
-  title?: string;
-  description?: string;
+  title?: Bi;
+  description?: Bi;
   noindex?: boolean;
 }
 
+const bi = (v: Bi) => (typeof v === "string" ? { es: v, en: v } : v);
 const {
   title,
-  description = "Portafolio de Pablo Barrera, ingeniero de software full-stack: backend en Go y Python, React, Flutter e infraestructura Linux auto-hospedada.",
+  description = {
+    es: "Portafolio de Pablo Barrera, ingeniero de software full-stack: backend en Go y Python, React, Flutter e infraestructura Linux auto-hospedada.",
+    en: "Portfolio of Pablo Barrera, full-stack software engineer: Go and Python backends, React, Flutter and self-hosted Linux infrastructure.",
+  },
   noindex = false,
 } = Astro.props;
 
 const siteName = "Pablo Barrera";
-const fullTitle = title ? `${title} | ${siteName}` : `${siteName} | Ingeniero de Software Full-Stack`;
+const d = bi(description);
+const fullTitle = title
+  ? { es: `${bi(title).es} | ${siteName}`, en: `${bi(title).en} | ${siteName}` }
+  : { es: `${siteName} | Ingeniero de Software Full-Stack`, en: `${siteName} | Full-Stack Software Engineer` };
+// crawlers and link previews only see the markup, so the previews carry both languages
+const preview = d.es === d.en ? d.es : `${d.es} · ${d.en}`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
 const person = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: siteName,
-  jobTitle: "Ingeniero de Software Full-Stack",
+  jobTitle: "Ingeniero de Software Full-Stack / Full-Stack Software Engineer",
   url: Astro.site?.href,
   sameAs: [
     "https://github.com/pbarrera813",
@@ -40,6 +54,23 @@ const person = {
       (function () {
         const root = document.documentElement;
         function apply(el = root) {
+          // language: saved choice, else the browser's, else Spanish (src/scripts/lang.js changes it later)
+          let l;
+          try {
+            l = localStorage.getItem("lang");
+          } catch {}
+          if (l !== "es" && l !== "en") {
+            l = (navigator.languages || [navigator.language || ""])
+              .map((x) => x.slice(0, 2).toLowerCase())
+              .find((x) => x === "es" || x === "en") || "es";
+          }
+          el.dataset.lang = l;
+          el.lang = l;
+          // "Feeling nostalgic?" skin, kept for the session (src/scripts/era.js)
+          try {
+            if (sessionStorage.getItem("era") === "2001") el.setAttribute("data-era", "2001");
+            else el.removeAttribute("data-era");
+          } catch {}
           const saved = localStorage.getItem("theme");
           const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
           el.classList.toggle("theme-dark", saved ? saved === "dark" : prefersDark);
@@ -62,16 +93,18 @@ const person = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <ClientRouter />
-    <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <title data-es={fullTitle.es} data-en={fullTitle.en}>{fullTitle.es}</title>
+    <meta name="description" content={d.es} data-attr="content" data-es={d.es} data-en={d.en} />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/rss+xml" title="Pablo Barrera: blog" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Pablo Barrera: blog (English)" href="/rss-en.xml" />
     {noindex && <meta name="robots" content="noindex" />}
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_MX" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:site_name" content={siteName} />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={fullTitle.es} />
+    <meta property="og:description" content={preview} />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary" />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(person)} />
@@ -81,18 +114,23 @@ const person = {
       href="#main"
       class="sr-only focus:not-sr-only fixed top-2 left-2 z-[100] rounded-lg bg-primary px-4 py-2 font-semibold"
     >
-      Saltar al contenido
+      <T es="Saltar al contenido" en="Skip to content" />
     </a>
     <Navbar />
+    <Retro pieza="ticker" />
     <main id="main">
       <slot />
     </main>
     <Footer />
+    <Retro pieza="footer" />
     <script is:inline>
       (function () {
         if (window.__demoToast) return;
         window.__demoToast = true;
-        const message = "Lo siento, este proyecto aún no cuenta con una demo.";
+        const messages = {
+          es: "Lo siento, este proyecto aún no cuenta con una demo.",
+          en: "Sorry, this project doesn't have a demo yet.",
+        };
         let activeToast = null;
 
         function removeToast() {
@@ -107,7 +145,7 @@ const person = {
           removeToast();
           const toast = document.createElement("div");
           toast.className = "demo-toast";
-          toast.textContent = message;
+          toast.textContent = messages[document.documentElement.dataset.lang] || messages.es;
           document.body.appendChild(toast);
           activeToast = toast;
           setTimeout(() => toast.classList.add("demo-toast-show"), 10);
@@ -125,6 +163,9 @@ const person = {
       })();
     </script>
     <script>
+      import "../scripts/lang.js";
+      import "../scripts/era.js";
+      import "../scripts/visitas.js";
       import "../scripts/motion.js";
     </script>
   </body>

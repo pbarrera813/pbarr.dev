@@ -1,6 +1,8 @@
 ---
+import T from "../../../i18n/T.astro";
+
 export interface Props {
-  titulo: string;
+  titulo: string | { es: string; en: string };
 }
 
 const { titulo } = Astro.props;
@@ -13,7 +15,7 @@ const { titulo } = Astro.props;
     <h1
       class="text-4xl md:text-6xl font-extrabold mb-4 tracking-wide drop-shadow-lg text-shadow-cyan"
     >
-      {titulo}
+      {typeof titulo === "string" ? titulo : <T {...titulo} />}
     </h1>
   </div>
 </section>

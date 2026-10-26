@@ -9,7 +9,9 @@ import nitori from "../assets/img-projects/nitori-discord.png";
 import svgApp from "../assets/img-projects/svg-app.jpg";
 import hostra from "../assets/img-projects/hostra.png";
 import hostraCompanion from "../assets/img-projects/hostra-companion.png";
-export const proyectos = [
+import en from "./projectData.en.js";
+
+const base = [
   
   {
     titulo: "Sopa de letras",
@@ -602,3 +604,32 @@ export const proyectos = [
         destacado: false,
     },
  ];
+
+// Every text field becomes { es, en }. A missing or reshaped English twin stops the build.
+function par(es, tr, path) {
+  if (typeof es === "string") {
+    if (typeof tr !== "string" || !tr.trim()) throw new Error(`projectData.en.js: missing English text at ${path}`);
+    return { es, en: tr };
+  }
+  if (Array.isArray(es)) {
+    if (!Array.isArray(tr) || tr.length !== es.length) throw new Error(`projectData.en.js: different list length at ${path}`);
+    return es.map((v, i) => par(v, tr[i], `${path}[${i}]`));
+  }
+  if (es && typeof es === "object") {
+    return Object.fromEntries(
+      Object.entries(es).map(([k, v]) => [k, k === "href" || typeof v === "boolean" ? v : par(v, tr?.[k], `${path}.${k}`)])
+    );
+  }
+  return es;
+}
+
+export const proyectos = base.map((p) => {
+  const tr = en[p.slug];
+  if (!tr) throw new Error(`projectData.en.js: no English text for "${p.slug}"`);
+  return {
+    ...p,
+    descripcion: par(p.descripcion, tr.descripcion, `${p.slug}.descripcion`),
+    caso: p.caso && par(p.caso, tr.caso, `${p.slug}.caso`),
+    ahora: p.ahora && par(p.ahora, tr.ahora, `${p.slug}.ahora`),
+  };
+});
