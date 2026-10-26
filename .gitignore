@@ -9,3 +9,8 @@ dist/
 dist-next/
 dist-old/
 .blog-marca
+visitas.txt
+
+# blog posts are personal: only the template is versioned
+src/content/blog/*.md
+!src/content/blog/Blogs-template.md
