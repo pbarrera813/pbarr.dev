@@ -1,11 +1,12 @@
 // Tiny unique-visitor counter. POST /visitas {"id": "<uuid>"} stores the ID once; GET /visitas returns
 // the total. Only random IDs are stored (one per line in VISITAS_FILE): no IP, no cookie, no name.
-// Run: PORT=<port> node scripts/visitas.mjs   (listens on 127.0.0.1; put the reverse proxy in front)
+// Run: PORT=<port> node scripts/visitas.mjs   (listens on 127.0.0.1 unless HOST is set; put the reverse proxy in front)
 import { createServer } from "node:http";
 import { appendFileSync, existsSync, readFileSync } from "node:fs";
 
 const PORT = Number(process.env.PORT);
 if (!PORT) throw new Error("Set PORT");
+const HOST = process.env.HOST ?? "127.0.0.1";
 const FILE = process.env.VISITAS_FILE ?? "visitas.txt";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -50,4 +51,4 @@ createServer((req, res) => {
       send(res, 400, { error: "body" });
     }
   });
-}).listen(PORT, "127.0.0.1");
+}).listen(PORT, HOST);

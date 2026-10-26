@@ -8,6 +8,8 @@ Type=simple
 User=USUARIO
 WorkingDirectory=/RUTA/AL/PROYECTO
 Environment=PORT=PUERTO
+# Solo escucha en este equipo. Si el proxy inverso llega por la red (por ejemplo desde Docker), usa HOST=0.0.0.0.
+Environment=HOST=127.0.0.1
 Environment=VISITAS_FILE=/RUTA/AL/PROYECTO/visitas.txt
 ExecStart=/usr/bin/env node scripts/visitas.mjs
 Restart=on-failure
