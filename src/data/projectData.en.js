@@ -236,7 +236,6 @@ export default {
   nitori: {
     descripcion:
       "All-in-one Discord bot with no paid features. It understands natural language: an AI router proposes a typed plan and the code validates it against Discord's real state before running it. Includes moderation, football, images, link reading, reminders and more.",
-    ahora: "AI redesign (router with typed plans and prompt cache) in the dev branch.",
     caso: [
       {
         titulo: "The problem",
@@ -253,7 +252,7 @@ export default {
         lista: [
           "Moderation of messages, users, channels and roles, also by asking in natural language if you have the corresponding permission.",
           "AI conversation, image generation, editing and analysis, and native Discord voice messages when requested.",
-          "Football information based on API-Football: teams, players, matches, standings, top scorers, injuries, lineups, odds, predictions and live tracking.",
+          "Football information based on API-Football, in image cards with menus and buttons to navigate: teams, players, matches, standings, top scorers, injuries, lineups, odds, predictions and live tracking.",
           "Link reading: summarize, explain, compare or verify their content.",
           "Translation into any language, code execution, reminders, memes, Minecraft server status, birthdays and anniversaries.",
           "Structured per-server memory, with style rules that only trusted administrators can change.",
@@ -290,8 +289,8 @@ export default {
       {
         titulo: "Current status",
         texto:
-          "This AI redesign lives in the dev branch, which is still work in progress and is not in the main branch.",
-        enlaces: [{ texto: "See the dev branch" }],
+          "The AI redesign has been in the main branch since October 28, 2026, together with the new football section. It passes its 484 automated tests, which use simulated data and do not query the real providers. The code is public under the MIT license.",
+        enlaces: [{ texto: "Nitori on GitHub" }, { texto: "The change that merged it" }],
       },
     ],
   },
@@ -456,6 +455,86 @@ export default {
         texto:
           "Version 1.0.0, with the code public on GitHub under the MIT license. It's the companion app of Hostra Dashboard.",
         enlaces: [{ texto: "Hostra Companion on GitHub" }, { texto: "Hostra Dashboard, the dashboard it controls" }],
+      },
+    ],
+  },
+
+  "dra2-recomp": {
+    descripcion:
+      "Native Windows port of Digimon Rumble Arena 2 (Xbox, 2004) by static recompilation: the game's code is translated to C and runs with Direct3D 11 up to 2160p at 60 fps and controllers through SDL3. It includes nothing from the game: you rebuild it from your own copy.",
+    caso: [
+      {
+        titulo: "How it started",
+        texto:
+          "As a kid I played this game with friends and family. I wanted to relive those days and thought: why not make a native port of an Xbox game? It would also give me a much better understanding of low-level code, which is very important in C and C++ development.",
+      },
+      {
+        titulo: "The idea",
+        texto:
+          "Port the original Xbox version of Digimon Rumble Arena 2 into a native 64-bit Windows version, running natively. You only need your own, legal copy of the disc.",
+      },
+      {
+        titulo: "What it does",
+        lista: [
+          "The complete game: menus, battles and local multiplayer for up to four players, with its music, voices and effects.",
+          "Borderless fullscreen at 1080p, 1440p or 2160p and a locked 60 fps, widened to fill 16:9 screens without stretching the image (or in the original 4:3).",
+          "Up to four controllers with rumble, tested on real hardware: DualSense, Xbox Series X|S and Switch 2 Pro.",
+          "A menu that opens from the controller itself to change resolution, widescreen, fullscreen or monitor, with no keyboard needed.",
+        ],
+      },
+      {
+        titulo: "How it's made",
+        texto: [
+          "It's a static recompilation. XboxRecomp, the toolkit by sp00nznet that it builds on, translates the game's x86 code to C; that C is compiled with MSVC and runs on a reimplemented Xbox kernel, with the NV2A GPU drawn in Direct3D 11 and the controllers through SDL3. About 20,000 functions are translated.",
+          "My part is the patches to that toolkit (translator, runtime and renderer), the functions it did not detect on its own, the rebuild script and the engineering record. The code is C and Python.",
+        ],
+      },
+      {
+        titulo: "Decisions",
+        lista: [
+          "Before building, the 2,863 files of your copy are checked against a clean copy, and what gets generated must not be shared.",
+          "The game's code is not modified: each defect is fixed in the layer where it is born, whether the translator, the function detector or the runtime.",
+          "The result was compared against the real console using the xemu emulator and its debugger. A finding only counted when it held in both directions: the console does X, the port did Y, and the fix makes the port do X.",
+          "SDL3 is built with libusb because the official SDL3.dll does not ship the Switch 2 Pro driver.",
+          "Every defect found is documented, from symptom to cause, in ENGINEERING.md.",
+        ],
+      },
+      {
+        titulo: "Fun fact",
+        texto: [
+          "On the RubberTree Falls level, a cliff beside the waterfall came out as a black hole. The first suspect was the game's own scene culling, but comparing with xemu ruled it out: the 39 large scenery objects had the same boxes in both.",
+          "Counting the indices of each draw gave the answer: the terrain sends 12,391 in a single draw and the executor kept at most 4,096 per batch, dropping the rest without a word. Two thirds of the cliff never reached the GPU. The cap is now 65,536 and a warning names any game that exceeds it.",
+        ],
+        cifras: [
+          { valor: "12,391", etiqueta: "indices in a single terrain draw" },
+          { valor: "4,096 → 65,536", etiqueta: "index cap per batch" },
+        ],
+        enlaces: [{ texto: "The engineering record" }],
+      },
+      {
+        titulo: "Limits",
+        lista: [
+          "It only works with the US release of the game. The European and Japanese releases would need additional work.",
+          "64-bit Windows 10 or 11, with Visual Studio, CMake and Python to build it. The first build takes a good while.",
+          "There is no prebuilt download: everyone rebuilds it with their own copy of the game.",
+        ],
+      },
+      {
+        titulo: "How to rebuild it",
+        texto:
+          "There are two paths: follow the README steps and run python reproduce.py with the path to your copy of the disc, or open the repository with a coding assistant and ask it to read AGENTS.md. The assistant checks your tools, runs the script and explains any error.",
+      },
+      {
+        titulo: "Credits and notice",
+        texto:
+          "It's built on XboxRecomp (MIT license), which includes code derived from xemu, and uses SDL3 and libusb. Digimon Rumble Arena 2 is the property of its rights holders; this project is not affiliated with or endorsed by them.",
+        enlaces: [{ texto: "XboxRecomp, by sp00nznet" }],
+      },
+      {
+        titulo: "Current status",
+        texto:
+          "The code is available on GitHub to build the game from your own copy of the disc.",
+        enlaces: [{ texto: "DRA2-Recomp on GitHub" }],
       },
     ],
   },

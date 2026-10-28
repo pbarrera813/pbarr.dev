@@ -11,7 +11,7 @@ const noticias = await novedades();
 const ticker = (l: "es" | "en") =>
   `${l === "es" ? "¡BIENVENIDO A PBARR.DEV!" : "WELCOME TO PBARR.DEV!"} *** ${noticias.map((n) => n.texto[l]).join(" *** ")} ***`;
 
-// newest projects first (they carry a `fecha`), then the featured ones
+// newest projects first (they carry a `fecha`), then the featured ones; only the newest one gets the NEW! tag
 const populares = proyectos
   .filter((p) => p.caso)
   .sort((a, b) => (b.fecha ?? "").localeCompare(a.fecha ?? "") || Number(b.destacado) - Number(a.destacado))
@@ -38,7 +38,7 @@ const fecha = (loc: string) => hoy.toLocaleDateString(loc, { day: "numeric", mon
         populares.map((p) => (
           <a href={`/proyectos/${p.slug}`}>
             {p.titulo}
-            {p.fecha && <span class="r-new">NEW!</span>}
+            {p === populares[0] && p.fecha && <span class="r-new">NEW!</span>}
           </a>
         ))
       }

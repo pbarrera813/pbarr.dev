@@ -4,6 +4,14 @@ import { entradas } from "./blog.js";
 // Entradas escritas a mano; las de blog y las de proyectos con `fecha` se agregan solas.
 const manual = [
   {
+    fecha: "2026-10-28",
+    texto: {
+      es: "Nitori: el rediseño de la IA y la nueva sección de fútbol ya están en la rama principal.",
+      en: "Nitori: the AI redesign and the new football section are now in the main branch.",
+    },
+    href: "/proyectos/nitori/",
+  },
+  {
     fecha: "2026-10-22",
     texto: {
       es: "Hostra Dashboard ya es público: el código y el instalador están en GitHub.",

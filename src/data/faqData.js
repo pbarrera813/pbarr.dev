@@ -2,8 +2,8 @@ export const faqs = [
   {
     pregunta: { es: "¿Qué tecnologías uso?", en: "What technologies do I use?" },
     respuesta: {
-      es: "Actualmente trabajo con tecnologías como Python, C++, React, Astro, Bootstrap y demás librerías y frameworks para el frontend, y en el backend trabajo con Node.js, MongoDB, Firebase, entre otras.",
-      en: "I currently work with technologies such as Python, C++, React, Astro, Bootstrap and other frontend libraries and frameworks, and on the backend with Node.js, MongoDB, Firebase, among others.",
+      es: "Actualmente trabajo con tecnologías como Python, C, C++, React, Astro, Bootstrap y demás librerías y frameworks para el frontend, y en el backend trabajo con Node.js, MongoDB, Firebase, entre otras.",
+      en: "I currently work with technologies such as Python, C, C++, React, Astro, Bootstrap and other frontend libraries and frameworks, and on the backend with Node.js, MongoDB, Firebase, among others.",
     },
   },
   {

@@ -108,7 +108,7 @@ const base = [
     demo: "https://pbarr.dev/pacman/",
     codigo: "https://github.com/pbarrera813/Pacman-Game/",
     categoria: "Desarrollo",
-    destacado: true,
+    destacado: false,
   },
   {
     titulo: "NexuDrive",
@@ -152,10 +152,10 @@ const base = [
     tecnologias: ["Go", "React", "Docker"],
     demo: "",
     codigo: "",
-    categoria: "FullStack,Backend,Desarrollo",
+    categoria: "FullStack,Frontend,Backend",
     estado: "En desarrollo",
     ahora: "En desarrollo activo; todavía no está abierto al público.",
-    destacado: true,
+    destacado: false,
   },
   {
     titulo: "Recreacion juego Snake",
@@ -240,7 +240,7 @@ const base = [
     tecnologias: ["Java"],
     demo:"",
     codigo: "https://github.com/pbarrera813/self-checkout",
-    categoria: "FullStack,Desarrollo",
+    categoria: "Backend,Desarrollo",
     destacado: false,
     },
     {
@@ -310,7 +310,7 @@ const base = [
             lista: [
               "Moderación de mensajes, usuarios, canales y roles, también pidiéndola en lenguaje natural si tienes el permiso correspondiente.",
               "Conversación con IA, generación, edición y análisis de imágenes, y mensajes de voz nativos de Discord cuando se piden.",
-              "Información de fútbol basada en API-Football: equipos, jugadores, partidos, posiciones, goleadores, lesiones, alineaciones, cuotas, predicciones y seguimiento en vivo.",
+              "Información de fútbol basada en API-Football, en tarjetas de imagen con menús y botones para navegar: equipos, jugadores, partidos, posiciones, goleadores, lesiones, alineaciones, cuotas, predicciones y seguimiento en vivo.",
               "Lectura de enlaces: resumir, explicar, comparar o verificar su contenido.",
               "Traducción a cualquier idioma, ejecución de código, recordatorios, memes, estado de servidores de Minecraft, cumpleaños y aniversarios.",
               "Memoria estructurada por servidor, con reglas de estilo que solo administradores de confianza pueden cambiar.",
@@ -345,14 +345,17 @@ const base = [
             ],
             enlaces: [
               { texto: "El cambio en GitHub", href: "https://github.com/pbarrera813/Discord-bot/commit/07868f8" },
-              { texto: "Las pruebas de caché", href: "https://github.com/pbarrera813/Discord-bot/blob/dev/tests/test_xai_cache_usage.py" },
+              { texto: "Las pruebas de caché", href: "https://github.com/pbarrera813/Discord-bot/blob/main/tests/test_xai_cache_usage.py" },
             ],
           },
           {
             titulo: "Estado actual",
             texto:
-              "Este rediseño de la IA vive en la rama dev, que todavía es trabajo en progreso y no está en la rama principal.",
-            enlaces: [{ texto: "Ver la rama dev", href: "https://github.com/pbarrera813/Discord-bot/tree/dev" }],
+              "El rediseño de la IA ya está en la rama principal desde el 28 de octubre de 2026, junto con la nueva sección de fútbol. Pasa sus 484 pruebas automáticas, que usan datos simulados y no consultan a los proveedores reales. El código es público bajo licencia MIT.",
+            enlaces: [
+              { texto: "Nitori en GitHub", href: "https://github.com/pbarrera813/Discord-bot" },
+              { texto: "El cambio que lo integró", href: "https://github.com/pbarrera813/Discord-bot/pull/1" },
+            ],
           },
         ],
         imagen: nitori,
@@ -360,10 +363,8 @@ const base = [
         "Bot de Discord todo en uno y sin funciones de pago. Entiende lenguaje natural: un router de IA propone un plan tipado y el código lo valida con el estado real de Discord antes de ejecutarlo. Incluye moderación, fútbol, imágenes, lectura de enlaces, recordatorios y más.",
         tecnologias: ["Python"],
         demo: null,
-        codigo: "https://github.com/pbarrera813/Discord-bot/tree/dev",
+        codigo: "https://github.com/pbarrera813/Discord-bot",
         categoria: "Backend,Desarrollo",
-        estado: "En desarrollo",
-        ahora: "Rediseño de la IA (router con planes tipados y caché de prompts) en la rama dev.",
         destacado: true,
     },
     {
@@ -475,8 +476,8 @@ const base = [
         demo: null,
         imagen: hostra,
         codigo: "https://github.com/pbarrera813/Hostra-Dashboard",
-        categoria: "FullStack,Backend,Desarrollo",
-        destacado: false,
+        categoria: "FullStack,Frontend,Backend",
+        destacado: true,
     },
     {
         titulo: "Hostra Companion",
@@ -553,8 +554,98 @@ const base = [
         demo: null,
         imagen: hostraCompanion,
         codigo: "https://github.com/pbarrera813/Hostra-Companion",
-        categoria: "FullStack,Desarrollo",
+        categoria: "Desarrollo",
         destacado: false,
+    },
+    {
+        titulo: "Digimon Rumble Arena 2 Recomp",
+        slug: "dra2-recomp",
+        fecha: "2026-10-28",
+        caso: [
+          {
+            titulo: "Cómo nació",
+            texto:
+              "De niño jugaba este juego con amigos y familia. Quise revivir esos días y pensé: ¿por qué no hacer un port nativo de un juego de Xbox? Además, me daría una comprensión mucho mejor del código de bajo nivel, algo muy importante en el desarrollo en C y C++.",
+          },
+          {
+            titulo: "La idea",
+            texto:
+              "Llevar la versión original de Xbox de Digimon Rumble Arena 2 a una versión nativa de Windows de 64 bits, que corre de forma nativa. Solo necesitas tu propia copia legal del disco.",
+          },
+          {
+            titulo: "Qué hace",
+            lista: [
+              "El juego completo: menús, combates y multijugador local de hasta cuatro jugadores, con su música, voces y efectos.",
+              "Pantalla completa sin bordes a 1080p, 1440p o 2160p y 60 fps fijos, ensanchada para llenar pantallas 16:9 sin estirar la imagen (o en el 4:3 original).",
+              "Hasta cuatro controles con vibración, probados en equipo real: DualSense, Xbox Series X|S y Switch 2 Pro.",
+              "Un menú que se abre desde el propio control para cambiar resolución, pantalla ancha, pantalla completa o monitor, sin necesidad de teclado.",
+            ],
+          },
+          {
+            titulo: "Cómo está hecho",
+            texto: [
+              "Es una recompilación estática. XboxRecomp, la herramienta de sp00nznet en la que se apoya, traduce el código x86 del juego a C; ese C se compila con MSVC y corre sobre un núcleo de Xbox reimplementado, con la GPU NV2A dibujada en Direct3D 11 y los controles a través de SDL3. Son unas 20,000 funciones traducidas.",
+              "Mi parte son los parches a esa herramienta (traductor, tiempo de ejecución y renderizador), las funciones que la herramienta no detectaba por sí sola, el script de reconstrucción y el registro de ingeniería. El código es C y Python.",
+            ],
+          },
+          {
+            titulo: "Decisiones",
+            lista: [
+              "Antes de compilar se comprueba que los 2,863 archivos de tu copia coincidan con una copia limpia, y lo que se genera no se debe compartir.",
+              "No se modifica el código del juego: cada defecto se corrige en la capa donde nace, ya sea el traductor, el detector de funciones o el tiempo de ejecución.",
+              "El resultado se comparó contra la consola real usando el emulador xemu y su depurador. Un hallazgo solo contaba si se cumplía en las dos direcciones: la consola hace X, el port hacía Y, y el arreglo hace que el port haga X.",
+              "SDL3 se compila con libusb porque la SDL3.dll oficial no trae el controlador del Switch 2 Pro.",
+              "Todo defecto encontrado queda documentado, del síntoma a la causa, en ENGINEERING.md.",
+            ],
+          },
+          {
+            titulo: "Dato curioso",
+            destacada: true,
+            texto: [
+              "En el nivel RubberTree Falls, un acantilado junto a la cascada salía como un hueco negro. La primera sospecha fue el recorte de escena del propio juego, pero compararlo con xemu la descartó: los 39 objetos grandes del escenario tenían las mismas cajas en ambos.",
+              "Contar los índices de cada dibujo dio la respuesta: el terreno manda 12,391 en un solo dibujo y el ejecutor conservaba como máximo 4,096 por lote, descartando el resto sin avisar. Dos tercios del acantilado nunca llegaban a la GPU. Ahora el límite es de 65,536 y un aviso nombra cualquier juego que lo supere.",
+            ],
+            cifras: [
+              { valor: "12,391", etiqueta: "índices en un solo dibujo del terreno" },
+              { valor: "4,096 → 65,536", etiqueta: "límite de índices por lote" },
+            ],
+            enlaces: [
+              { texto: "El registro de ingeniería", href: "https://github.com/pbarrera813/DRA2-Recomp/blob/main/ENGINEERING.md" },
+            ],
+          },
+          {
+            titulo: "Límites",
+            lista: [
+              "Solo funciona con la versión de Estados Unidos del juego. Las versiones europea y japonesa necesitarían trabajo adicional.",
+              "Windows 10 u 11 de 64 bits, con Visual Studio, CMake y Python para compilarlo. La primera compilación tarda un buen rato.",
+              "No hay descarga ya compilada: cada quien la reconstruye con su propia copia del juego.",
+            ],
+          },
+          {
+            titulo: "Cómo reconstruirlo",
+            texto:
+              "Hay dos caminos: seguir los pasos del README y ejecutar python reproduce.py con la ruta de tu copia del disco, o abrir el repositorio con un asistente de código y pedirle que lea AGENTS.md. El asistente revisa tus herramientas, ejecuta el script y te explica cualquier error.",
+          },
+          {
+            titulo: "Créditos y aviso",
+            texto:
+              "Está construido sobre XboxRecomp (licencia MIT), que incluye código derivado de xemu, y usa SDL3 y libusb. Digimon Rumble Arena 2 es propiedad de sus titulares; este proyecto no está afiliado ni respaldado por ellos.",
+            enlaces: [{ texto: "XboxRecomp, de sp00nznet", href: "https://github.com/sp00nznet/xboxrecomp" }],
+          },
+          {
+            titulo: "Estado actual",
+            texto:
+              "El código está disponible en GitHub para construir el juego a partir de tu propia copia del disco.",
+            enlaces: [{ texto: "DRA2-Recomp en GitHub", href: "https://github.com/pbarrera813/DRA2-Recomp" }],
+          },
+        ],
+        descripcion:
+        "Port nativo a Windows de Digimon Rumble Arena 2 (Xbox, 2004) por recompilación estática: el código del juego se traduce a C y corre con Direct3D 11 hasta 2160p a 60 fps y controles por SDL3. No incluye nada del juego: se reconstruye desde tu propia copia.",
+        tecnologias: ["C", "Python"],
+        demo: null,
+        codigo: "https://github.com/pbarrera813/DRA2-Recomp",
+        categoria: "Desarrollo",
+        destacado: true,
     },
     {
 	      titulo: "PlayerPing-mod",

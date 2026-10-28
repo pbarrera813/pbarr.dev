@@ -5,7 +5,7 @@ Portafolio personal auto-hospedado en [pbarr.dev](https://pbarr.dev). Presenta e
 ## Que contiene
 
 - **Inicio**: presentacion con disponibilidad, tira de tecnologias, cifras (proyectos, en desarrollo, pull requests fusionados), proyectos destacados, lo que esta en desarrollo ahora, actividad reciente de GitHub y preguntas frecuentes
-- **Proyectos**: tarjetas con filtros por categoria (`Full Stack`, `Frontend`, `Backend`, `Desarrollo`), demo y codigo cuando existen. Hoy son 11: Hostra Dashboard, Hostra Companion, Nitori, NexuDrive, Orexa Panel, Simple Voice App, PlayerPing, Self-checkout, Pac-Man, Snake y Sopa de letras
+- **Proyectos**: tarjetas con filtros por categoria (`Full Stack`, `Frontend`, `Backend`, `Desarrollo`), demo y codigo cuando existen. Hoy son 12: Hostra Dashboard, Hostra Companion, Digimon Rumble Arena 2 Recomp, Nitori, NexuDrive, Orexa Panel, Simple Voice App, PlayerPing, Self-checkout, Pac-Man, Snake y Sopa de letras
 - **Detras del proyecto**: una pagina por proyecto con el problema, la idea, que hace, como esta hecho, decisiones, cifras, estado actual y lo que se aprendio, con un indice lateral y una linea de progreso de lectura
 - **Blog**: notas de desarrollo en Markdown, ligadas a su proyecto, con un feed RSS por idioma y una pagina para suscribirse
 - **Laboratorio**: como esta montado el servidor (visitante, Cloudflare, servidor Debian, proxy inverso) en pasos que se pueden abrir para ver que hace cada uno, por que se eligio y que pasa si falla, mas el estado en vivo de las demos
