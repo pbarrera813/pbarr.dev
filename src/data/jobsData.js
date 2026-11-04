@@ -26,8 +26,8 @@ export const jobs = [
     },
     list: [
       {
-        es: "17 commits y 4 pull requests fusionados: soporte para subpath, audio 3D y espacial, contraseña por usuario, reescritura del envío de audio cliente-servidor y traducción al español.",
-        en: "17 commits and 4 merged pull requests: subpath support, 3D and spatial audio, per-user passwords, a rewrite of client-server audio sending and a Spanish translation.",
+        es: "Contribuciones: soporte para subpath, audio 3D y espacial, contraseña por usuario, reescritura del envío de audio cliente-servidor y traducción al español.",
+        en: "Contributions: subpath support, 3D and spatial audio, per-user passwords, a rewrite of client-server audio sending and a Spanish translation.",
       },
     ],
   },

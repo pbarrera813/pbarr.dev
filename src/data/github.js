@@ -1,3 +1,5 @@
+import { resumir } from "./eventos.js";
+
 const USER = "pbarrera813";
 
 const headers = {
@@ -22,15 +24,8 @@ async function gh(path) {
 }
 
 async function cargarActividad() {
-  const [repos, prs] = await Promise.all([
-    gh(`/users/${USER}/repos?sort=pushed&per_page=10`),
-    gh(`/search/issues?q=author:${USER}+is:pr+is:merged+-user:${USER}&per_page=1`),
-  ]);
-  if (!repos) return null;
-  return {
-    repos: repos.filter((r) => r.name !== USER).slice(0, 4),
-    prsFusionados: prs?.total_count ?? 0,
-  };
+  const eventos = await gh(`/users/${USER}/events/public?per_page=100`);
+  return eventos && { repos: resumir(eventos, USER) };
 }
 
 let pendiente;

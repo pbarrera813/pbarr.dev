@@ -3,7 +3,7 @@ import { actividad, fecha } from "../../../data/github.js";
 import T from "../../../i18n/T.astro";
 
 const data = await actividad();
-const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
+const slots: any[] = data?.repos ?? Array.from({ length: 4 }, () => ({}));
 ---
 
 <section
@@ -21,27 +21,24 @@ const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
         <li data-reveal>
           <a
             data-repo
-            href={r.html_url}
+            href={r.url}
             target="_blank"
             rel="noopener noreferrer"
             class="flex h-full flex-col rounded-xl bg-gray-900 p-4 drop-shadow-[4px_4px_0_#7836cf] lift"
           >
             <span
               data-name
-              class="text-lg font-semibold text-white drop-shadow-[1px_1px_0_#7836cf]"
+              class="break-words text-lg font-semibold text-white drop-shadow-[1px_1px_0_#7836cf]"
             >
-              {r.name}
+              <span data-owner class="text-[#a27ed1]">{r.owner && `${r.owner}/`}</span><span data-rname>{r.name}</span>
             </span>
-            <span data-desc class="mt-1 text-sm text-gray-400 empty:hidden">
-              {r.description}
+            <span data-desc class="mt-1 text-sm text-gray-400">
+              <span data-l="es" data-desc-es>{r.es}</span>
+              <span data-l="en" data-desc-en>{r.en}</span>
             </span>
             <span data-meta class="mt-auto pt-3 text-xs font-semibold text-[#a27ed1]">
-              <span data-l="es" data-meta-es>
-                {r.pushed_at && `${r.language ? `${r.language} · ` : ""}Actualizado el ${fecha(r.pushed_at)}`}
-              </span>
-              <span data-l="en" data-meta-en>
-                {r.pushed_at && `${r.language ? `${r.language} · ` : ""}Updated ${fecha(r.pushed_at, "en-US")}`}
-              </span>
+              <span data-l="es" data-meta-es>{r.fecha && fecha(r.fecha)}</span>
+              <span data-l="en" data-meta-en>{r.fecha && fecha(r.fecha, "en-US")}</span>
             </span>
           </a>
         </li>
@@ -50,14 +47,6 @@ const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
   </ul>
 
   <p class="mt-6 text-center text-sm text-neutral-300">
-    <span data-prs>
-      <span data-l="es" data-prs-es>
-        {data && data.prsFusionados > 0 && `${data.prsFusionados} pull requests fusionados en proyectos de otras personas. `}
-      </span>
-      <span data-l="en" data-prs-en>
-        {data && data.prsFusionados > 0 && `${data.prsFusionados} merged pull requests in other people's projects. `}
-      </span>
-    </span>
     <a
       href="https://github.com/pbarrera813"
       target="_blank"
@@ -70,8 +59,10 @@ const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
 </section>
 
 <script>
+  import { resumir } from "../../../data/eventos.js";
+
   const USER = "pbarrera813";
-  const KEY = "gh-actividad";
+  const KEY = "gh-actividad-2";
   const TTL = 15 * 60 * 1000;
 
   const get = (path: string) =>
@@ -92,16 +83,9 @@ const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
       const cached = JSON.parse(localStorage.getItem(KEY) ?? "null");
       if (cached && Date.now() - cached.t < TTL) return cached;
     } catch {}
-    const [repos, prs] = await Promise.all([
-      get(`/users/${USER}/repos?sort=pushed&per_page=10`),
-      get(
-        `/search/issues?q=author:${USER}+is:pr+is:merged+-user:${USER}&per_page=1`
-      ).catch(() => null),
-    ]);
     const data = {
       t: Date.now(),
-      repos: repos.filter((r: any) => r.name !== USER).slice(0, 4),
-      prs: prs?.total_count ?? 0,
+      repos: resumir(await get(`/users/${USER}/events/public?per_page=100`), USER),
     };
     try {
       localStorage.setItem(KEY, JSON.stringify(data));
@@ -114,27 +98,18 @@ const slots = data?.repos ?? Array.from({ length: 4 }, () => ({}) as any);
     if (!root || root.dataset.listo) return;
     root.dataset.listo = "1";
     load()
-      .then(({ repos, prs }) => {
+      .then(({ repos }) => {
         root.querySelectorAll<HTMLAnchorElement>("[data-repo]").forEach((el, i) => {
           const r = repos[i];
           el.parentElement!.hidden = !r;
           if (!r) return;
-          el.href = r.html_url;
-          el.querySelector("[data-name]")!.textContent = r.name;
-          el.querySelector("[data-desc]")!.textContent = r.description ?? "";
-          const lang = r.language ? `${r.language} · ` : "";
-          el.querySelector("[data-meta-es]")!.textContent = `${lang}Actualizado el ${fecha(r.pushed_at, "es-MX")}`;
-          el.querySelector("[data-meta-en]")!.textContent = `${lang}Updated ${fecha(r.pushed_at, "en-US")}`;
-        });
-        root.querySelector("[data-prs-es]")!.textContent = prs
-          ? `${prs} pull requests fusionados en proyectos de otras personas. `
-          : "";
-        root.querySelector("[data-prs-en]")!.textContent = prs
-          ? `${prs} merged pull requests in other people's projects. `
-          : "";
-        document.querySelectorAll<HTMLElement>("[data-stat-prs]").forEach((el) => {
-          el.textContent = String(prs);
-          el.closest<HTMLElement>("[data-stat]")!.hidden = !prs;
+          el.href = r.url;
+          el.querySelector("[data-owner]")!.textContent = r.owner && `${r.owner}/`;
+          el.querySelector("[data-rname]")!.textContent = r.name;
+          el.querySelector("[data-desc-es]")!.textContent = r.es;
+          el.querySelector("[data-desc-en]")!.textContent = r.en;
+          el.querySelector("[data-meta-es]")!.textContent = fecha(r.fecha, "es-MX");
+          el.querySelector("[data-meta-en]")!.textContent = fecha(r.fecha, "en-US");
         });
         root.hidden = false;
         window.dispatchEvent(new Event("resize"));
