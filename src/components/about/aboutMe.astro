@@ -1,29 +1,12 @@
 ---
-import { Image } from "astro:assets";
-import MiFoto from "../../assets/img/MiFoto.png";
 import T from "../../i18n/T.astro";
 ---
 
 <!-- Contenedor principal -->
 <div
-  class="mx-auto mt-20 flex max-w-6xl flex-col items-center gap-8 px-6 lg:flex-row "
+  class="mx-auto mt-20 flex max-w-3xl flex-col items-center gap-8 px-6"
 >
-  <!-- Imagen -->
-  <div
-    class="border-primary h-64 w-64 overflow-hidden rounded-2xl shadow-lg md:h-96 md:w-96 drop-shadow-[4px_4px_0_#7836cf]"
-  >
-    <Image
-      src={MiFoto}
-      width={800}
-      alt="Foto de Pablo"
-      data-attr="alt"
-      data-es="Foto de Pablo"
-      data-en="Photo of Pablo"
-      class="h-full w-full object-cover"
-    />
-  </div>
-
-  <div class="flex-1 text-center text-gray-300 lg:text-left">
+  <div class="flex-1 text-gray-300">
     <h2 class="text-3xl font-bold text-white">
       <T es="Hola! Mi nombre es" en="Hi! My name is" /> <span class="text-white text-shadow">Pablo</span>
     </h2>
@@ -31,7 +14,7 @@ import T from "../../i18n/T.astro";
       <T>
         <Fragment slot="es">
           Soy <span class="text-primary font-semibold">Ingeniero en Tecnología del Software</span>
-          por la UANL, vivo en Monterrey y curso una
+          por la UANL, vivo en México y curso una
           <span class="text-primary font-semibold">maestría en Ingeniería con orientación en Tecnologías de la Información</span>.
           Trabajo en <span class="text-primary font-semibold">backend y full-stack</span>: servicios
           en Go y Python, interfaces con React y TypeScript y apps con Flutter. Todo lo que construyo
@@ -40,7 +23,7 @@ import T from "../../i18n/T.astro";
         </Fragment>
         <Fragment slot="en">
           I'm a <span class="text-primary font-semibold">Software Technology Engineer</span>
-          from UANL, I live in Monterrey and I'm doing a
+          from UANL, I live in Mexico and I'm doing a
           <span class="text-primary font-semibold">master's degree in Engineering with a focus on Information Technology</span>.
           I work on <span class="text-primary font-semibold">backend and full-stack</span>: services
           in Go and Python, interfaces with React and TypeScript, and apps with Flutter. Everything I

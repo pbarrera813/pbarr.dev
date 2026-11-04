@@ -1,7 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from "astro:assets";
-import MiFoto from "../assets/img/MiFoto.png";
 import CopyMail from "../components/links/copyMail.jsx";
 import T from "../i18n/T.astro";
 
@@ -28,18 +26,13 @@ const links = [
     <div class="mb-2 mt-11">
       <div class="mb-2 mt-11">
         <div class="relative flex items-center justify-center">
-          <!-- Foto con borde -->
-          <Image
-            src={MiFoto}
-            width={256}
-            alt="Foto de Pablo"
-            data-attr="alt"
-            data-es="Foto de Pablo"
-            data-en="Photo of Pablo"
-            class="border-primary h-32 w-32 rounded-full shadow-lg"
-          />
+          <span
+            aria-hidden="true"
+            class="flex h-32 w-32 items-center justify-center rounded-full bg-[#7836cf] text-4xl font-bold text-force-white drop-shadow-[3px_3px_0_#0debd8]"
+          >
+            PB
+          </span>
 
-          <!-- Texto circular alrededor de la foto -->
           <svg
             viewBox="0 0 200 200"
             class="animate-spin-slow absolute h-48 w-48"
