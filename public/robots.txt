@@ -1,0 +1,30 @@
+# Allowed: search engines, bots that fetch a page because a person asked, and link previews.
+# Everything else, including AI training and bulk scrapers, is disallowed.
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: DuckDuckBot
+User-agent: Applebot
+User-agent: YandexBot
+User-agent: Baiduspider
+User-agent: Slurp
+User-agent: ChatGPT-User
+User-agent: Perplexity-User
+User-agent: Claude-User
+User-agent: MistralAI-User
+User-agent: facebookexternalhit
+User-agent: Twitterbot
+User-agent: LinkedInBot
+User-agent: Discordbot
+User-agent: Slackbot
+User-agent: WhatsApp
+User-agent: TelegramBot
+Disallow: /visitas
+Disallow: /sopa/
+Disallow: /pacman/
+Disallow: /snake/
+Disallow: /panel-demo/
+
+User-agent: *
+Disallow: /
+
+Sitemap: https://pbarr.dev/sitemap-index.xml
