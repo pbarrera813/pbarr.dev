@@ -4,11 +4,11 @@ Portafolio personal auto-hospedado en [pbarr.dev](https://pbarr.dev). Presenta e
 
 ## Que contiene
 
-- **Inicio**: presentacion con disponibilidad, tira de tecnologias, cifras (proyectos, en desarrollo, pull requests fusionados), proyectos destacados, lo que esta en desarrollo ahora, actividad reciente de GitHub y preguntas frecuentes
+- **Inicio**: presentacion con disponibilidad, tira de tecnologias, cifras (proyectos, en desarrollo), proyectos destacados, lo que esta en desarrollo ahora, actividad reciente de GitHub (toda la actividad publica, tambien en proyectos de otras personas) y preguntas frecuentes
 - **Proyectos**: tarjetas con filtros por categoria (`Full Stack`, `Frontend`, `Backend`, `Desarrollo`), demo y codigo cuando existen. Hoy son 12: Hostra Dashboard, Hostra Companion, Digimon Rumble Arena 2 Recomp, Nitori, NexuDrive, Orexa Panel, Simple Voice App, PlayerPing, Self-checkout, Pac-Man, Snake y Sopa de letras
 - **Detras del proyecto**: una pagina por proyecto con el problema, la idea, que hace, como esta hecho, decisiones, cifras, estado actual y lo que se aprendio, con un indice lateral y una linea de progreso de lectura
 - **Blog**: notas de desarrollo en Markdown, ligadas a su proyecto, con un feed RSS por idioma y una pagina para suscribirse
-- **Laboratorio**: como esta montado el servidor (visitante, Cloudflare, servidor Debian, proxy inverso) en pasos que se pueden abrir para ver que hace cada uno, por que se eligio y que pasa si falla, mas el estado en vivo de las demos
+- **Laboratorio**: como esta montado el servidor (visitante, Cloudflare, servidor Debian, proxy inverso) en pasos que se pueden abrir para ver que hace cada uno, por que se eligio y que pasa si falla, mas el estado en vivo de las demos con su tiempo de respuesta y el nodo de Cloudflare que atendio la visita. Cada paso tiene enlace directo (`#paso-2`)
 - **Sobre mi**: biografia, experiencia con pestanas, areas de trabajo enlazadas a un proyecto como evidencia, tecnologias y preguntas frecuentes
 - **Contacto** con correo copiable, LinkedIn y GitHub, un CV descargable y una pagina 404
 
@@ -18,7 +18,8 @@ Portafolio personal auto-hospedado en [pbarr.dev](https://pbarr.dev). Presenta e
 - **Modo nostalgia**: un easter egg en el pie de pagina muestra todo el sitio como un portal del año 2001, con barra lateral, cajas blancas, botones biselados, anuncios que parpadean y un contador real de visitantes unicos.
 - **Campana de novedades**: se llena sola con los articulos nuevos del blog y los proyectos nuevos, mas avisos escritos a mano
 - **Blog que se publica solo**: basta con subir un archivo `.md` (hay una plantilla en `src/content/blog/`); el servidor reconstruye el sitio y lo publica en segundos, y si algo falla conserva la version anterior
-- **Estado en vivo**: el navegador comprueba las demos y la actividad de GitHub, con valores de respaldo generados en el build
+- **Estado en vivo**: el navegador comprueba las demos (con su tiempo de respuesta) y la actividad de GitHub, con valores de respaldo generados en el build
+- **Bots**: `robots.txt` solo permite buscadores, bots que abren una pagina porque una persona lo pidio y vistas previas de enlaces; `llms.txt` se genera en el build con las paginas y proyectos, y `AGENTS.md` resume las reglas para agentes automaticos. Todos en ingles
 - **Animaciones sobrias**: transiciones entre paginas, revelado al hacer scroll, cambio de tema con revelado circular, pestanas y preguntas frecuentes animadas, conteo de cifras y un recorrido animado en el Laboratorio. Con `prefers-reduced-motion` todo aparece sin movimiento
 - **Tema** claro y oscuro con un gradiente propio (`#E4E7E4` a `#0A1647`), responsive para escritorio y movil
 - **SEO y accesibilidad**: titulo y descripcion por pagina en ambos idiomas, Open Graph, datos estructurados, sitemap, enlace para saltar al contenido, foco visible y navegacion con teclado
@@ -36,18 +37,18 @@ Portafolio personal auto-hospedado en [pbarr.dev](https://pbarr.dev). Presenta e
 
 ```text
 /
-|-- public/                       # CVs (espanol e ingles), iconos y favicon
+|-- public/                       # CVs (espanol e ingles), iconos, favicon, robots.txt y AGENTS.md
 |-- src/
 |   |-- assets/                   # Imagenes generales y capturas de proyectos
 |   |-- components/               # Secciones por pagina, navbar, footer, modo nostalgia
 |   |-- content/blog/             # Articulos en Markdown (+ traduccion .en.md) y su plantilla
-|   |-- data/                     # Proyectos (y su version en ingles), experiencia, FAQs, novedades, GitHub
+|   |-- data/                     # Proyectos (y su version en ingles), experiencia, FAQs, novedades, GitHub y su resumen de eventos
 |   |-- i18n/                     # Componente que muestra cada texto en los dos idiomas
 |   |-- layouts/Layout.astro      # Meta, SEO, idioma, tema y modo nostalgia
-|   |-- pages/                    # Inicio, proyectos, blog, laboratorio, sobre mi, contacto, 404 y feeds
+|   |-- pages/                    # Inicio, proyectos, blog, laboratorio, sobre mi, contacto, 404, feeds y llms.txt
 |   |-- scripts/                  # Idioma, animaciones, pestanas, FAQ, modo nostalgia y contador
 |   |-- styles/                   # Estilos globales, de seccion y del modo nostalgia
-|-- scripts/                      # Publicacion automatica del blog, contador de visitas y revision de traducciones
+|-- scripts/                      # Publicacion automatica del blog, contador de visitas, revision de traducciones y prueba del resumen de actividad
 |-- deploy/                       # Unidades de systemd para el servidor
 |-- astro.config.mjs
 |-- package.json
@@ -61,6 +62,7 @@ Portafolio personal auto-hospedado en [pbarr.dev](https://pbarr.dev). Presenta e
 | `npm run dev`     | Servidor local en `localhost:4321`                           |
 | `npm run build`   | Revisa las traducciones y genera el sitio estatico en `dist/` |
 | `npm run preview` | Sirve `dist/` (requiere `npm run build`)                     |
+| `node scripts/check-eventos.mjs` | Prueba el resumen de la actividad de GitHub     |
 
 ## Despliegue
 
