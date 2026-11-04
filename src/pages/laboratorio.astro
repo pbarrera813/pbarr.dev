@@ -141,6 +141,12 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
                   <p class="mt-1 text-sm text-neutral-300"><T {...x} /></p>
                 </div>
               ))}
+              {i === 1 && (
+                <p data-edge hidden class="border-t border-[#7836cf] pt-3 text-sm font-semibold text-[#a27ed1] md:col-span-3">
+                  <span data-l="es" data-edge-es />
+                  <span data-l="en" data-edge-en />
+                </p>
+              )}
             </div>
           ))
         }
@@ -148,9 +154,15 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
     </section>
 
     <section data-reveal class="rounded-2xl bg-gray-900 p-6 drop-shadow-[4px_4px_0_#7836cf]">
-      <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
-        <T es="Estado de las demos" en="Demo status" />
-      </h2>
+      <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+        <h2 class="text-2xl font-bold text-white drop-shadow-[2px_2px_0_#7836cf]">
+          <T es="Estado de las demos" en="Demo status" />
+        </h2>
+        <p data-resumen hidden class="text-sm font-semibold text-white">
+          <span data-l="es" data-resumen-es />
+          <span data-l="en" data-resumen-en />
+        </p>
+      </div>
       <ul data-estados class="mt-4 divide-y divide-gray-800">
         {
           demos.map((d) => (
@@ -391,25 +403,49 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
 <script>
   import { seconds } from "../scripts/tokens.js";
 
-  const probe = (ruta: string) =>
-    fetch(ruta, { cache: "no-store", signal: AbortSignal.timeout(5000) }).then(
-      (res) => res.ok,
-      () => false
-    );
+  type Sondeo = { ok: boolean; ms?: number; edge?: string };
+
+  const probe = async (ruta: string): Promise<Sondeo> => {
+    const t = performance.now();
+    try {
+      const res = await fetch(ruta, { cache: "no-store", signal: AbortSignal.timeout(5000) });
+      return { ok: res.ok, ms: Math.round(performance.now() - t), edge: res.headers.get("cf-ray")?.split("-")[1] };
+    } catch {
+      return { ok: false };
+    }
+  };
 
   // hold each result a moment (not under reduced motion) so the state change is perceptible
-  function sondear(lista: HTMLElement) {
+  async function sondear(lista: HTMLElement) {
     const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    lista.querySelectorAll<HTMLElement>("[data-status-path]").forEach(async (row, i) => {
-      row.dataset.sondeo = "";
-      const [ok] = await Promise.all([
-        probe(row.dataset.statusPath!),
-        new Promise((r) => setTimeout(r, calm ? 0 : 600 + i * 180)),
-      ]);
-      row.dataset.estado = ok ? "ok" : "fail";
-      row.querySelector("[data-label-es]")!.textContent = ok ? "En línea" : "Sin respuesta";
-      row.querySelector("[data-label-en]")!.textContent = ok ? "Online" : "No response";
-    });
+    const rows = [...lista.querySelectorAll<HTMLElement>("[data-status-path]")];
+    const results = await Promise.all(
+      rows.map(async (row, i) => {
+        row.dataset.sondeo = "";
+        const [r] = await Promise.all([
+          probe(row.dataset.statusPath!),
+          new Promise((res) => setTimeout(res, calm ? 0 : 600 + i * 180)),
+        ]);
+        row.dataset.estado = r.ok ? "ok" : "fail";
+        row.querySelector("[data-label-es]")!.textContent = r.ok ? `En línea · ${r.ms} ms` : "Sin respuesta";
+        row.querySelector("[data-label-en]")!.textContent = r.ok ? `Online · ${r.ms} ms` : "No response";
+        return r;
+      })
+    );
+
+    const up = results.filter((r) => r.ok).length;
+    const resumen = document.querySelector<HTMLElement>("[data-resumen]")!;
+    resumen.querySelector("[data-resumen-es]")!.textContent = `${up} de ${results.length} demos en línea`;
+    resumen.querySelector("[data-resumen-en]")!.textContent = `${up} of ${results.length} demos online`;
+    resumen.hidden = false;
+
+    const first = results.find((r) => r.ok && r.edge);
+    const edge = document.querySelector<HTMLElement>("[data-edge]");
+    if (first && edge) {
+      edge.querySelector("[data-edge-es]")!.textContent = `Tu petición pasó por el nodo ${first.edge} de Cloudflare: ${first.ms} ms de ida y vuelta hasta una demo.`;
+      edge.querySelector("[data-edge-en]")!.textContent = `Your request went through Cloudflare's ${first.edge} node: ${first.ms} ms round trip to a demo.`;
+      edge.hidden = false;
+    }
   }
 
   // start each effect when its card is actually on screen, not at page load
@@ -467,9 +503,17 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
       panels[i].animate({ opacity: [0, 1], translate: ["0 8px", "0 0"] }, { duration: base * 1.4, easing });
     };
 
+    const abrir = (i: number) => {
+      sel = i;
+      replay(i);
+      mostrar(i);
+      history.replaceState(history.state, "", `#paso-${i + 1}`);
+    };
+
     const cerrar = async () => {
       const me = ++run;
       sel = -1;
+      history.replaceState(history.state, "", location.pathname + location.search);
       items.forEach((li) => {
         li.removeAttribute("data-fuera");
         li.removeAttribute("data-sel");
@@ -484,11 +528,15 @@ const enDesarrollo = proyectos.filter((p) => p.estado === "En desarrollo");
       if (!b) return;
       const i = Number(b.dataset.i);
       if (i === sel) return cerrar();
-      sel = i;
-      replay(i);
-      mostrar(i);
+      abrir(i);
     });
     document.addEventListener("keydown", (e) => e.key === "Escape" && sel >= 0 && cerrar());
+
+    const linked = Number(location.hash.match(/^#paso-(\d)$/)?.[1]) - 1;
+    if (items[linked]) {
+      abrir(linked);
+      ol.scrollIntoView({ block: "center" });
+    }
   }
 
   function iniciar() {
