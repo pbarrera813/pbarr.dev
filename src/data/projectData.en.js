@@ -61,6 +61,7 @@ export default {
           "Frightened state with a warning flash, eyes that return home and a score from 200 to 1600 per consecutive ghost.",
           "A 12-frame death animation and eight different fruits depending on the level, from the cherry to the key.",
           "A siren that speeds up when few dots remain, high score, pause, restart and volume control (100, 50, 25 or mute).",
+          "Version 1.2: new ghost sprites and fixes to their logic and to fruit collisions.",
         ],
       },
       {
@@ -214,6 +215,10 @@ export default {
           "File explorer with search, editing, upload and download.",
           "Plugin and mod management: upload, enable or disable, and check for updates.",
           "Scheduled backups with restore, plus logs and crash reports.",
+          "Chooses each server's Java according to its version (17, 21 or 25) and warns if it isn't available. Install errors and crashes show a short title and a suggested fix.",
+          "Automatic restart after a crash (off by default) and a server list with search, status filter and sorting.",
+          "Version change forward or backward, with a risk warning when downgrading, and detection of the server's .jar whatever its name.",
+          "The editor saves with Ctrl+S and keeps the previous five versions of each file; the console remembers each server's command history.",
         ],
       },
       {
@@ -230,12 +235,17 @@ export default {
           "Deleting files, backups or logs asks for confirmation and leaves 3 seconds to undo.",
         ],
       },
+      {
+        titulo: "Current status",
+        texto: "Version 1.1.0, released on November 8, 2026. It installs with Docker and the code is public on GitHub.",
+        enlaces: [{ texto: "Orexa Panel on GitHub" }],
+      },
     ],
   },
 
   nitori: {
     descripcion:
-      "All-in-one Discord bot with no paid features. It understands natural language: an AI router proposes a typed plan and the code validates it against Discord's real state before running it. Includes moderation, football, images, link reading, reminders and more.",
+      "All-in-one Discord bot with no paid features. It understands natural language: a single AI decides which functions to use and the code checks permissions and scope against Discord's real state before running them. Includes moderation, football, images, link reading, reminders and more.",
     caso: [
       {
         titulo: "The problem",
@@ -261,36 +271,35 @@ export default {
       {
         titulo: "How it's made",
         texto:
-          "Python 3.11 or higher with SQLite. A model acts as a router: it returns a typed plan with the functions to run, their data and their order. The code validates authorization, identity, scope and dependencies against Discord's real state before running anything; if it rejects the plan, the router gets a chance to correct it. The final answer is written only from trusted results. Users' code runs in its own runner, and JavaScript-heavy pages are read with Playwright, optionally.",
+          "Python 3.11 or higher with SQLite. A single AI, xAI's Grok, receives every message addressed to Nitori together with her personality, the conversation, the latest messages in the channel, the server's memory and the author's real permissions. Each Nitori feature is a tool Grok can call: it decides what the message asks for, calls one or several functions, reads each result and keeps going, up to 8 steps and 24 calls per message. The code keeps the guardrails: it checks permissions, identity and scope against Discord's real state before running anything, and Nitori only says something was done when a result confirms it. Users' code runs in its own runner, and link reading and web and X search are Grok's own tools.",
       },
       {
         titulo: "Decisions",
         lista: [
           "Permissions come from Discord's real state, never from what a message says.",
-          "Everything that changes the server needs the real permission, is fully validated before running and is never retried or reverted automatically.",
-          "Football answers are validated against API-Football instead of letting the model guess.",
-          "It doesn't listen to the whole channel: it answers only if mentioned, if a message of its own is replied to, or if it continues a recent conversation with the same user.",
+          "Everything that changes the server needs the real permission and is validated before running; bans, temporary bans and kicks wait for your confirmation in a later message.",
+          "Football answers are based on API-Football data instead of letting the model guess.",
+          "It doesn't listen to the whole channel: it answers if mentioned, if replied to, if her name is said while talking to her, or if it continues a recent conversation with the same user, and it stays quiet when people are only talking about her.",
           "Web search is off by default and is only used when the question needs current information.",
         ],
       },
       {
         titulo: "Fun fact",
         texto: [
-          "Each message goes first through the router, a model call with about 15,000 tokens of fixed instructions. At the start that call read only 128 tokens from cache. I reordered the request so that what is fixed goes first and what changes per message goes last, and added cache keys.",
-          "With a warm cache, most of that input is read from cache and the call costs about a third. The saving isn't immediate: after a while without use or after a restart, the first messages pay full price. The figures come from real logs at the model's current price.",
+          "The first version of the AI used a router: a model planned everything in advance in a typed plan and the code validated it. It worked, but every message first paid for a call with about 15,000 tokens of fixed instructions.",
+          "I removed it. Now Grok decides on its own: it calls the functions, reads each result and keeps going. If a call is refused for something fixable, it corrects its arguments and retries, with a cap of 8 steps and 24 calls per message. The code kept only the guardrails.",
         ],
         cifras: [
-          { valor: "~15,000", etiqueta: "tokens per router call" },
-          { valor: "~91%", etiqueta: "of the input read from cache" },
-          { valor: "0.022 → 0.007 USD", etiqueta: "cost of a router call" },
+          { valor: "8", etiqueta: "steps at most per message" },
+          { valor: "24", etiqueta: "calls at most per message" },
         ],
-        enlaces: [{ texto: "The change on GitHub" }, { texto: "The cache tests" }],
+        enlaces: [{ texto: "The change that removed the router" }],
       },
       {
         titulo: "Current status",
         texto:
-          "The AI redesign has been in the main branch since October 28, 2026, together with the new football section. It passes its 484 automated tests, which use simulated data and do not query the real providers. The code is public under the MIT license.",
-        enlaces: [{ texto: "Nitori on GitHub" }, { texto: "The change that merged it" }],
+          "The AI redesign has been in the main branch since October 28, 2026, together with the new football section. On November 3 the final version was merged: the AI decides natively, without the router, and the football commands were simplified. The code is public under the MIT license.",
+        enlaces: [{ texto: "Nitori on GitHub" }, { texto: "The initial merge" }, { texto: "The final version" }],
       },
     ],
   },
@@ -298,7 +307,6 @@ export default {
   "simple-voice-app": {
     descripcion:
       "Android app built with Flutter for Minecraft Bedrock players: it lets you join SimpleVoice-Geyser's voice chat and server chat without using the browser. I'm its lead developer.",
-    ahora: "Version 1.1.0 in the dev branch: Minecraft interface and languages.",
     caso: [
       {
         titulo: "The problem",
@@ -318,9 +326,13 @@ export default {
       {
         titulo: "What it does",
         lista: [
-          "Native Android audio capture and playback, with an option to output through earpiece or speaker.",
+          "Native Android audio capture and playback, with Opus on 0.1.5 servers (and PCM as a fallback when the server allows it) and an option to output through earpiece or speaker.",
           "Foreground call notification with controls to mute, switch to speaker, hang up and reply to chat.",
           "Voice and chat tabs, a local audio test and a connection diagnostics panel.",
+          "Interface in the plugin's Minecraft style, in four languages (English, Español, Italiano and Polski): it follows the device's language and can be changed during a call.",
+          "Push-to-talk inline and in fullscreen, with screen reader support.",
+          "Detects the server's version, reconnects after a dropped connection and tells you when there is no internet or when the server does not allow the app. Works with SimpleVoice-Geyser 0.1.3, 0.1.4 and 0.1.5, and with Velocity server switching.",
+          "An app about 66% smaller than the previous one.",
         ],
       },
       {
@@ -334,6 +346,12 @@ export default {
           "For the app to work I also modified the plugin: protocol support for Android clients (PR #64).",
           "I also contributed subpath support for reverse proxy, spatial audio and persistent authentication (PR #45).",
         ],
+      },
+      {
+        titulo: "Current status",
+        texto:
+          "Version 1.1.0, released on November 12, 2026 as an APK on GitHub Releases. It requires Android 7.0 or later and a server with SimpleVoice-Geyser 0.1.3, 0.1.4 or 0.1.5; Opus audio needs a 0.1.5 server. Only this version installs next to 1.0.2: you have to uninstall the previous one and enter your saved servers again.",
+        enlaces: [{ texto: "Svg-App 1.1.0 on GitHub" }],
       },
     ],
   },
@@ -357,6 +375,7 @@ export default {
         lista: [
           "Shows CPU, memory, storage (with a forecast of when each volume will fill up) and drive health.",
           "Shows the network and ports with their owner, systemd services with their logs, Docker containers and a summary of Zoraxy, the reverse proxy, traffic.",
+          "Shows what fail2ban is doing: its jails, who is banned and the history of past bans. Alerts tell you about bans and, only if you allow it, you can ban or unban an address and block countries or networks.",
           "Its alerts say what happened, show the evidence and point to what to do about it.",
           "Only if you allow it, it can start, stop and restart services and containers, and do safe space clean-ups.",
           "The Android app, Hostra Companion, offers the same from the phone, with alert notifications and a terminal.",
@@ -382,7 +401,7 @@ export default {
       {
         titulo: "Current status",
         texto:
-          "Version 1.0.0, with the code public on GitHub under the MIT license. There are no binaries to download: it's built on the server itself with the installer. The Android app is a separate project, Hostra Companion.",
+          "Version 1.1.0, with the code public on GitHub under the MIT license. There are no binaries to download: it's built on the server itself with the installer. The Android app is a separate project, Hostra Companion.",
         enlaces: [
           { texto: "Hostra Dashboard on GitHub" },
           { texto: "Hostra Companion, the Android app" },
@@ -556,18 +575,20 @@ export default {
       {
         titulo: "What it does",
         lista: [
-          "/ping command to see latency, and /ping with a player for administrators.",
+          "/ping command to see latency, jitter and packet loss, and /ping with a player for administrators.",
           "/ip command to see your own public IP, and /ip with a player for administrators only.",
           "Color indicator in the commands and in the player list: excellent, good, fair, bad or terrible.",
           "Editable thresholds with overlap validation, applied instantly.",
           "Debug mode and diagnostic report generation.",
           "Works only on the server side: players don't need to install anything.",
+          "/ping list shows the ping of every online player (administrators) and /pingplayer reload applies config changes without restarting.",
+          "The player list keeps team colors and prefixes, refreshes once per second and, with Placeholder API (optional), other mods can show the ping.",
         ],
       },
       {
         titulo: "How it's made",
         texto:
-          "Java, with one project for Fabric and another for NeoForge. It was validated on Minecraft 1.21 and 1.21.11, and recognizes as administrators Minecraft operators, those with the playerping.admin permission and LuckPerms roles with enough weight.",
+          "Version 1.2.0. Java, with one project for Fabric and another for NeoForge. It is compatible with Minecraft 1.21.x and 26.1 to 26.3 on Fabric, and with 1.21.1 to 1.21.10, 1.21.11 and 26.1 to 26.3 on NeoForge. It recognizes as administrators Minecraft operators, those with the playerping.admin permission and LuckPerms roles with enough weight.",
       },
       {
         titulo: "Credits",

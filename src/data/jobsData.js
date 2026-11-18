@@ -12,8 +12,8 @@ export const jobs = [
         en: "Native Android audio capture and playback, websocket connection and a call notification with controls.",
       },
       {
-        es: "Versión 1.0.2 publicada como APK en GitHub Releases.",
-        en: "Version 1.0.2 released as an APK on GitHub Releases.",
+        es: "Versión 1.1.0 publicada como APK en GitHub Releases: audio Opus, interfaz al estilo de Minecraft, cuatro idiomas y una app cerca de 66% más pequeña.",
+        en: "Version 1.1.0 released as an APK on GitHub Releases: Opus audio, a Minecraft-style interface, four languages and an app about 66% smaller.",
       },
     ],
   },
@@ -26,8 +26,8 @@ export const jobs = [
     },
     list: [
       {
-        es: "Contribuciones: soporte para subpath, audio 3D y espacial, contraseña por usuario, reescritura del envío de audio cliente-servidor y traducción al español.",
-        en: "Contributions: subpath support, 3D and spatial audio, per-user passwords, a rewrite of client-server audio sending and a Spanish translation.",
+        es: "Contribuciones: soporte para subpath, audio 3D y espacial, contraseña por usuario, reescritura del envío de audio cliente-servidor, traducción al español y reescritura de la documentación para la versión 0.1.5.",
+        en: "Contributions: subpath support, 3D and spatial audio, per-user passwords, a rewrite of client-server audio sending, a Spanish translation and a documentation rewrite for version 0.1.5.",
       },
     ],
   },

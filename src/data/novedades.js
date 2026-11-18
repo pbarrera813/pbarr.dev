@@ -4,6 +4,14 @@ import { entradas } from "./blog.js";
 // Entradas escritas a mano; las de blog y las de proyectos con `fecha` se agregan solas.
 const manual = [
   {
+    fecha: "2026-11-08",
+    texto: {
+      es: "Orexa Panel 1.1.0: elige el Java de cada servidor, reinicia tras una falla y cambia de versión hacia atrás.",
+      en: "Orexa Panel 1.1.0: it picks each server's Java, restarts after a crash and can move to an older version.",
+    },
+    href: "/proyectos/orexa-panel/",
+  },
+  {
     fecha: "2026-10-28",
     texto: {
       es: "Nitori: el rediseño de la IA y la nueva sección de fútbol ya están en la rama principal.",

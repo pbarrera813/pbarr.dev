@@ -81,6 +81,7 @@ const base = [
           "Estado asustado con parpadeo de advertencia, ojos que regresan a casa y puntaje de 200 a 1600 por fantasma consecutivo.",
           "Animación de muerte de 12 cuadros y ocho frutas distintas según el nivel, de la cereza a la llave.",
           "Sirena que se acelera cuando quedan pocos puntos, high score, pausa, reinicio y control de volumen (100, 50, 25 o silencio).",
+          "Versión 1.2: sprites nuevos para los fantasmas y correcciones en su lógica y en la colisión con las frutas.",
         ],
       },
       {
@@ -265,6 +266,10 @@ const base = [
               "Explorador de archivos con búsqueda, edición, subida y descarga.",
               "Gestión de plugins y mods: subir, habilitar o deshabilitar y buscar actualizaciones.",
               "Respaldos programados con restauración, además de registros y reportes de fallas.",
+              "Elige el Java de cada servidor según su versión (17, 21 o 25) y avisa si no está disponible. Los errores de instalación y los cierres inesperados muestran un título corto y una sugerencia.",
+              "Reinicio automático tras una falla (apagado por defecto) y lista de servidores con búsqueda, filtro por estado y orden.",
+              "Cambio de versión hacia adelante o hacia atrás, con aviso del riesgo al bajar de versión, y detección del .jar del servidor sin importar su nombre.",
+              "El editor guarda con Ctrl+S y conserva las cinco versiones anteriores de cada archivo; la consola recuerda el historial de comandos de cada servidor.",
             ],
           },
           {
@@ -280,6 +285,12 @@ const base = [
               "Contraseñas con Argon2id, protección CSRF y rutas de archivos contenidas dentro de cada servidor.",
               "Borrar archivos, respaldos o registros pide confirmación y deja 3 segundos para deshacer.",
             ],
+          },
+          {
+            titulo: "Estado actual",
+            texto:
+              "Versión 1.1.0, publicada el 8 de noviembre de 2026. Se instala con Docker y el código es público en GitHub.",
+            enlaces: [{ texto: "Orexa Panel en GitHub", href: "https://github.com/pbarrera813/MC-AdPanel" }],
           },
         ],
         descripcion:
@@ -319,15 +330,15 @@ const base = [
           {
             titulo: "Cómo está hecho",
             texto:
-              "Python 3.11 o superior con SQLite. Un modelo actúa como router: devuelve un plan tipado con las funciones a ejecutar, sus datos y su orden. El código valida autorización, identidad, alcance y dependencias con el estado real de Discord antes de ejecutar nada; si rechaza el plan, el router tiene una oportunidad de corregirlo. La respuesta final se escribe únicamente a partir de resultados confiables. El código de los usuarios se ejecuta en un runner propio, y las páginas con mucho JavaScript se leen con Playwright, de forma opcional.",
+              "Python 3.11 o superior con SQLite. Una sola IA, Grok de xAI, recibe cada mensaje dirigido a Nitori junto con su personalidad, la conversación, los últimos mensajes del canal, la memoria del servidor y los permisos reales de quien escribe. Cada función de Nitori es una herramienta que Grok puede llamar: decide qué pide el mensaje, llama una o varias funciones, lee cada resultado y sigue, hasta 8 pasos y 24 llamadas por mensaje. El código conserva las barreras: revisa permisos, identidad y alcance con el estado real de Discord antes de ejecutar nada, y Nitori solo dice que algo se hizo cuando un resultado lo confirma. El código de los usuarios se ejecuta en un runner propio, y la lectura de enlaces y la búsqueda web y de X son herramientas propias de Grok.",
           },
           {
             titulo: "Decisiones",
             lista: [
               "Los permisos salen del estado real de Discord, nunca de lo que diga un mensaje.",
-              "Todo lo que cambia el servidor necesita el permiso real, se valida completo antes de ejecutarse y nunca se reintenta ni se revierte automáticamente.",
-              "Las respuestas de fútbol se validan contra API-Football en lugar de dejar que el modelo adivine.",
-              "No escucha todo el canal: responde solo si lo mencionan, si se responde a un mensaje suyo o si continúa una conversación reciente del mismo usuario.",
+              "Todo lo que cambia el servidor necesita el permiso real y se valida antes de ejecutarse; los baneos, los baneos temporales y las expulsiones esperan tu confirmación en un mensaje posterior.",
+              "Las respuestas de fútbol se basan en datos de API-Football en lugar de dejar que el modelo adivine.",
+              "No escucha todo el canal: responde si la mencionan, si le responden, si dicen su nombre hablándole a ella o si continúa una conversación reciente del mismo usuario, y calla cuando solo hablan de ella.",
               "La búsqueda web viene desactivada y solo se usa cuando la pregunta necesita información actual.",
             ],
           },
@@ -335,32 +346,31 @@ const base = [
             titulo: "Dato curioso",
             destacada: true,
             texto: [
-              "Cada mensaje pasa primero por el router, una llamada al modelo con unos 15,000 tokens de instrucciones fijas. Al inicio esa llamada leía solo 128 tokens de caché. Reordené la petición para que lo fijo vaya primero y lo que cambia por mensaje al final, y agregué llaves de caché.",
-              "Con la caché caliente, la mayor parte de esa entrada se lee desde caché y la llamada cuesta cerca de un tercio. El ahorro no es inmediato: después de un rato sin uso o de un reinicio, los primeros mensajes pagan el precio completo. Las cifras son de registros reales con el precio actual del modelo.",
+              "La primera versión de la IA usaba un router: un modelo planeaba todo por adelantado en un plan tipado y el código lo validaba. Funcionaba, pero cada mensaje pagaba antes una llamada con unos 15,000 tokens de instrucciones fijas.",
+              "Lo quité. Ahora Grok decide por sí mismo: llama las funciones, lee cada resultado y sigue. Si una llamada se rechaza por algo corregible, corrige sus argumentos y reintenta, con un tope de 8 pasos y 24 llamadas por mensaje. El código se quedó solo con las barreras.",
             ],
             cifras: [
-              { valor: "~15,000", etiqueta: "tokens por llamada del router" },
-              { valor: "~91%", etiqueta: "de la entrada leída desde caché" },
-              { valor: "0.022 → 0.007 USD", etiqueta: "costo de una llamada del router" },
+              { valor: "8", etiqueta: "pasos como máximo por mensaje" },
+              { valor: "24", etiqueta: "llamadas como máximo por mensaje" },
             ],
             enlaces: [
-              { texto: "El cambio en GitHub", href: "https://github.com/pbarrera813/Discord-bot/commit/07868f8" },
-              { texto: "Las pruebas de caché", href: "https://github.com/pbarrera813/Discord-bot/blob/main/tests/test_xai_cache_usage.py" },
+              { texto: "El cambio que quitó el router", href: "https://github.com/pbarrera813/Discord-bot/commit/fecf0ea" },
             ],
           },
           {
             titulo: "Estado actual",
             texto:
-              "El rediseño de la IA ya está en la rama principal desde el 28 de octubre de 2026, junto con la nueva sección de fútbol. Pasa sus 484 pruebas automáticas, que usan datos simulados y no consultan a los proveedores reales. El código es público bajo licencia MIT.",
+              "El rediseño de la IA está en la rama principal desde el 28 de octubre de 2026, junto con la nueva sección de fútbol. El 3 de noviembre se integró la versión final: la IA decide de forma nativa, sin el router, y los comandos de fútbol se simplificaron. El código es público bajo licencia MIT.",
             enlaces: [
               { texto: "Nitori en GitHub", href: "https://github.com/pbarrera813/Discord-bot" },
-              { texto: "El cambio que lo integró", href: "https://github.com/pbarrera813/Discord-bot/pull/1" },
+              { texto: "La integración inicial", href: "https://github.com/pbarrera813/Discord-bot/pull/1" },
+              { texto: "La versión final", href: "https://github.com/pbarrera813/Discord-bot/pull/2" },
             ],
           },
         ],
         imagen: nitori,
         descripcion:
-        "Bot de Discord todo en uno y sin funciones de pago. Entiende lenguaje natural: un router de IA propone un plan tipado y el código lo valida con el estado real de Discord antes de ejecutarlo. Incluye moderación, fútbol, imágenes, lectura de enlaces, recordatorios y más.",
+        "Bot de Discord todo en uno y sin funciones de pago. Entiende lenguaje natural: una sola IA decide qué funciones usar y el código revisa permisos y alcance con el estado real de Discord antes de ejecutarlas. Incluye moderación, fútbol, imágenes, lectura de enlaces, recordatorios y más.",
         tecnologias: ["Python"],
         demo: null,
         codigo: "https://github.com/pbarrera813/Discord-bot",
@@ -389,9 +399,13 @@ const base = [
           {
             titulo: "Qué hace",
             lista: [
-              "Captura y reproducción de audio nativas de Android, con opción de salida por auricular o altavoz.",
+              "Captura y reproducción de audio nativas de Android, con Opus en servidores 0.1.5 (y PCM de respaldo cuando el servidor lo permite) y opción de salida por auricular o altavoz.",
               "Notificación de llamada en primer plano con controles para silenciar, cambiar a altavoz, colgar y responder al chat.",
               "Pestañas de voz y chat, prueba de audio local y un panel de diagnóstico de conexión.",
+              "Interfaz con el estilo de Minecraft del plugin, en cuatro idiomas (English, Español, Italiano y Polski): sigue el idioma del dispositivo y se puede cambiar durante una llamada.",
+              "Presionar para hablar integrado y a pantalla completa, con soporte para lector de pantalla.",
+              "Detecta la versión del servidor, se reconecta tras una caída y avisa si no hay internet o si el servidor no permite la app. Funciona con SimpleVoice-Geyser 0.1.3, 0.1.4 y 0.1.5, y con el cambio de servidor de Velocity.",
+              "Una app cerca de 66% más pequeña que la anterior.",
             ],
           },
           {
@@ -406,6 +420,14 @@ const base = [
               "También aporté soporte de subruta para reverse proxy, audio espacial y autenticación persistente (PR #45).",
             ],
           },
+          {
+            titulo: "Estado actual",
+            texto:
+              "Versión 1.1.0, publicada el 12 de noviembre de 2026 como APK en GitHub Releases. Requiere Android 7.0 o superior y un servidor con SimpleVoice-Geyser 0.1.3, 0.1.4 o 0.1.5; el audio Opus pide un servidor 0.1.5. Solo esta versión se instala junto a la 1.0.2: hay que desinstalar la anterior y volver a ingresar los servidores guardados.",
+            enlaces: [
+              { texto: "Svg-App 1.1.0 en GitHub", href: "https://github.com/TheodoreMeyer/Svg-App/releases/tag/1.1.0" },
+            ],
+          },
         ],
         imagen: svgApp,
         descripcion:
@@ -414,8 +436,6 @@ const base = [
         demo: null,
         codigo: "https://github.com/TheodoreMeyer/Svg-App",
         categoria: "Desarrollo",
-        estado: "En desarrollo",
-        ahora: "Versión 1.1.0 en la rama dev: interfaz de Minecraft e idiomas.",
         destacado: false,
     },
     {
@@ -437,6 +457,7 @@ const base = [
             lista: [
               "Muestra el CPU, la memoria, el almacenamiento (con un pronóstico de cuándo se llenará cada volumen) y la salud de los discos.",
               "Muestra la red y los puertos con su dueño, los servicios de systemd con sus registros, los contenedores de Docker y un resumen del tráfico de Zoraxy, el reverse proxy.",
+              "Muestra lo que hace fail2ban: sus jaulas, quién está baneado y el historial de baneos. Las alertas avisan de los baneos y, solo si tú lo permites, puedes banear o desbanear una dirección y bloquear países o redes.",
               "Sus alertas dicen qué pasó, muestran la evidencia y señalan qué hacer al respecto.",
               "Solo si tú lo permites, puede iniciar, detener y reiniciar servicios y contenedores, y hacer limpiezas seguras de espacio.",
               "La app de Android, Hostra Companion, ofrece lo mismo desde el celular, con notificaciones de alertas y una terminal.",
@@ -462,7 +483,7 @@ const base = [
           {
             titulo: "Estado actual",
             texto:
-              "Versión 1.0.0, con el código público en GitHub bajo licencia MIT. No hay binarios para descargar: se compila en el propio servidor con el instalador. La app de Android es un proyecto aparte, Hostra Companion.",
+              "Versión 1.1.0, con el código público en GitHub bajo licencia MIT. No hay binarios para descargar: se compila en el propio servidor con el instalador. La app de Android es un proyecto aparte, Hostra Companion.",
             enlaces: [
               { texto: "Hostra Dashboard en GitHub", href: "https://github.com/pbarrera813/Hostra-Dashboard" },
               { texto: "Hostra Companion, la app de Android", href: "/proyectos/hostra-companion" },
@@ -648,7 +669,7 @@ const base = [
         destacado: true,
     },
     {
-	      titulo: "PlayerPing-mod",
+	      titulo: "Player Ping",
         slug: "playerping",
         caso: [
           {
@@ -664,18 +685,20 @@ const base = [
           {
             titulo: "Qué hace",
             lista: [
-              "Comando /ping para ver la latencia, y /ping con un jugador para los administradores.",
+              "Comando /ping para ver la latencia, la variación (jitter) y la pérdida de paquetes, y /ping con un jugador para los administradores.",
               "Comando /ip para ver tu propia IP pública, y /ip con un jugador solo para administradores.",
               "Indicador de colores en los comandos y en la lista de jugadores: excelente, bueno, regular, malo o terrible.",
               "Umbrales editables con validación de traslapes, aplicados al instante.",
               "Modo de depuración y generación de reportes de diagnóstico.",
               "Funciona solo del lado del servidor: los jugadores no necesitan instalar nada.",
+              "/ping list muestra el ping de todos los jugadores conectados (administradores) y /pingplayer reload aplica los cambios de la configuración sin reiniciar.",
+              "La lista de jugadores conserva los colores y prefijos de equipo, se actualiza una vez por segundo y, con Placeholder API (opcional), otros mods pueden mostrar el ping.",
             ],
           },
           {
             titulo: "Cómo está hecho",
             texto:
-              "Java, con un proyecto para Fabric y otro para NeoForge. Se validó en Minecraft 1.21 y 1.21.11, y reconoce como administradores a los operadores de Minecraft, a quienes tengan el permiso playerping.admin y a los roles de LuckPerms con peso suficiente.",
+              "Versión 1.2.0. Java, con un proyecto para Fabric y otro para NeoForge. Es compatible con Minecraft 1.21.x y 26.1 a 26.3 en Fabric, y con 1.21.1 a 1.21.10, 1.21.11 y 26.1 a 26.3 en NeoForge. Reconoce como administradores a los operadores de Minecraft, a quienes tengan el permiso playerping.admin y a los roles de LuckPerms con peso suficiente.",
           },
           {
             titulo: "Créditos",
